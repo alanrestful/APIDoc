@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 router.get('/api_doc', function(req, res) {
   var data = rf.readFileSync(__dirname + "/swagger.json","utf-8");
 
-  res.send(data);
+  res.render('apis/apiView' , {data : JSON.parse(data)});
 });
 
 module.exports = router;
