@@ -13,6 +13,7 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "express-handlebars": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "config": "*"
   }
 }

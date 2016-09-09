@@ -1,0 +1,10 @@
+{
+  // mongodb module configs
+  "mongodb": {
+    "host": "localhost",
+    "port": 27017,
+    "userName" : "alan",
+    "passWord" : "",
+    "dbName": "api_doc"
+  }
+}
