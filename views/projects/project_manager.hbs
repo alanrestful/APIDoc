@@ -1,10 +1,17 @@
 {{> header}}
 <div class="container-fluid">
   <div class="row">
-    {{> left}}
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">冀东水泥</a></li>
+        <li><a href="#">三力士</a></li>
+        <li><a href="#">岁宝</a></li>
+        <li><a href="#">Pampas</a></li>
+        <li><a href="#">Parana</a></li>
+      </ul>
+    </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      {{!-- {{#each data}} {{@key}}:{{this}}{{/each}} --}}
-      <h1 class="page-header">{{data.definitions}}</h1>
+      <h1 class="page-header">Dashboard</h1>
 
       <div class="row placeholders">
         <div class="col-xs-6 col-sm-3 placeholder">
@@ -160,4 +167,4 @@
     </div>
   </div>
 </div>
-<link href="../stylesheets/dashboard.css" rel="stylesheet">
+<link href="./stylesheets/dashboard.css" rel="stylesheet">
