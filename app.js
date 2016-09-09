@@ -9,6 +9,7 @@ var exphbs  = require('express-handlebars');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var projects = require('./routes/projects');
 var apiIndexs = require('./routes/apiIndexs');
 var apiManager = require('./routes/apiManager');
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/projects', projects);
 app.use('/apiIndexs', apiIndexs);
 app.use('/apiManager', apiManager);
 

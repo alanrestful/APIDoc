@@ -11,9 +11,10 @@ var loginEvent = function(e) {
         success:function (data) {
             if (data) {
                 $(".login-modal").modal('hide');
+                $(".login-btn").addClass('hide');
             } else {
                 alert("login failed");
             }
-        },
+        }
     })
 };

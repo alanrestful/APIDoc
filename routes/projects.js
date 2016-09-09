@@ -4,7 +4,7 @@ var rf = require("fs");
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index_layout', { title: 'Express' });
+  res.render('projects/project_manager', { title: 'Express' });
 });
 
 router.get('/api_doc', function(req, res) {
