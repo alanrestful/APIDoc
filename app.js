@@ -10,6 +10,7 @@ var exphbs  = require('express-handlebars');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var apiIndexs = require('./routes/apiIndexs');
+var apiManager = require('./routes/apiManager');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/apiIndexs', apiIndexs);
+app.use('/apiManager', apiManager);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,8 +73,8 @@ module.exports = app;
 
 var server = app.listen(9010, function () {
 
-  var host = server.address().address
-  var port = server.address().port
+  var host = server.address().address;
+  var port = server.address().port;
 
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })
