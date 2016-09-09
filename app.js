@@ -41,7 +41,7 @@ app.use('/projects', projects);
 app.use('/apiIndexs', apiIndexs);
 
 /// 初始化mongodb的连接池（默认pool=5）
-mongoose.connect('mongodb://'+config.get("mongodb.host")+':'+config.get("mongodb.port")+'/'+config.get("mongodb.dbName"));
+mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -77,10 +77,12 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-var server = app.listen(9010, function () {
+var server = app.listen(config.get("server.port"), function () {
 
   var host = server.address().address
   var port = server.address().port
 
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })
+
+//设置不同的启动环境export NODE_ENV=default && node app.js
