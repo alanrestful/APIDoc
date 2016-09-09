@@ -1,16 +1,20 @@
 var express = require('express');
+var mongoose = require('mongoose');
+require('express-mongoose');
 var router = express.Router();
 var rf = require("fs");
+var models = require('../models/Project');
+
+var project = models.Project;
+mongoose.connect('mongodb://127.0.0.1:27017/api_doc');
+
+// console.log(project.find());
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('projects/project_manager', { title: 'Express' });
-});
-
-router.get('/api_doc', function(req, res) {
-  var data = rf.readFileSync(__dirname + "/swagger.json","utf-8");
-
-  res.render('apis/apiView' , {left_nav : JSON.parse(data).definitions});
+  project.find(function(err, projects) {
+    res.render('projects/project_manager', { projects: projects });
+  });
 });
 
 module.exports = router;
