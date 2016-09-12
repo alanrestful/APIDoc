@@ -15,7 +15,6 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
-var apiIndexs = require('./routes/apiIndexs');
 var apiManager = require('./routes/apiManager');
 var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
