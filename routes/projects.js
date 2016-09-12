@@ -8,7 +8,7 @@ var project = models.Project;
 /* GET home page. */
 router.get('/', function(req, res) {
   project.find(function(err, projects) {
-    res.render('projects/project_manager', { projects: projects });
+    res.render('projects/project_manager', {Params: req.query, projects: projects });
   });
 });
 

@@ -28,6 +28,19 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 
+// app.use(function(req, res, next){
+//     var reqData = [];
+//     var size = 0;
+//     req.on('data', function (data) {
+//       console.log('>>>req on');
+//       reqData.push(data);
+//       size += data.length;
+//     });
+//     req.on('end', function () {
+//       req.reqData = Buffer.concat(reqData, size);
+//     });
+//     next();
+// });
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
