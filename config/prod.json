@@ -1,0 +1,16 @@
+{
+  // mongodb module configs
+  // 通过设置环境变量NODE_ENV=dev来设置项目读取的环境变量参数
+  "mongodb": {
+    "uri": "mongodb://localhost:27017/api_doc",
+    "options": {
+      "server": {
+        "auto_reconnect": true,
+        "poolSize": 10
+      }
+    }
+  },
+  "server": {
+    "port": 9010
+  }
+}

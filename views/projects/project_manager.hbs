@@ -3,26 +3,14 @@
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Overview</a></li>
-        <li><a href="#">Reports</a></li>
-        <li><a href="#">Analytics</a></li>
-        <li><a href="#">Export</a></li>
-      </ul>
-      <ul class="nav nav-sidebar">
-        <li><a href="#">Nav item</a></li>
-        <li><a href="#">Nav item again</a></li>
-        <li><a href="#">One more nav</a></li>
-        <li><a href="#">Another nav item</a></li>
-        <li><a href="#">More navigation</a></li>
-      </ul>
-      <ul class="nav nav-sidebar">
-        <li><a href="#">Nav item again</a></li>
-        <li><a href="#">One more nav</a></li>
-        <li><a href="#">Another nav item</a></li>
+        {{#each projects}}
+          <li {{#if @first}}class="active"{{/if}}><a href="#">{{this.name}}</a></li>
+        {{/each}}
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h1 class="page-header">Dashboard</h1>
+
       <div class="row placeholders">
         <div class="col-xs-6 col-sm-3 placeholder">
           <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="200x200" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzBEOEZEQiIvPjxnPjx0ZXh0IHg9Ijc0LjA1NDY4NzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0ZGRkZGRjtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjIwMHgyMDA8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true">
@@ -177,57 +165,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-
-    // initialize swagger with callback
-    var swaggerWithCallback = new SwaggerClient({
-        url: "http://jidd.com/v2/api-docs?group=api",
-        success: function () {
-            console.log('callback ready', swaggerWithCallback);
-        }
-    });
-
-//     // initialize swagger with promise
-//     var swaggerWithPromise = new SwaggerClient({
-//         url: "http://petstore.swagger.io/api/api-docs",
-//         usePromise: true
-//     }).then(function(swagger) {
-//         swaggerWithPromise = swagger;
-//         return swaggerWithPromise.pet.getPetById({petId: 7}, {responseContentType: 'application/json'});
-//     }).then(function(pet) {
-//         console.log('Swagger promise resolved pet', pet);
-//         return swaggerWithPromise.store.getOrderById({orderId: 2});
-//     }).then(function(order) {
-//         console.log('Swagger promise resolved order', order);
-// //            return swaggerWithPromise.store.getOrderById();
-//     }).catch(function(error) {
-//         console.error('Swagger promise rejected', error);
-//     });
-
-</script>
-<script type="">
-$(function(){
-		$.ajax({
-			url: 'http://jidd.com/v2/api-docs?group=api',
-			dataType: 'json',
-			cache: false,
-			timeout: 5000,
-			success: function(data){
-			  console.log(data);
-        //
-        // console.log(data.info.title);
-        // console.log(data.info.description);
-        // console.log(data.info.version);
-        // console.log(data.info.contact.email);
-        // console.log(data.basePath);
-        // $.each(data.paths,function(){
-        //     console.log(JSON.stringify($(this)));
-        // });
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				alert('error ' + textStatus + " " + errorThrown);
-			}
-		});
-});
-</script>
 <link href="./stylesheets/dashboard.css" rel="stylesheet">
