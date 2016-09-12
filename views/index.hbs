@@ -28,10 +28,14 @@
       </div>
       <div class="row clearfix" style="color:white;margin-top:170px;">
         <div class="col-md-12 column">
-          <h3 class="text-center">APIDoc 云端restful api管理</h3>
+          <h3 class="text-center">APIDoc 云端restful api管理{{User}}</h3>
           <h1 class="text-center" style="margin-top:30px;">简洁明了的接口文档管理 构建高效的团队协作</h1>
           <div class="col-md-12 column text-center" style="margin-top:50px;">
-            <a class="btn btn-primary btn-large login-btn" data-toggle="modal" data-target=".login-modal">快速登入</a>
+          {{#if User}}
+              <a class="btn btn-primary btn-large logout-btn" onclick="logoutEvent()">注销</a>
+          {{else}}
+              <a class="btn btn-primary btn-large login-btn" data-toggle="modal" data-target=".login-modal">快速登入</a>
+          {{/if}}
           </div>
         </div>
       </div>

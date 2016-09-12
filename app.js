@@ -21,7 +21,6 @@ var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
@@ -44,24 +43,24 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
-        url : 'mongodb://localhost/apidoc',
+        url : config.get("mongodb.uri"),
         ttl : 60 * 60,
     })
 }));
 
 /// session
 app.use(function(req,res,next){
-    // console.log(JSON.stringify(req.session));
+    app.locals.User = req.session.user;
     var url = req.originalUrl;
-    if (req.session.user){
+    if (req.session.user) {
         next();
     } else {
-        if (url !== '/'){
-            res.send();
+        if (url !== '/' && url !== '/users/login') {
             res.redirect('/');
+        } else {
+            next();
         }
     }
-    next();
 });
 
 app.use('/', routes);
@@ -111,7 +110,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 var server = app.listen(config.get("server.port"), function () {
-
+    我要审核
   var host = server.address().address;
   var port = server.address().port;
 
