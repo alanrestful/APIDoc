@@ -4,11 +4,14 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('config');
 // hbs渲染
 var exphbs  = require('express-handlebars');
+var mongoose = require('mongoose');
 
 var session = require('express-session');
 
+// route设置
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
@@ -67,6 +70,9 @@ app.use('/projects', projects);
 app.use('/apiIndexs', apiIndexs);
 app.use('/apiManager', apiManager);
 
+/// 初始化mongodb的连接池（默认pool=5）
+mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -104,7 +110,7 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-var server = app.listen(9010, function () {
+var server = app.listen(config.get("server.port"), function () {
 
   var host = server.address().address;
   var port = server.address().port;
