@@ -1,7 +1,16 @@
 {{> header}}
 <div class="container-fluid">
   <div class="row">
-    {{> left}}
+    <div class="col-sm-3 col-md-2 sidebar">
+      <a style="text-decoration: none;" href="/projects?id=57d65de287e89469e5dff869"><< 返回应用列表</a>
+      <hr>
+      <ul class="nav nav-sidebar">
+        {{#each left_nav}}
+          <li {{#if @first}}class="active"{{/if}}><a href="/path={{this._id}}" title="{{@key}}">{{@key}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
+
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       {{!-- {{#each data}} {{@key}}:{{this}}{{/each}} --}}
       <h1 class="page-header">{{data.definitions}}</h1>

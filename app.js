@@ -19,6 +19,7 @@ var apiIndexs = require('./routes/apiIndexs');
 var apiManager = require('./routes/apiManager');
 var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
+var applications = require('./routes/applications');
 
 var app = express();
 // view engine setup
@@ -32,6 +33,19 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 
+// app.use(function(req, res, next){
+//     var reqData = [];
+//     var size = 0;
+//     req.on('data', function (data) {
+//       console.log('>>>req on');
+//       reqData.push(data);
+//       size += data.length;
+//     });
+//     req.on('end', function () {
+//       req.reqData = Buffer.concat(reqData, size);
+//     });
+//     next();
+// });
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -66,8 +80,7 @@ app.use(function(req,res,next){
 app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
-app.use('/apiIndexs', apiIndexs);
-app.use('/apiManager', apiManager);
+app.use('/applications', applications);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
@@ -110,9 +123,10 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 var server = app.listen(config.get("server.port"), function () {
-    我要审核
-  var host = server.address().address;
-  var port = server.address().port;
+  var host = server.address().address
+  var port = server.address().port
 
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
-});
+})
+
+//设置不同的启动环境export NODE_ENV=default && node app.js
