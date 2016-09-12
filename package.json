@@ -16,7 +16,6 @@
     "mongoose": "*",
     "morgan": "~1.0.0",
     "static-favicon": "~1.0.0"
-    "config": "*"
   },
   "devDependencies": {
     "config": "^1.21.0"

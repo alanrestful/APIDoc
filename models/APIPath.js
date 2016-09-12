@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 //APIPath schema
 var _APIPath = new Schema({
     path_json : {},
+    applicationId : {type : String, default : ''},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}
 });

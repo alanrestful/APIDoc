@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 //APIPath schema
 var _APIDifinition = new Schema({
+    applicationId : {type : String, default : ''},
     difinition_json : {},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}
