@@ -13,11 +13,10 @@
     "debug": "~0.7.4",
     "express": "^4.2.0",
     "express-handlebars": "*",
+    "express-session": "*",
+    "connect-mongo": "*",
     "mongoose": "*",
     "morgan": "~1.0.0",
     "static-favicon": "~1.0.0"
-  },
-  "devDependencies": {
-    "config": "^1.21.0"
   }
 }

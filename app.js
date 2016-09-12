@@ -10,14 +10,14 @@ var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 
 var session = require('express-session');
+// var connect = require('connect');
+var MongoStore = require('connect-mongo')(session);
 
 // route设置
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
 var apiManager = require('./routes/apiManager');
-var connect = require('connect');
-var MongoStore = require('connect-mongo')(session);
 var applications = require('./routes/applications');
 
 var app = express();
@@ -61,7 +61,7 @@ app.use(session({
     })
 }));
 
-/// session
+/// session拦截器
 app.use(function(req,res,next){
     app.locals.User = req.session.user;
     var url = req.originalUrl;
