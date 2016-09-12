@@ -13,7 +13,7 @@ var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
-var apiIndexs = require('./routes/apiIndexs');
+var applications = require('./routes/applications');
 
 var app = express();
 
@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
-app.use('/apiIndexs', apiIndexs);
+app.use('/applications', applications);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));

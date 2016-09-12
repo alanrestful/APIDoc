@@ -1,28 +1,31 @@
 var express = require('express');
 var router = express.Router();
 var rf = require("fs");
-var models = require('../models/APIPath');
+var application = require('../models/Application').Application;
 
-var apiPath = models.APIPath;
+var apiPath = require('../models/APIPath').APIPath;
 
-/* GET home page. */
+
+/* GET page. */
 router.get('/', function(req, res) {
-  res.render('index_layout', { title: 'Express' });
-
-  apiPath.find(function(err, paths) {
-    console.log(paths);
-  });
+  var data = rf.readFileSync(__dirname + "/swagger.json","utf-8");
+  res.render('applications/application_manager' , {left_nav : JSON.parse(data).paths});
 });
 
+/* 创建应用 */
+router.post('/', function(req, res) {
+  application.create(req.body, function(error) {
+    if(error) {
+        console.log('create application error:%s', error);
+    } else {
+        console.log('create application success!');
+    }
+  });
+  res.redirect('/projects');
+});
 
-function objMerger(obj1, obj2){
-  for(var r in obj2){
-    obj1[r] = obj2[r];
-  }
-  return obj1;
-}
-
-router.get('/api_doc', function(req, res) {
+/* 导入path */
+router.post('/path', function(req, res) {
   var data = rf.readFileSync(__dirname + "/swagger.json","utf-8");
 
   // console.log(JSON.parse(data).paths);
@@ -39,7 +42,7 @@ router.get('/api_doc', function(req, res) {
       }
     });
   }
-  res.render('apis/apiView' , {left_nav : JSON.parse(data).definitions});
 });
+
 
 module.exports = router;

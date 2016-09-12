@@ -178,15 +178,15 @@
   </div>
 </div>
 <script type="text/javascript">
-
+$(function(){
     // initialize swagger with callback
     var swaggerWithCallback = new SwaggerClient({
-        url: "http://jidd.com/v2/api-docs?group=api",
+        url: "http://petstore.swagger.io/v2/swagger.json",
         success: function () {
             console.log('callback ready', swaggerWithCallback);
         }
     });
-
+ });
 //     // initialize swagger with promise
 //     var swaggerWithPromise = new SwaggerClient({
 //         url: "http://petstore.swagger.io/api/api-docs",
@@ -205,16 +205,17 @@
 //     });
 
 </script>
-<script type="">
+<script type="text/javascript">
+// url: 'http://jidd.com/v2/api-docs?group=api',
 $(function(){
 		$.ajax({
-			url: 'http://jidd.com/v2/api-docs?group=api',
+			url: 'http://petstore.swagger.io/v2/swagger.json',
 			dataType: 'json',
 			cache: false,
 			timeout: 5000,
 			success: function(data){
 			  console.log(data);
-        //
+
         // console.log(data.info.title);
         // console.log(data.info.description);
         // console.log(data.info.version);
