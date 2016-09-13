@@ -1,7 +1,7 @@
 var express = require('express');
 var User = require('../models/User');
 var http = require('http');
-var ccap = require('ccap');
+// var ccap = require('ccap');
 var async = require('async');
 
 
@@ -68,22 +68,23 @@ router.post('/logout',function(req,res){
 });
 
 router.get('/code',function(req,res,next){
-  var captchar = ccap();
-  var ary = captchar.get();
-  var text = ary[0];
-  var buffer = ary[1];
-  req.session.code = text;
-  console.log(text);
-  res.end(buffer);
+  // var captchar = ccap();
+  // var ary = captchar.get();
+  // var text = ary[0];
+  // var buffer = ary[1];
+  // req.session.code = text;
+  // console.log(text);
+  // res.end(buffer);
+  res.end();
 });
 
 router.post('/register',function(req,res,next){
   var obj = req.body;
   var code = req.session.code;
-  if (obj.code.toUpperCase() !== code) {
-    res.send({success: false, reason: 'code.error'});
-    return;
-  }
+  // if (obj.code.toUpperCase() !== code) {
+  //   res.send({success: false, reason: 'code.error'});
+  //   return;
+  // }
   try {
     async.waterfall([
         function(cb){
@@ -136,18 +137,3 @@ router.post('/register',function(req,res,next){
   }
 });
 module.exports = router;
-
-/**
- * 校验重复性
- * @param obj
- * @param reason
- * @param res
- */
-var checkDuplicate = function(obj,reason,res) {
-  User.User.findOne(obj,function(err,doc){
-    if (doc) {
-      res.send({success: false, reason:reason});
-      res.end();
-    }
-  });
-};

@@ -64,7 +64,7 @@
             <form role="form" class="register-form">
                 <div class="form-group">
                     <label for="Please input your user name!">用户名</label>
-                    <input type="text" class="form-control" id="userName" placeholder="请填写您的用户名" name="userName">
+                    <input type="text" class="form-control" id="userName" placeholder="请填写您的用户名" name="userName" data-bv-notempty-message="用户名不能为空">
                 </div>
                 <div class="form-group">
                     <label for="Please input your user name!">手机号码</label>
@@ -88,7 +88,7 @@
                     <img src="" id="codeImg" style="width:120px;"/>
                 </div>
                 <div class="footer pull-right">
-                    <a href="#" class="btn">取消</a>
+                    <a type="button" class="btn" data-dismiss="modal"><span aria-hidden="true">取消</span><span class="sr-only">取消</span></a>
                     <button type="button" class="btn btn-success pull-right" name="register" onclick="">注册</button>
                 </div>
             </form>
