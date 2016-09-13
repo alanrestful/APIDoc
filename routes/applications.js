@@ -11,7 +11,6 @@ var multer  = require('multer');
 
 /* GET page. */
 router.get('/', function(req, res) {
-  // var data = rf.readFileSync(__dirname + "/swagger.json","utf-8");
   if(!req.query.id){
       res.redirect('./projects');
   }else{

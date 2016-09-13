@@ -21,6 +21,7 @@
     "morgan": "~1.0.0",
     "multer": "^1.2.0",
     "static-favicon": "~1.0.0",
-    "config": "^1.21.0"
+    "config": "^1.21.0",
+    "multer": "^1.2.0"
   }
 }

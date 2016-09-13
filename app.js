@@ -19,7 +19,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
 var applications = require('./routes/applications');
-var paths = require('./routes/paths');
 
 var app = express();
 // view engine setup
@@ -29,7 +28,8 @@ app.engine('hbs', exphbs({
   partialsDir: 'views/partials',
   layoutsDir: 'views/layouts',
   defaultLayout: 'layout',
-  extname: '.hbs'
+  extname: '.hbs',
+  helpers: require('./helpers/helper')
 }));
 app.set('view engine', 'hbs');
 
@@ -83,7 +83,6 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
 app.use('/applications', applications);
-app.use('/paths', paths);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
@@ -119,9 +118,6 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
-
-
 
 module.exports = app;
 

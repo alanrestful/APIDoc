@@ -8,7 +8,7 @@
       <ul class="nav nav-sidebar">
         {{#each paths}}
           {{#each path_json}}
-          <li><a href="/paths?aid={{../../aid}}&id={{../_id}}" title="{{@key}}">{{@key}}</a></li>
+          <li><a href="#{{@key}}" title="{{@key}}">{{@key}}</a></li>
           {{/each}}
         {{/each}}
       </ul>
@@ -19,12 +19,12 @@
         API接口文档
       </h3>
 
-      <div class="row placeholders">
+      <div class="row">
         {{#unless paths}}
           该应用未导入API接口，现在<a data-toggle="modal" data-target="#importApiModal" href="#">上传API接口文件</a>
         {{else}}
           {{#each document}}
-            <div class="jumbotron">
+            <div class="jumbotron placeholders">
              <h3>{{info.title}}</h3>
              <p>version: {{info.version}}</p>
              <p>{{info.description}}</p>
@@ -36,6 +36,34 @@
              <p>{{info.host}}</p>
              <p>{{_id}}</p>
             </div>
+          {{/each}}
+          {{#each paths}}
+            {{#each path_json}}
+            <h2 id="{{@key}}">{{@key}}</h2>
+              {{#each this}}
+                <div>
+                  <h3>{{@key}}</h3>
+                  {{#if parameters}}
+                    <h5>Parameters</h5>
+                    {{#each parameters}}
+                      <strong>{{this.name}}: </strong>
+                      {{#equals this.in "body"}}
+                        <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}"></textarea>
+                      {{else}}
+                        <input class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}"/>
+                      {{/equals}}
+                    {{/each}}
+                  {{/if}}
+                  <p>Test this endpoint</p>
+                  <a href="javascript:;" onclick="alert('1');" class="btn btn-primary endpoint">Try</a>
+                  <h5>Response Messages</h5>
+                  {{#each responses}}
+                  {{@key}} - {{description}}<br>
+                  {{/each}}
+                  <hr>
+                </div>
+              {{/each}}
+            {{/each}}
           {{/each}}
         {{/unless}}
       </div>
