@@ -68,7 +68,8 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        if (url !== '/' && url !== '/users/login') {
+        var filters = ['/','/users/login','/users/register'];
+        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0) {
             res.redirect('/');
         } else {
             next();

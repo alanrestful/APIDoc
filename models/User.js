@@ -6,6 +6,8 @@ var Schema = mongoose.Schema;
 
 var _User = new Schema({
     name : {type: String, default:''},
+    mobile : {type: String, default: ''},
+    email : {type: String, default: ''},
     password : {type: String, default:''},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}
