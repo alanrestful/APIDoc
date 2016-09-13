@@ -41,7 +41,7 @@
             {{#each path_json}}
             <h2 id="{{@key}}">{{@key}}</h2>
               {{#each this}}
-                <div>
+                  <form>
                   <h3>{{@key}}</h3>
                   {{#if parameters}}
                     <h5>Parameters</h5>
@@ -55,13 +55,13 @@
                     {{/each}}
                   {{/if}}
                   <p>Test this endpoint</p>
-                  <a href="javascript:;" onclick="alert('1');" class="btn btn-primary endpoint">Try</a>
+                  <input type="submit" class="btn btn-primary endpoint" value="Try"/>
                   <h5>Response Messages</h5>
                   {{#each responses}}
                   {{@key}} - {{description}}<br>
                   {{/each}}
                   <hr>
-                </div>
+                </form>
               {{/each}}
             {{/each}}
           {{/each}}
