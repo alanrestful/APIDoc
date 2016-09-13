@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^2.0.1",
     "body-parser": "~1.0.0",
     "ccap": "^0.6.10",
     "config": "^1.21.0",
