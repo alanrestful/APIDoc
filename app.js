@@ -10,15 +10,16 @@ var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 
 var session = require('express-session');
-// var connect = require('connect');
+
+var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
 
 // route设置
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
-var apiManager = require('./routes/apiManager');
 var applications = require('./routes/applications');
+var paths = require('./routes/paths');
 
 var app = express();
 // view engine setup
@@ -51,6 +52,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser('123'));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
     secret: 'anywhere',
     resave: true,
@@ -81,6 +83,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
 app.use('/applications', applications);
+app.use('/paths', paths);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));

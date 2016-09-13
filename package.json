@@ -9,6 +9,7 @@
     "async": "^2.0.1",
     "body-parser": "~1.0.0",
     "ccap": "^0.6.10",
+    "body-parser": "^1.0.2",
     "config": "^1.21.0",
     "connect-mongo": "*",
     "cookie-parser": "~1.0.1",
@@ -18,6 +19,8 @@
     "express-session": "*",
     "mongoose": "*",
     "morgan": "~1.0.0",
-    "static-favicon": "~1.0.0"
+    "multer": "^1.2.0",
+    "static-favicon": "~1.0.0",
+    "config": "^1.21.0"
   }
 }
