@@ -1,18 +1,22 @@
-/**
- * Created by macbook on 16/9/12.
- */
 $(function(){
-    $(".endpoint").click(logoutEvent);
+    $("form").validator({
+      isErrorOnParent: true
+    });
+    $("form").submit(endpointEvent);
 });
 
-var logoutEvent = function(e){
+var endpointEvent = function(e){
     e && e.preventDefault();
+    var path = $(event.currentTarget).data("path");
+    var method = $(event.currentTarget).data("method");
+    var data = $(event.currentTarget).serializeJSON();
+    debugger;
     $.ajax({
-        url:'/users/logout',
-        type:'POST',
+        url: "http://jidd.com"+path,
+        type: method,
+        data: data,
         success:function(data){
-            $.cookie('user',null,{path:'/',expires:-1});
-            window.location.reload();
+          alert(data)
         }
     })
 };
