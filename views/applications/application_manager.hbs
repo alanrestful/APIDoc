@@ -10,7 +10,7 @@
   <div class="row">
 
     <div class="col-sm-3 col-md-2 sidebar">
-      <a style="text-decoration: none;" href="/projects?id=57d65de287e89469e5dff869"><< 返回应用列表</a>
+      <a style="text-decoration: none;" href="javascript:;" onclick="window.history.go(-1)"><< 返回应用列表</a>
       <hr>
       <ul class="nav nav-sidebar">
         {{#each paths}}
@@ -47,7 +47,7 @@
             {{#each path_json}}
             <h2 id="{{@key}}">{{@key}}</h2>
               {{#each this}}
-                  <form data-path="{{@../key}}" data-method="{{@key}}">
+                  <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
                   <h3>{{@key}}</h3>
                   {{#if parameters}}
                     <h5>Parameters</h5>
