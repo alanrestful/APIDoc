@@ -15,9 +15,19 @@ router.get('/', function(req, res) {
   if(!req.query.id){
       res.redirect('./projects');
   }else{
-    apiPath.find({"applicationId": req.query.id}, function (err, paths){
+    apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
       apiDocument.find({"applicationId": req.query.id}, function(err, document){
-        res.render('applications/application_manager', {paths: paths, document: document, aid: req.query.id});
+        var nav = [];
+        for(var path in paths) {
+          for(var p in paths[path]["path_json"]){
+            for(var m in paths[path]["path_json"][p]){
+              if(nav.indexOf(paths[path]["path_json"][p][m].tags[0])==-1){
+                nav.push(paths[path]["path_json"][p][m].tags[0]);
+              }
+            }
+          }
+        }
+        res.render('applications/application_manager', {nav: nav.sort(), paths: paths, document: document, aid: req.query.id});
       });
     });
   }
