@@ -1,5 +1,5 @@
 $(function(){
-    $(".path-form").validator({
+    $("form").validator({
       isErrorOnParent: true
     });
     $(".path-form").submit(endpointEvent);

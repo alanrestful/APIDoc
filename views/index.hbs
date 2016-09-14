@@ -16,9 +16,11 @@
                 <li>
                   <a href="/projects">项目管理</a>
                 </li>
+                {{#if User}}
                 <li>
                   <a href="#" onclick="logoutEvent()">注销</a>
                 </li>
+                {{/if}}
               </ul>
             </div>
           </div>
@@ -29,9 +31,9 @@
           <h3 class="text-center">APIDoc 云端 RestFul API 管理</h3>
           <h1 class="text-center" style="margin-top:30px;">简洁明了的接口文档管理 构建高效的团队协作</h1>
           <div class="col-md-12 column text-center" style="margin-top:50px;">
-          {{#if User}}{{else}}
+          {{#unless User}}
             <a class="btn btn-primary btn-large login-btn" data-toggle="modal" data-target=".login-modal">快速登入</a>
-          {{/if}}
+          {{/unless}}
           </div>
         </div>
       </div>

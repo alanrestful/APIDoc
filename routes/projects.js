@@ -4,7 +4,6 @@ var rf = require("fs");
 var project = require('../models/Project').Project;
 var application = require('../models/Application').Application;
 
-
 /* 项目列表 */
 router.get('/', function(req, res) {
     project.find(function(err, projects) {
@@ -20,7 +19,13 @@ router.get('/', function(req, res) {
 
 /* 创建项目 */
 router.post('/', function(req, res) {
-  project.create(req.body, function(error) {
+  var params = {
+    name: req.body.name,
+    tag: req.body.tag,
+    creator: req.session.user
+  };
+
+  project.create(params, function(error) {
     if(error) {
         console.log('create project error:%s', error);
     } else {

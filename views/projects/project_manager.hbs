@@ -46,7 +46,7 @@
   <div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-      <form action="/projects" method="post">
+      <form action="/projects" method="post" class="create-project-form">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             &times;
@@ -56,9 +56,14 @@
           </h4>
         </div>
         <div class="modal-body">
-           名  称：<input type="text" name="name" />
-           Tag：<input type="text" name="tag" /><br>
-           创建人：<input type="text" name="creator" /><br>
+          <div class="form-group">
+              <label>项目名称</label>
+              <input type="text" class="form-control" placeholder="请填写项目名称" name="name" required>
+          </div>
+          <div class="form-group">
+              <label>项目备注</label>
+              <input type="text" class="form-control" placeholder="请填写项目备注" name="tag" required>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -76,7 +81,7 @@
   <div class="modal fade" id="createApplicationModal" tabindex="-1" role="dialog" aria-labelledby="createApplicationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-      <form action="/applications" method="post">
+      <form action="/applications" method="post" class="create-application-form">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             &times;
@@ -86,9 +91,15 @@
           </h4>
         </div>
         <div class="modal-body">
-            <input type="hidden" name="projectId" value="{{_id}}">
-           名  称：<input type="text" name="name" />
-           Tag：<input type="text" name="tag" /><br>
+          <input type="hidden" name="projectId" value="{{_id}}">
+          <div class="form-group">
+              <label>应用名称</label>
+              <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>
+          </div>
+          <div class="form-group">
+              <label>应用备注</label>
+              <input type="text" class="form-control" placeholder="请填写应用备注" name="tag">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭
