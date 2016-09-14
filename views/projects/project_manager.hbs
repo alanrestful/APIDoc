@@ -4,7 +4,7 @@
 
     <div class="col-sm-3 col-md-2 sidebar">
       <a style="text-decoration: none;" data-toggle="modal" data-target="#createProjectModal" href="#">新建项目</a>
-      <hr>
+      <hr style="margin: 5px auto;">
       <ul class="nav nav-sidebar">
         {{#each projects}}
           <li><a href="/projects?id={{this.id}}">{{this.name}}</a></li>
@@ -16,7 +16,7 @@
       <h3 class="page-header">
         应用列表
         {{#if applications}}
-        <a style="float:right;font-size:14px;line-height:40px;text-decoration: none;" data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
+          <a style="float:right;font-size:14px;line-height:40px;text-decoration: none;" data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
         {{/if}}
       </h3>
       <div class="row placeholders">
@@ -24,7 +24,7 @@
           {{#each applications}}
             <a href="/applications?id={{this.id}}">
               <div class="col-xs-6 col-sm-3 placeholder">
-                <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="200x200" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzBEOEZEQiIvPjxnPjx0ZXh0IHg9Ijc0LjA1NDY4NzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0ZGRkZGRjtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjIwMHgyMDA8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true">
+                <img class="img-responsive" style="width:200px;height:200px;" alt="200x200" src="{{#if this.avatar}}{{this.avatar}}{{else}}./images/avatar.png{{/if}}" data-holder-rendered="true">
                 <h4>{{this.name}}</h4>
                 <span class="text-muted">{{this.tag}}</span>
               </div>
@@ -81,7 +81,7 @@
   <div class="modal fade" id="createApplicationModal" tabindex="-1" role="dialog" aria-labelledby="createApplicationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-      <form action="/applications" method="post" class="create-application-form">
+      <form action="/applications" method="post" class="create-application-form" enctype="multipart/form-data">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             &times;
@@ -93,12 +93,16 @@
         <div class="modal-body">
           <input type="hidden" name="projectId" value="{{_id}}">
           <div class="form-group">
-              <label>应用名称</label>
-              <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>
+            <label>应用名称</label>
+            <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>
           </div>
           <div class="form-group">
-              <label>应用备注</label>
-              <input type="text" class="form-control" placeholder="请填写应用备注" name="tag">
+            <label>应用备注</label>
+            <input type="text" class="form-control" placeholder="请填写应用备注" name="tag">
+          </div>
+          <div class="form-group">
+            <label>应用图标</label>
+            <input type="file" name="appAvatar">
           </div>
         </div>
         <div class="modal-footer">

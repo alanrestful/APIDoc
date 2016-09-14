@@ -6,6 +6,7 @@ var _Application = new Schema({
     name : {type : String, default : ''},
     projectId : {type : String, default : ''},
     tag : {type : String, default : ''},
+    avatar : {type : String, default : ''},
     creator : {type : String, default : ''},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}

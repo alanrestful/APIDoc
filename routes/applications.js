@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var rf = require("fs");
+var path = require('path');
+var fs = require("fs");
 var http = require('http');
 var application = require('../models/Application').Application;
 var apiDocument = require('../models/APIDocument').APIDocument;
@@ -8,7 +9,7 @@ var apiPath = require('../models/APIPath').APIPath;
 var apiDifinition = require('../models/APIDifinition').APIDifinition;
 
 var multer  = require('multer');
-
+var upload = multer({dest: path.join(__dirname,'../temp/')});
 /* GET page. */
 router.get('/', function(req, res) {
   if(!req.query.id){
@@ -23,30 +24,50 @@ router.get('/', function(req, res) {
 });
 
 /* 创建应用 */
-router.post('/', function(req, res) {
-  application.create(req.body, function(error) {
-    if(error) {
-        console.log('create application error:%s', error);
-    } else {
-        console.log('create application success!');
+router.post('/', upload.single('appAvatar'), function(req, res) {
+    console.log(req.body);
+    var avatar = 'images/avatar.png';
+    if(req.file){
+      console.log(req.file);
+      var tmpPath = 'temp/' + req.file.filename;
+    	//移动到指定的目录，一般放到public的images文件下面
+    	//在移动的时候确定路径已经存在，否则会报错
+      avatar = 'uploads/' + req.file.filename + '.png';
+    	//将上传的临时文件移动到指定的目录下
+    	fs.rename(tmpPath, 'public/' + avatar , function(err) {
+    		if(err){
+    			throw err;
+    		}
+    		//删除临时文件
+    		fs.unlink(tmpPath, function(){
+    			if(err) {
+    				throw err;
+    			}
+    		})
+    	})
     }
-  });
-  res.redirect('/projects');
+
+    var params = {
+      projectId: req.body.projectId,
+      name: req.body.name,
+      tag: req.body.tag,
+      avatar: './' + avatar
+    };
+
+    application.create(params, function(error) {
+      if(error) {
+          console.log('create application error:%s', error);
+      } else {
+          console.log('create application success!');
+      }
+    });
+    res.redirect('/projects');
 });
 
 /* 导入api */
-var upload = multer({dest:"uploads/"}).single('apifile');
-router.post('/importAPI', function(req, res) {
-    upload(req, res, function (err) {
-      if (err) {
-        console.log(req.body);   //打印请求体
-        console.log(req.file);
-        // An error occurred when uploading
-        return
-      }
-      // Everything went fine
+router.post('/importAPI', upload.single('apifile'), function(req, res) {
       console.log(req.file);  // 上传的文件信息
-      var data = rf.readFileSync(req.file.path,"utf-8");
+      var data = fs.readFileSync(req.file.path,"utf-8");
       var params = {
         applicationId: req.body._id,
         swagger: JSON.parse(data).swagger,
@@ -88,7 +109,6 @@ router.post('/importAPI', function(req, res) {
       }
       console.log("##############");
       res.redirect('../applications?id='+req.body._id);
-  })
 });
 
 module.exports = router;
