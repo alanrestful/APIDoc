@@ -19,6 +19,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
 var applications = require('./routes/applications');
+var codeGen = require('./routes/codeGen');
 
 var app = express();
 // view engine setup
@@ -83,6 +84,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
 app.use('/applications', applications);
+app.use('/codegen', codeGen);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
