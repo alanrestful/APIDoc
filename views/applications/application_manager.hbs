@@ -1,7 +1,6 @@
 {{> header}}
 <div class="container-fluid">
   <div class="row">
-
     <div class="col-sm-3 col-md-2 sidebar">
       <a style="text-decoration: none;" href="javascript:;" onclick="window.history.go(-1)"><< 返回应用列表</a>
       <hr>
@@ -36,36 +35,55 @@
              <p>{{info.host}}</p>
             </div>
           {{/each}}
-          {{#each paths}}
-            {{#each path_json}}
-            <h2 id="{{@key}}">{{@key}}</h2>
-              {{#each this}}
-                  <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
-                  <h3>{{@key}}</h3>
-                  {{#if parameters}}
-                    <h5>Parameters</h5>
-                    {{#each parameters}}
-                      <div class="form-group">
-                      <label>{{this.name}}:</label>
-                      {{#equals this.in "body"}}
-                        <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
-                      {{else}}
-                        <input type="text" class="form-control" style="width: 300px;" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
-                      {{/equals}}
-                      </div>
-                    {{/each}}
-                  {{/if}}
-                  <p>Test this endpoint</p>
-                  <input type="submit" class="btn btn-primary endpoint" value="Try"/>
-                  <h5>Response Messages</h5>
-                  {{#each responses}}
-                  {{@key}} - {{description}}<br>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 paths">
+              {{#each paths}}
+                {{#each path_json}}
+                <ul>
+                  {{#each this}}
+                    <li id="{{tags}}" style="list-style: none;">
+                      <h2 id="{{summary}}">{{summary}}</h2>
+                      <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
+                      <h3 class="{{@key}}" data-t="{{json this}}" >
+                          <span class="http_method">
+                              <a href="#{{summary}}">{{@key}}</a>
+                          </span>
+                          <span class="path">
+                              <a href="#{{summary}}">{{@../key}}</a>
+                          </span>
+                      </h3>
+                      <h6 id="{{description}}">{{description}}</h6>
+                      {{#if parameters}}
+                        <h5>Parameters</h5>
+                        {{#each parameters}}
+                          <div class="form-group">
+                          <label>{{this.name}}:</label>
+                          {{#equals this.in "body"}}
+                            <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
+                          {{else}}
+                            <input type="text" class="form-control" style="width: 300px;" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
+                          {{/equals}}
+                          </div>
+                        {{/each}}
+                      {{/if}}
+                      <p>Test this endpoint</p>
+                      <input type="submit" class="btn btn-primary endpoint" value="Try"/>
+                      <h5>Response Messages</h5>
+                      {{#each responses}}
+                        {{@key}} - {{description}}<br>
+                      {{/each}}
+                      <hr>
+                    </form>
+                  </li>
                   {{/each}}
-                  <hr>
-                </form>
+                </ul>
+                {{/each}}
               {{/each}}
-            {{/each}}
-          {{/each}}
+            </div>
+            <div class="col-sm-6 col-md-6 schemas">
+              ss
+            </div>
+          </div>
         {{/unless}}
       </div>
     </div>

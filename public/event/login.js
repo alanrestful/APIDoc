@@ -55,7 +55,7 @@ var submitRegister = function(){
 }
 
 $(function(){
-    APP.init();
+  APP.init();
 });
 
 var APP = {
