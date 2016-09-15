@@ -20,7 +20,25 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 var applications = require('./routes/applications');
 
+
+var open = require('open'),
+    util = require('util'),
+    serveStatic = require('serve-static'),
+    fs = require('fs'),
+    path = require('path'),
+    // swagger-editor must be served from root
+    SWAGGER_EDITOR_SERVE_PATH = '/edit',
+    // swagger-editor expects to GET the file here
+    SWAGGER_EDITOR_LOAD_PATH = '/editor/spec',
+    // swagger-editor PUTs the file back here
+    SWAGGER_EDITOR_SAVE_PATH = '/editor/spec',
+    // swagger-editor ask for defaults
+    SWAGGER_EDITOR_DEFAULTS = '/config',
+    SWAGGER_EDITOR_DEFAULTS_DIR = path.join(__dirname, './config'),
+    SWAGGER_EDITOR_DIR = path.join(__dirname, './swagger-editor');
+
 var app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
@@ -78,6 +96,28 @@ app.use(function(req,res,next){
         }
     }
 });
+
+app.use(SWAGGER_EDITOR_SAVE_PATH, function (req, res, next) {
+
+    if (req.method !== 'PUT') {
+        return next();
+    }
+
+    var stream = fs.createWriteStream('./swagger.json');
+    req.pipe(stream);
+    stream.on('finish', function () {
+        res.end('ok');
+    });
+
+});
+
+// serve defaults
+app.use(SWAGGER_EDITOR_DEFAULTS, serveStatic(SWAGGER_EDITOR_DEFAULTS_DIR));
+// retrieve the project swagger file for the swagger-editor
+app.use(SWAGGER_EDITOR_LOAD_PATH, serveStatic('./swagger.json'));
+// serve swagger-editor
+app.use(SWAGGER_EDITOR_SERVE_PATH, serveStatic(SWAGGER_EDITOR_DIR));
+
 
 app.use('/', routes);
 app.use('/users', users);
