@@ -11,7 +11,6 @@ var mongoose = require('mongoose');
 
 var session = require('express-session');
 
-var connect = require('connect');
 var MongoStore = require('connect-mongo')(session);
 
 // route设置
@@ -21,8 +20,7 @@ var projects = require('./routes/projects');
 var applications = require('./routes/applications');
 
 
-var open = require('open'),
-    util = require('util'),
+var util = require('util'),
     serveStatic = require('serve-static'),
     fs = require('fs'),
     path = require('path'),
