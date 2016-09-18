@@ -14,34 +14,48 @@ var upload = multer({dest: path.join(__dirname,'../codeGenTmp')});
 //java -jar swagger-codegen-cli.jar generate -i Downloads/swagger.json -l php -o ./
 var cmd = 'java -jar swagger-codegen-cli.jar generate -i';
 var cmdout = '-l spring -o ./codeGenTmp/';
-var tmpPath = 'codeGenTmp/';
+var tmpFloderPath = 'codeGenTmp/';
 var zipcmd = 'zip -r ';
 
 router.get('/gen',function(req,res) {
-    var zipquery = zipcmd +tmpPath + req.session.user + ".zip " + tmpPath + req.session.user;
-    var query = [cmd,tmpPath+'admin_swagger.json',cmdout+req.session.user, '&&',zipquery].join(' ');
+    var jsonName = req.query.fileName,
+        user = req.session.user,
+        resFileName = user + "_serverCode",
+        zipFileName = tmpFloderPath + user+ ".zip",
+        tmpCodeFloder = tmpFloderPath + user;
+    var zipquery = [zipcmd, zipFileName ,tmpCodeFloder].join(" ");
+    var query = [cmd,tmpFloderPath + jsonName,cmdout + user, '&&',zipquery].join(' ');
     console.log(query);
     exec(query, function(err,stdout,stderr){
         if(err) {
-            console.log('get weather api error:'+stderr);
+            console.log('get api error:'+stderr);
+            res.send({success:false})
         } else {
             console.log(stdout);
             console.log(stderr);
             //成功了取到文件压缩
+            res.download(zipFileName, resFileName + ".zip",function(err){
+                if(err) {
+                    console.error("download file failed:%s",err);
+                }
+                fs.unlink(zipFileName,function(err){
+                    if(err){
+                        console.error("delete file [%s] failed:%s",tmpFloderPath,err);
+                    }
+                });
+                //删除文件夹
+                exec('rm -rf '+ tmpCodeFloder,function(err,stdout){
+                    console.log(stdout); err && console.log(err);
+                })
+            });
         }
     });
-    // res.setRequestHeader('Content-disposition', 'attachment; filename=all_student.csv');
-    // res.writeHeader(200, {
-    //     'Content-Type': 'text/csv'
-    // });
-    res.end();
 });
 
 router.post('/upload',upload.single('apifile'),function(req,res) {
     if(req.file){
-
-        var tmpPath = tmpPath + req.file.filename ;
-        var descPath = tmpPath + req.session.user + "_" + req.file.originalname;
+        var tmpPath = tmpFloderPath + req.file.filename ;
+        var descPath = tmpFloderPath + req.session.user + "_" + req.file.originalname;
         fs.rename(tmpPath,descPath, function(err) {
             if(err){
                 throw err;
