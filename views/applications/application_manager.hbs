@@ -42,6 +42,11 @@ h2.operation-title {
     white-space: nowrap;
     overflow: hidden;
 }
+p.operations {
+    color: #5c666f;
+    min-width: 320px;
+    position: relative;
+}
 </style>
 <div class="container-fluid">
   <div class="row">
@@ -72,8 +77,8 @@ h2.operation-title {
              <p>{{info.contact.email}}</p>
              <p>{{info.license.name}}</p>
              <p>{{info.license.url}}</p>
-             <p>{{info.basePath}}</p>
-             <p>{{info.host}}</p>
+             <p>{{basePath}}</p>
+             <p class="host" data-host="{{host}}">{{host}}</p>
             </div>
           {{/each}}
           <div class="row">
@@ -85,7 +90,7 @@ h2.operation-title {
                     <li id="{{tags}}" style="list-style: none;">
                       <h2 id="{{summary}}" class="operation-title">{{summary}}</h2>
                       <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
-                      <h3 class="{{@key}}" data-t="{{json this}}" >
+                      <h3 class="{{@key}}">
                           <span class="http_method">
                               <a href="#{{summary}}">{{@key}}</a>
                           </span>
@@ -102,12 +107,12 @@ h2.operation-title {
                           {{#equals this.in "body"}}
                             <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
                           {{else}}
-                            <input type="text" class="form-control" style="width: 300px;" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
+                            <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
                           {{/equals}}
                           </div>
                         {{/each}}
                       {{/if}}
-                      <p>Test this endpoint</p>
+                      <p class="operations">Test this endpoint</p>
                       <input type="submit" class="btn btn-primary endpoint" value="Try"/>
                       <h5>Response Messages</h5>
                       {{#each responses}}
@@ -122,7 +127,7 @@ h2.operation-title {
               {{/each}}
             </div>
             <div class="col-sm-6 col-md-6 schemas">
-              
+
             </div>
           </div>
         {{/unless}}

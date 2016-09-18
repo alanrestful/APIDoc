@@ -23,6 +23,7 @@ router.get('/', function(req, res) {
             for(var m in paths[path]["path_json"][p]){
               if(nav.indexOf(paths[path]["path_json"][p][m].tags[0])==-1){
                 nav.push(paths[path]["path_json"][p][m].tags[0]);
+                break;
               }
             }
           }
