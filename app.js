@@ -71,7 +71,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register'];
+        var filters = ['/','/users/login','/users/register','/codegen/gen'];
         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0) {
             res.redirect('/');
         } else {

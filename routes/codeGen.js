@@ -18,6 +18,16 @@ var tmpFloderPath = 'codeGenTmp/';
 var zipcmd = 'zip -r ';
 
 router.get('/gen',function(req,res) {
+    swaggerServerCodeGen(req,res);
+});
+
+router.post('/upload',upload.single('apifile'),function(req,res) {
+    jsonUpload(req,res);
+    res.send({file:req.file.originalname});
+    res.end();
+});
+
+var swaggerServerCodeGen = function(req,res) {
     var jsonName = req.query.fileName,
         user = req.session.user,
         resFileName = user + "_serverCode",
@@ -29,7 +39,7 @@ router.get('/gen',function(req,res) {
     exec(query, function(err,stdout,stderr){
         if(err) {
             console.log('get api error:'+stderr);
-            res.send({success:false})
+            res.send({success:false,reason:stderr})
         } else {
             console.log(stdout);
             console.log(stderr);
@@ -38,6 +48,7 @@ router.get('/gen',function(req,res) {
                 if(err) {
                     console.error("download file failed:%s",err);
                 }
+                //删除zip
                 fs.unlink(zipFileName,function(err){
                     if(err){
                         console.error("delete file [%s] failed:%s",tmpFloderPath,err);
@@ -50,9 +61,9 @@ router.get('/gen',function(req,res) {
             });
         }
     });
-});
+};
 
-router.post('/upload',upload.single('apifile'),function(req,res) {
+var jsonUpload = function(req,res) {
     if(req.file){
         var tmpPath = tmpFloderPath + req.file.filename ;
         var descPath = tmpFloderPath + req.session.user + "_" + req.file.originalname;
@@ -68,10 +79,7 @@ router.post('/upload',upload.single('apifile'),function(req,res) {
             })
         })
     }
-    res.send({file:req.file.originalname});
-    res.end();
-});
-
+};
 
 
 module.exports = router;
