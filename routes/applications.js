@@ -16,25 +16,23 @@ router.get('/', function(req, res) {
     res.redirect('./projects');
   }else{
     apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
-      if(err){
-        throw err;
-      }
+      if(err) throw err;
       apiDocument.find({"applicationId": req.query.id}, function(err, document){
-        if(err){
-          throw err;
-        }
-        var nav = [];
+        if(err) throw err;
+        var nav = {};
         for(var path in paths) {
           for(var p in paths[path]["path_json"]){
             for(var m in paths[path]["path_json"][p]){
-              if(nav.indexOf(paths[path]["path_json"][p][m].tags[0])==-1){
-                nav.push(paths[path]["path_json"][p][m].tags[0]);
-                break;
+              if(!nav[paths[path]["path_json"][p][m].tags[0]]){
+                nav[paths[path]["path_json"][p][m].tags[0]] = [];
+              }
+              if(nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary)==-1){
+                nav[paths[path]["path_json"][p][m].tags[0]].push(paths[path]["path_json"][p][m].summary);
               }
             }
           }
         }
-        res.render('applications/application_manager', {nav: nav.sort(), paths: paths, document: document, aid: req.query.id});
+        res.render('applications/application_manager', {nav: nav, paths: paths, document: document, aid: req.query.id});
       });
     });
   }
