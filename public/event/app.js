@@ -26,10 +26,21 @@ var endpointEvent = function(e){
   })
 };
 
+function TraversalObject(obj){
+  var o = {};
+  for (var a in obj) {
+    if (typeof (obj[a]) == "object") {
+      o[a] = obj[a]["type"];
+    }
+  }
+  return o;
+}
+
 // 显示参数json
 var showSamplesEvent = function(e){
   e && e.preventDefault();
   var parameters = $(event.currentTarget).data("parameters");
+  var aid = $(".jumbotron").data("aid");
   var params = {};
   var param, type, schema, ref;
   for(var p in parameters){
@@ -43,10 +54,19 @@ var showSamplesEvent = function(e){
         } else {
           type = ref;
         }
+        $.ajax({
+            url: "/applications/difinition",
+            type: "GET",
+            async: false,
+            data: {"id": aid, "ref": type},
+            success:function(data){
+              type = TraversalObject(data[0].difinition_json[type]["properties"]);
+            }
+        })
         param.type = type;
       }
     }
-   params[param.name] = param.type;
+   params[param.name] = param.type || param["schema"]["type"];
   }
   $(event.currentTarget).parent().find("pre").html('').append(JSON.stringify(params, null, 2));
 };

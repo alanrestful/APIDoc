@@ -128,16 +128,16 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   res.redirect('../applications?id='+req.body._id);
 });
 
+// 查询实体参数定义
 router.get('/difinition', function(req, res) {
-
-  var ref, aId;
-  ref = 'difinition_json.'+req.body.ref;
-  aId = req.body.id;
-  apiDifinition.find({ref: { $exists: true }, "applicationId": aId}, function (err, def){
+  var data = {};
+  data['difinition_json.' + req.query.ref] = { $exists: true };
+  data['applicationId'] = req.query.id
+  apiDifinition.find(data, function (err, def){
     if(err){
       throw err;
     }
-    res.send(def);
+    res.json(def);
   });
 
 });

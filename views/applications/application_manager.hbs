@@ -69,7 +69,7 @@ p.operations {
           该应用未导入API接口，现在<a data-toggle="modal" data-target="#importApiModal" href="#">上传API接口文件</a>
         {{else}}
           {{#each document}}
-            <div class="jumbotron placeholders">
+            <div class="jumbotron placeholders" data-aid="{{applicationId}}">
              <h3>{{info.title}}</h3>
              <p>version: {{info.version}}</p>
              <p>{{info.description}}</p>
@@ -104,13 +104,13 @@ p.operations {
                           {{#if parameters}}
                             <h5>Parameters</h5>
                             {{#each parameters}}
-                              <div class="form-group" data-schema="{{json this.schema}}">
-                              <label>{{this.name}}:</label>
-                              {{#equals this.in "body"}}
+                              <div class="form-group" data-schema="{{json schema}}">
+                              <label>{{name}}:</label>
+                              {{#if schema.$ref}}
                                 <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
                               {{else}}
                                 <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
-                              {{/equals}}
+                              {{/if}}
                               </div>
                             {{/each}}
                           {{/if}}
