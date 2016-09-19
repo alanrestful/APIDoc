@@ -16,7 +16,13 @@ router.get('/', function(req, res) {
     res.redirect('./projects');
   }else{
     apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
+      if(err){
+        throw err;
+      }
       apiDocument.find({"applicationId": req.query.id}, function(err, document){
+        if(err){
+          throw err;
+        }
         var nav = [];
         for(var path in paths) {
           for(var p in paths[path]["path_json"]){
@@ -110,7 +116,7 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   for(var def in JSON.parse(data).definitions){
     var def_obj = {};
     def_obj[def] = JSON.parse(data).definitions[def];
-    apiDifinition.create({applicationId: req.body._id, def_obj: def_obj}, function(error) {
+    apiDifinition.create({applicationId: req.body._id, difinition_json: def_obj}, function(error) {
       if(error) {
           console.log('create definitions error:%s', error);
       } else {
@@ -120,6 +126,20 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   }
   console.log("##############");
   res.redirect('../applications?id='+req.body._id);
+});
+
+router.get('/difinition', function(req, res) {
+
+  var ref, aId;
+  ref = 'difinition_json.'+req.body.ref;
+  aId = req.body.id;
+  apiDifinition.find({ref: { $exists: true }, "applicationId": aId}, function (err, def){
+    if(err){
+      throw err;
+    }
+    res.send(def);
+  });
+
 });
 
 module.exports = router;
