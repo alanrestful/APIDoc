@@ -27,8 +27,17 @@ router.post('/upload',upload.single('apifile'),function(req,res) {
     res.end();
 });
 
-var swaggerServerCodeGen = function(req,res) {
-    var jsonName = req.query.fileName,
+router.post('/gen-by-file',upload.single('apiJson'),function(req,res){
+    var type = req.body.type;
+    jsonUpload(req, res);
+    swaggerServerCodeGen(req,res,req.session.user + "_" + req.file.originalname,type);
+});
+
+var swaggerServerCodeGen = function(req,res,fileName,type) {
+    if(type){
+        cmdout = cmdout.replace("spring",type);
+    }
+    var jsonName = fileName ||req.query.fileName,
         user = req.session.user,
         resFileName = user + "_serverCode",
         zipFileName = tmpFloderPath + user+ ".zip",
@@ -36,48 +45,60 @@ var swaggerServerCodeGen = function(req,res) {
     var zipquery = [zipcmd, zipFileName ,tmpCodeFloder].join(" ");
     var query = [cmd,tmpFloderPath + jsonName,cmdout + user, '&&',zipquery].join(' ');
     console.log(query);
-    exec(query, function(err,stdout,stderr){
-        if(err) {
-            console.log('get api error:'+stderr);
-            res.send({success:false,reason:stderr})
-        } else {
-            console.log(stdout);
-            console.log(stderr);
-            //成功了取到文件压缩
-            res.download(zipFileName, resFileName + ".zip",function(err){
-                if(err) {
-                    console.error("download file failed:%s",err);
-                }
-                //删除zip
-                fs.unlink(zipFileName,function(err){
-                    if(err){
-                        console.error("delete file [%s] failed:%s",tmpFloderPath,err);
+    try {
+        exec(query, function (err, stdout, stderr) {
+            if (err) {
+                console.log('get api error:' + stderr);
+                res.send({success: false, reason: stderr})
+            } else {
+                console.log(stdout);
+                console.log(stderr);
+                //成功了取到文件压缩
+                res.download(zipFileName, resFileName + ".zip", function (err) {
+                    if (err) {
+                        console.error("download file failed:%s", err);
                     }
+                    //删除zip
+                    fs.unlink(zipFileName, function (err) {
+                        if (err) {
+                            console.error("delete file [%s] failed:%s", tmpFloderPath, err);
+                        }
+                    });
+                    //删除文件夹
+                    exec('rm -rf ' + tmpCodeFloder, function (err, stdout) {
+                        console.log(stdout);
+                        err && console.log(err);
+                    })
                 });
-                //删除文件夹
-                exec('rm -rf '+ tmpCodeFloder,function(err,stdout){
-                    console.log(stdout); err && console.log(err);
-                })
-            });
-        }
-    });
+            }
+        });
+    }catch(e){
+        console.error(e);
+        req.send(false);
+    }
 };
 
 var jsonUpload = function(req,res) {
     if(req.file){
         var tmpPath = tmpFloderPath + req.file.filename ;
         var descPath = tmpFloderPath + req.session.user + "_" + req.file.originalname;
-        fs.rename(tmpPath,descPath, function(err) {
-            if(err){
-                throw err;
-            }
-            //删除临时文件
-            fs.unlink(tmpPath, function(){
-                if(err) {
+        try {
+            fs.rename(tmpPath, descPath, function (err) {
+                if (err) {
                     throw err;
                 }
+                console.log("make new file:%s", descPath);
+                //删除临时文件
+                fs.unlink(tmpPath, function () {
+                    if (err) {
+                        throw err;
+                    }
+                })
             })
-        })
+        }catch(exception){
+            console.error(exception);
+            res.send(false);
+        }
     }
 };
 
