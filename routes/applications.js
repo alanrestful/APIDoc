@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
             }
           }
         }
-        res.render('applications/application_manager', {nav: nav, paths: paths, document: document, aid: req.query.id});
+        res.render('applications/application_manager', {nav: nav, paths: paths, document: document, aid: req.query.id, pid: req.query.pid});
       });
     });
   }

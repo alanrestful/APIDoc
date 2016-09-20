@@ -51,7 +51,7 @@ p.operations {
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
-      <a style="text-decoration: none;" href="javascript:;" onclick="window.history.go(-1)"><< 返回应用列表</a>
+      <a style="text-decoration: none;" href="./projects?id={{pid}}" ><< 返回应用列表</a>
       <hr>
       <ul class="nav nav-sidebar">
         <span style="margin-left: 20px;color: #8c8c8c;">API REFERENCE</span>
@@ -97,7 +97,7 @@ p.operations {
                     <li id="{{tags}}" style="list-style: none;">
                       <div class="row">
                         <div class="col-sm-6 col-md-6 paths">
-                          <h2 id="{{summary}}" class="operation-title">{{summary}}</h2>
+                          <h2 id="{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
                           <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
                           <h3 class="{{@key}}">
                               <span class="http_method">
@@ -136,7 +136,7 @@ p.operations {
                         {{/if}}
                       </div>
                     </div>
-                    <hr>
+                    <hr style="margin-bottom: 0px;">
                   </li>
                   {{/each}}
                 </ul>

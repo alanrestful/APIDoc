@@ -8,10 +8,11 @@ var application = require('../models/Application').Application;
 router.get('/', function(req, res) {
   project.find(function(err, projects) {
     if(!req.query.id){
-      res.render('projects/project_manager', {Params: req.query, projects: projects});
+      res.render('projects/project_manager', {projects: projects});
     }else{
-      application.find({"projectId": req.query.id}, function (err, applications){
-        res.render('projects/project_manager', {Params: req.query, projects: projects, applications: applications, _id: req.query.id });
+      var pid = req.query.id;
+      application.find({"projectId": pid}, function (err, applications){
+        res.render('projects/project_manager', {projects: projects, applications: applications, pid: pid });
       });
     }
   });
