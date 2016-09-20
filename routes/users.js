@@ -49,6 +49,7 @@ router.post('/login', function (req, res) {
     if (doc){
       console.log(obj.userName + " login success");
       req.session.user = obj.userName;
+      req.session.userId= doc._id;
       req.session.cookie.user = obj.userName;
       res.send({user: obj.userName});
     } else {
@@ -135,5 +136,36 @@ router.post('/register',function(req,res,next){
     console.error(exception);
     res.end();
   }
+});
+
+router.get("/center",function(req,res){
+  User.User.findOne({_id:req.session.userId},function(err,doc){
+    if (err){
+      throw err;
+    }
+    console.log(doc);
+    res.render("user/user",{user:doc});
+  })
+});
+
+router.get('/passport',function(req,res){
+  res.render("user/change_password",{});
+});
+
+router.post("/change-password",function(req,res){
+  User.User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
+    if (doc.n == 0) {
+      res.send({success:false,reason:"origin.error"});
+      res.end();
+      return;
+    }
+    if (doc.nModified) {
+      res.send({success:true});
+      res.end();
+      return ;
+    }
+    console.log(err);
+    res.send({success:false})
+  });
 });
 module.exports = router;
