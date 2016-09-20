@@ -18,6 +18,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
 var applications = require('./routes/applications');
+var codeGen = require('./routes/codeGen');
 
 
 var util = require('util'),
@@ -86,7 +87,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register'];
+        var filters = ['/','/users/login','/users/register','/codegen/gen'];
         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0) {
             res.redirect('/');
         } else {
@@ -121,6 +122,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/projects', projects);
 app.use('/applications', applications);
+app.use('/codegen', codeGen);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
