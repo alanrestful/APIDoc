@@ -39,9 +39,11 @@ function TraversalObject(obj){
 // 显示参数json
 var showSamplesEvent = function(e){
   e && e.preventDefault();
-  var parameters = $(event.currentTarget).data("parameters");
+  var $target = $(event.currentTarget);
+  var parameters = $target.data("parameters");
+  var responses = $target.data("responses");
   var aid = $(".jumbotron").data("aid");
-  var params = {};
+  var samples = {};
   var param, type, schema, ref;
   for(var p in parameters){
     param = parameters[p];
@@ -49,24 +51,53 @@ var showSamplesEvent = function(e){
       schema = param.schema;
       if (schema && schema.$ref) {
         ref = schema.$ref;
-        if (ref.indexOf('#/definitions/') === 0) {
-          type = ref.substring('#/definitions/'.length);
-        } else {
-          type = ref;
-        }
-        $.ajax({
-            url: "/applications/difinition",
-            type: "GET",
-            async: false,
-            data: {"id": aid, "ref": type},
-            success:function(data){
-              type = TraversalObject(data[0].difinition_json[type]["properties"]);
-            }
-        })
-        param.type = type;
+        param.type = findDif(aid, getRef(ref));
       }
     }
-   params[param.name] = param.type || param["schema"]["type"];
+   samples[param.name] = param.type || param["schema"]["type"];
   }
-  $(event.currentTarget).parent().find("pre").html('').append(JSON.stringify(params, null, 2));
+  var resp, schema2, ref2;
+  var schemas={};
+  for(var p in responses){
+    resp = responses[p];
+    if (typeof resp.schema !== 'undefined') {
+      schema2 = resp.schema;
+      if (schema2 && schema2.$ref) {
+        ref2 = schema2.$ref;
+        schemas[getRef(ref2)] = findDif(aid, getRef(ref2));
+      }
+    }
+  }
+  var $samples = $target.parent().find(".samples");
+  var $schemas = $target.parent().find(".schemas");
+  $samples.css("display","block");
+  $schemas.css("display","block");
+  $samples.find("pre").html('').append(JSON.stringify(samples, null, 2));
+  $schemas.find("pre").html('').append(JSON.stringify(schemas, null, 2));
 };
+
+// 获取定义名称
+function getRef(ref){
+  var t;
+  if (ref.indexOf('#/definitions/') === 0) {
+    t = ref.substring('#/definitions/'.length);
+  } else {
+    t = ref;
+  }
+  return t;
+}
+
+// 获取定义obj
+function findDif(aid, ref){
+  var obj;
+  $.ajax({
+      url: "/applications/difinition",
+      type: "GET",
+      async: false,
+      data: {"id": aid, "ref": ref},
+      success:function(data){
+        obj = TraversalObject(data[0].difinition_json[ref]["properties"]);
+      }
+  })
+  return obj;
+}

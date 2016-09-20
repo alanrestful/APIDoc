@@ -28,7 +28,7 @@
       <div class="row placeholders">
         {{#if applications}}
           {{#each applications}}
-            <a href="/applications?id={{this.id}}">
+            <a href="/applications?pid={{../pid}}&id={{this.id}}">
               <div class="col-xs-6 col-sm-3 placeholder">
                 <img class="img-responsive" style="width:200px;height:200px;" alt="200x200" src="{{#if this.avatar}}{{this.avatar}}{{else}}./images/avatar.png{{/if}}" data-holder-rendered="true">
                 <h4>{{this.name}}</h4>
@@ -97,7 +97,7 @@
           </h4>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="projectId" value="{{_id}}">
+          <input type="hidden" name="projectId" value="{{_pid}}">
           <div class="form-group">
             <label>应用名称</label>
             <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>
