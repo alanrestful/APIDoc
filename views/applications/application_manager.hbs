@@ -1,30 +1,82 @@
 {{> header}}
+<style type="text/css">
+h2.operation-title {
+    font-size: 32px;
+    font-weight: 200;
+    line-height: 1;
+    padding-right: 160px;
+}
+h2.operation-title {
+    display: block;
+    float: none;
+    color: #333;
+    padding: 0;
+    font-size: 25px;
+    line-height: 1.3;
+    font-weight: 400;
+    margin: 20px 0;
+}
+
+.http_method a, .http_method span {
+    background: rgb(1, 180, 143);
+}
+.http_method a {
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    border-radius: 20px;
+    padding: 2px 10px;
+    vertical-align: top;
+}
+.path a {
+    line-height: 1.1em;
+    font-weight: 400;
+    color: rgb(131, 137, 145);
+    font-size: 12px;
+    max-width: 230px;
+    display: inline-block;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+p.operations {
+    color: #5c666f;
+    min-width: 320px;
+    position: relative;
+}
+</style>
 <div class="container-fluid">
   <div class="row">
-
     <div class="col-sm-3 col-md-2 sidebar">
       <a style="text-decoration: none;" href="javascript:;" onclick="window.history.go(-1)"><< 返回应用列表</a>
       <hr>
       <ul class="nav nav-sidebar">
-        {{#each paths}}
-          {{#each path_json}}
-          <li><a href="#{{@key}}" title="{{@key}}">{{@key}}</a></li>
-          {{/each}}
+        <span style="margin-left: 20px;color: #8c8c8c;">API REFERENCE</span>
+        {{#each nav}}
+        <li>
+          <a href="#{{@key}}" class="nav-header collapsed" data-toggle="collapse">{{@key}}<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+          <ul id="{{@key}}" class="nav nav-list collapse">
+            {{#each this}}
+              <li><a href="#{{this}}" title="{{this}}" style="margin-left: 20px;">{{this}}</a></li>
+            {{/each}}
+          </ul>
+        </li>
         {{/each}}
       </ul>
     </div>
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h3 class="page-header">
         API接口文档
       </h3>
-
       <div class="row">
         {{#unless paths}}
           该应用未导入API接口，现在<a data-toggle="modal" data-target="#importApiModal" href="#">上传API接口文件</a>
         {{else}}
           {{#each document}}
-            <div class="jumbotron placeholders">
+            <div class="jumbotron placeholders" data-aid="{{applicationId}}">
              <h3>{{info.title}}</h3>
              <p>version: {{info.version}}</p>
              <p>{{info.description}}</p>
@@ -32,40 +84,66 @@
              <p>{{info.contact.email}}</p>
              <p>{{info.license.name}}</p>
              <p>{{info.license.url}}</p>
-             <p>{{info.basePath}}</p>
-             <p>{{info.host}}</p>
+             <p>{{basePath}}</p>
+             <p class="host" data-host="{{host}}">{{host}}</p>
             </div>
           {{/each}}
-          {{#each paths}}
-            {{#each path_json}}
-            <h2 id="{{@key}}">{{@key}}</h2>
-              {{#each this}}
-                  <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
-                  <h3>{{@key}}</h3>
-                  {{#if parameters}}
-                    <h5>Parameters</h5>
-                    {{#each parameters}}
-                      <div class="form-group">
-                      <label>{{this.name}}:</label>
-                      {{#equals this.in "body"}}
-                        <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
-                      {{else}}
-                        <input type="text" class="form-control" style="width: 300px;" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
-                      {{/equals}}
+          <div class="row">
+            <div class="col-sm-12 col-md-12 paths">
+              {{#each paths}}
+                {{#each path_json}}
+                <ul>
+                  {{#each this}}
+                    <li id="{{tags}}" style="list-style: none;">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-6 paths">
+                          <h2 id="{{summary}}" class="operation-title">{{summary}}</h2>
+                          <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
+                          <h3 class="{{@key}}">
+                              <span class="http_method">
+                                  <a href="#{{summary}}">{{@key}}</a>
+                              </span>
+                              <span class="path">
+                                  <a href="#{{summary}}">{{@../key}}</a>
+                              </span>
+                          </h3>
+                          <h6 id="{{description}}">{{description}}</h6>
+                          {{#if parameters}}
+                            <h5>Parameters</h5>
+                            {{#each parameters}}
+                              <div class="form-group" data-schema="{{json schema}}">
+                              <label>{{name}}:</label>
+                              {{#if schema.$ref}}
+                                <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
+                              {{else}}
+                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
+                              {{/if}}
+                              </div>
+                            {{/each}}
+                          {{/if}}
+                          <p class="operations">Test this endpoint</p>
+                          <input type="submit" class="btn btn-primary endpoint" value="Try"/>
+                          <h5>Response Messages</h5>
+                          {{#each responses}}
+                            {{@key}} - {{description}}<br>
+                          {{/each}}
+                        </form>
                       </div>
-                    {{/each}}
-                  {{/if}}
-                  <p>Test this endpoint</p>
-                  <input type="submit" class="btn btn-primary endpoint" value="Try"/>
-                  <h5>Response Messages</h5>
-                  {{#each responses}}
-                  {{@key}} - {{description}}<br>
+                      <div class="col-sm-6 col-md-6 schemas">
+                        {{#if parameters}}
+                          <a class="show-samples" href="javascript:;" data-parameters="{{json parameters}}">Show samples</a>
+                          <pre></pre>
+                        {{/if}}
+                      </div>
+                    </div>
+                    <hr>
+                  </li>
                   {{/each}}
-                  <hr>
-                </form>
+                </ul>
+                {{/each}}
               {{/each}}
-            {{/each}}
-          {{/each}}
+            </div>
+          </div>
         {{/unless}}
       </div>
     </div>
@@ -99,6 +177,5 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
   </div>
-
 </div>
 <link href="../stylesheets/dashboard.css" rel="stylesheet">
