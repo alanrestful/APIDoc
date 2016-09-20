@@ -11,14 +11,14 @@ var apiDifinition = require('../models/APIDifinition').APIDifinition;
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
 /* GET page. */
-router.get('/', function(req, res) {
+router.get('/', function(req, res,next) {
   if(!req.query.id){
     res.redirect('./projects');
   }else{
     apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
-      if(err) throw err;
+      if(err) next(err);
       apiDocument.find({"applicationId": req.query.id}, function(err, document){
-        if(err) throw err;
+        if(err) next(err);
         var nav = {};
         for(var path in paths) {
           for(var p in paths[path]["path_json"]){
@@ -39,7 +39,7 @@ router.get('/', function(req, res) {
 });
 
 /* 创建应用 */
-router.post('/', upload.single('appAvatar'), function(req, res) {
+router.post('/', upload.single('appAvatar'), function(req, res,next) {
   console.log(req.body);
   var avatar = 'images/avatar.png';
   if(req.file){
@@ -51,12 +51,12 @@ router.post('/', upload.single('appAvatar'), function(req, res) {
   	//将上传的临时文件移动到指定的目录下
   	fs.rename(tmpPath, 'public/' + avatar , function(err) {
   		if(err){
-  			throw err;
+  			next(err);
   		}
   		//删除临时文件
   		fs.unlink(tmpPath, function(){
   			if(err) {
-  				throw err;
+  				next(err);
   			}
   		})
   	})
@@ -127,13 +127,13 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
 });
 
 // 查询实体参数定义
-router.get('/difinition', function(req, res) {
+router.get('/difinition', function(req, res,next) {
   var data = {};
   data['difinition_json.' + req.query.ref] = { $exists: true };
   data['applicationId'] = req.query.id
   apiDifinition.find(data, function (err, def){
     if(err){
-      throw err;
+      next(err);
     }
     res.json(def);
   });
