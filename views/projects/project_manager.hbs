@@ -16,11 +16,13 @@
       <h3 class="page-header">
         应用列表
         {{#if applications}}
-            <a class="dropdown-toggle" data-toggle="modal" data-target=".server-modal" href="#" style="font-size:13px">
-                生成Server
-            </a>
+            <div class="pull-right">
+                <a class="btn btn-primary" data-toggle="modal" data-target=".server-modal" href="#" style="font-size:13px">
+                    生成Server
+                </a>
 
-            <a style="float:right;font-size:14px;line-height:40px;text-decoration: none;" data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
+                <a style="float:right;font-size:14px;line-height:40px;text-decoration: none;" data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
+            </div>
         {{/if}}
       </h3>
       <div class="row placeholders">
