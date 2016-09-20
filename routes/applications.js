@@ -16,19 +16,23 @@ router.get('/', function(req, res) {
     res.redirect('./projects');
   }else{
     apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
+      if(err) throw err;
       apiDocument.find({"applicationId": req.query.id}, function(err, document){
-        var nav = [];
+        if(err) throw err;
+        var nav = {};
         for(var path in paths) {
           for(var p in paths[path]["path_json"]){
             for(var m in paths[path]["path_json"][p]){
-              if(nav.indexOf(paths[path]["path_json"][p][m].tags[0])==-1){
-                nav.push(paths[path]["path_json"][p][m].tags[0]);
-                break;
+              if(!nav[paths[path]["path_json"][p][m].tags[0]]){
+                nav[paths[path]["path_json"][p][m].tags[0]] = [];
+              }
+              if(nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary)==-1){
+                nav[paths[path]["path_json"][p][m].tags[0]].push(paths[path]["path_json"][p][m].summary);
               }
             }
           }
         }
-        res.render('applications/application_manager', {nav: nav.sort(), paths: paths, document: document, aid: req.query.id});
+        res.render('applications/application_manager', {nav: nav, paths: paths, document: document, aid: req.query.id});
       });
     });
   }
@@ -110,7 +114,7 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   for(var def in JSON.parse(data).definitions){
     var def_obj = {};
     def_obj[def] = JSON.parse(data).definitions[def];
-    apiDifinition.create({applicationId: req.body._id, def_obj: def_obj}, function(error) {
+    apiDifinition.create({applicationId: req.body._id, difinition_json: def_obj}, function(error) {
       if(error) {
           console.log('create definitions error:%s', error);
       } else {
@@ -120,6 +124,20 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   }
   console.log("##############");
   res.redirect('../applications?id='+req.body._id);
+});
+
+// 查询实体参数定义
+router.get('/difinition', function(req, res) {
+  var data = {};
+  data['difinition_json.' + req.query.ref] = { $exists: true };
+  data['applicationId'] = req.query.id
+  apiDifinition.find(data, function (err, def){
+    if(err){
+      throw err;
+    }
+    res.json(def);
+  });
+
 });
 
 module.exports = router;
