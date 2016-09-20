@@ -125,15 +125,16 @@ p.operations {
                           <input type="submit" class="btn btn-primary endpoint" value="Try"/>
                           <h5>Response Messages</h5>
                           {{#each responses}}
+                            <p style="display:none;" data-t="{{json this}}"></p>
                             {{@key}} - {{description}}<br>
                           {{/each}}
                         </form>
                       </div>
                       <div class="col-sm-6 col-md-6 schemas">
-                        {{#if parameters}}
-                          <a class="show-samples" href="javascript:;" data-parameters="{{json parameters}}">Show samples</a>
-                          <pre></pre>
-                        {{/if}}
+                          <a class="show-samples" href="javascript:;" data-parameters="{{#if parameters}}{{json parameters}}{{/if}}" data-responses="{{#if responses}}{{json responses}}{{/if}}" >Show samples</a>
+                          <br>
+                          <div style="display:none;" class="samples">samples:<pre></pre></div>
+                          <div style="display:none;" class="schemas">schemas:<pre></pre></div>
                       </div>
                     </div>
                     <hr style="margin-bottom: 0px;">
