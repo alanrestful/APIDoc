@@ -100,12 +100,12 @@ p.operations {
                           <h2 id="{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
                           <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
                           <h3 class="{{@key}}">
-                              <span class="http_method">
-                                  <a href="#{{summary}}">{{@key}}</a>
-                              </span>
-                              <span class="path">
-                                  <a href="#{{summary}}">{{@../key}}</a>
-                              </span>
+                            <span class="http_method">
+                                <a href="#{{summary}}">{{@key}}</a>
+                            </span>
+                            <span class="path">
+                                <a href="#{{summary}}">{{@../key}}</a>
+                            </span>
                           </h3>
                           <h6 id="{{description}}">{{description}}</h6>
                           {{#if parameters}}
@@ -154,7 +154,7 @@ p.operations {
   <div class="modal fade" id="importApiModal" tabindex="-1" role="dialog" aria-labelledby="importApiModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-      <form action="/codegen/upload" method="post" enctype="multipart/form-data">
+      <form action="/applications/importAPI" method="post" enctype="multipart/form-data">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             &times;

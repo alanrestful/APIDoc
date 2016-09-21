@@ -37,7 +37,7 @@
             </a>
           {{/each}}
         {{else}}
-          {{#if _id}}
+          {{#if pid}}
             该项目未创建应用，现在<a data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
           {{else}}
             请选择项目进行应用管理。
@@ -97,7 +97,7 @@
           </h4>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="projectId" value="{{_pid}}">
+          <input type="hidden" name="projectId" value="{{pid}}">
           <div class="form-group">
             <label>应用名称</label>
             <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>

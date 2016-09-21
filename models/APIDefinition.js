@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //APIPath schema
-var _APIDifinition = new Schema({
+var _APIDefinition = new Schema({
     applicationId : {type : String, default : ''},
-    difinition_json : {},
+    definition_json : {},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}
 });
 
-exports.APIDifinition = mongoose.model('api_difinitions', _APIDifinition);
+exports.APIDefinition = mongoose.model('api_definitions', _APIDefinition);
