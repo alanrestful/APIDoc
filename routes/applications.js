@@ -32,7 +32,17 @@ router.get('/', function(req, res,next) {
             }
           }
         }
-        res.render('applications/application_manager', {nav: nav, paths: paths, document: document, aid: req.query.id, pid: req.query.pid});
+        var arr = [];
+        for (var n in nav) {
+          nav[n].sort(function(a,b){
+            return a < b ? -1:1;
+          });
+          arr.push({name:n,key:nav[n]})
+        }
+        arr.sort(function(a,b){
+          return a.name < b.name ? -1:1;
+        });
+        res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: req.query.id, pid: req.query.pid});
       });
     });
   }
