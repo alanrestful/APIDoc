@@ -13,8 +13,10 @@ var _User = new Schema({
     updated_at : {type : Date, default: Date.now}
 });
 
-_User.method.findByName = function(name ,callback){
+_User.method('findByName', function(name ,callback){
     return this.model('users').find({name: name}, callback);
-};
+});
+
+
 
 exports.User = mongoose.model('users', _User);
