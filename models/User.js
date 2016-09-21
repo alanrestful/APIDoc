@@ -17,6 +17,11 @@ _User.method('findByName', function(name ,callback){
     return this.model('users').find({name: name}, callback);
 });
 
+_User.method('findExists',function(opt ,callback){
+    return this.model('users').find({$or:[{name:opt.userName},{mobile:opt.mobile},{email:opt.email}]},callback)
+});
+
+
 
 
 exports.User = mongoose.model('users', _User);

@@ -87,51 +87,23 @@ router.post('/register',function(req,res,next){
   //   return;
   // }
   try {
-    async.waterfall([
-        function(cb){
-          User.User.findOne({name:obj.userName},function(err,doc){
-            if (doc) {
-              res.send({success: false, reason:'duplicate.name'});
-              res.end();
-            } else {
-              cb();
-            }
-          });
-        },
-        function(cb){
-          User.User.findOne({mobile:obj.mobile},function(err,doc){
-            if (doc) {
-              res.send({success: false, reason:'duplicate.mobile'});
-              res.end();
-            }else {
-              cb();
-            }
-          });
-        },
-        function(cb) {
-          User.User.findOne({email:obj.email},function(err,doc){
-            if (doc) {
-              res.send({success: false, reason:'duplicate.email'});
-              res.end();
-            }else {
-              cb();
-            }
-          });
-        },
-        function(cb){
-          var user = new User.User({
-            name:obj.userName,
-            mobile:obj.mobile,
-            email:obj.email,
-            password:obj.password
-          });
-          user.save();
-          res.send({success:true});
-        }
-
-    ],function(err,vals){
-        console.log("%s---%s",err,vals);
-    });
+    var u = new User.User;
+    u.findExists(obj,function(err,doc){
+      if(err) next(err);
+      if(doc) {
+        if (doc[0].name == obj.userName) {res.send({success:false,reason:'duplicate name'});return; };
+        if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
+        if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
+      }
+      var user = new User.User({
+        name:obj.userName,
+        mobile:obj.mobile,
+        email:obj.email,
+        password:obj.password
+      });
+      user.save();
+      res.send({success:true});
+    })
   }catch (exception){
     console.error(exception);
     res.end();
