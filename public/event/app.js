@@ -26,78 +26,95 @@ var endpointEvent = function(e){
   })
 };
 
-function TraversalObject(obj){
-  var o = {};
-  for (var a in obj) {
-    if (typeof (obj[a]) == "object") {
-      o[a] = obj[a]["type"];
-    }
-  }
-  return o;
-}
-
 // 显示参数json
 var showSamplesEvent = function(e){
   e && e.preventDefault();
   var $target = $(event.currentTarget);
+  var $samples = $target.parent().find(".samples");
+  var $schemas = $target.parent().find(".schemas");
+  if($samples[0].style.display === 'block' || $schemas[0].style.display === 'block'){
+    $samples.css("display","none");
+    $schemas.css("display","none");
+    $samples.find("pre").html('');
+    $schemas.find("pre").html('');
+    return false;
+  }
   var parameters = $target.data("parameters");
   var responses = $target.data("responses");
   var aid = $(".jumbotron").data("aid");
-  var samples = {};
-  var param, type, schema, ref;
-  for(var p in parameters){
-    param = parameters[p];
-    if (typeof type === 'undefined') {
-      schema = param.schema;
-      if (schema && schema.$ref) {
-        ref = schema.$ref;
-        param.type = findDif(aid, getRef(ref));
+  var samples = {}, p;
+  for(var i in parameters){
+    p = parameters[i];
+    if (typeof(p.schema) !== 'undefined') {
+      if (p.schema && p.schema.$ref) {
+        p.type = findDefinitionObj(aid, getDefinitionName(p.schema.$ref));
       }
     }
-   samples[param.name] = param.type || param["schema"]["type"];
+    samples[p.name] = p.type || p.schema.type;
   }
-  var resp, schema2, ref2;
-  var schemas={};
-  for(var p in responses){
-    resp = responses[p];
-    if (typeof resp.schema !== 'undefined') {
-      schema2 = resp.schema;
-      if (schema2 && schema2.$ref) {
-        ref2 = schema2.$ref;
-        schemas[getRef(ref2)] = findDif(aid, getRef(ref2));
+  var schemas = {}, r;
+  for(var i in responses){
+    r = responses[i];
+    if (typeof r.schema !== 'undefined') {
+      if (r.schema && r.schema.$ref) {
+        schemas[getDefinitionName(r.schema.$ref)] = findDefinitionObj(aid, getDefinitionName(r.schema.$ref));
       }
     }
   }
-  var $samples = $target.parent().find(".samples");
-  var $schemas = $target.parent().find(".schemas");
+
   $samples.css("display","block");
+  $samples.find("pre").append(JSON.stringify(samples, null, 2));
+
   $schemas.css("display","block");
-  $samples.find("pre").html('').append(JSON.stringify(samples, null, 2));
-  $schemas.find("pre").html('').append(JSON.stringify(schemas, null, 2));
+  $schemas.find("pre").append(JSON.stringify(schemas, null, 2));
 };
 
 // 获取定义名称
-function getRef(ref){
-  var t;
+function getDefinitionName(ref){
   if (ref.indexOf('#/definitions/') === 0) {
-    t = ref.substring('#/definitions/'.length);
+    return ref.substring('#/definitions/'.length);
   } else {
-    t = ref;
+    return ref;
   }
-  return t;
 }
 
 // 获取定义obj
-function findDif(aid, ref){
+function findDefinitionObj(aid, ref){
   var obj;
   $.ajax({
-      url: "/applications/difinition",
+      url: "/applications/definition",
       type: "GET",
       async: false,
       data: {"id": aid, "ref": ref},
       success:function(data){
-        obj = TraversalObject(data[0].difinition_json[ref]["properties"]);
+        if(typeof (data[0]) !== "undefined"){
+          obj = TraversalObject(aid, data[0]["definition_json"][ref]["properties"]);
+        }
       }
   })
+  return obj;
+}
+
+function TraversalObject(aid,obj){
+  var o = {};
+  for (var a in obj) {
+    if (typeof (obj[a]) == "object") {
+      var f = obj[a];
+      if(typeof (f.$ref) !== "undefined"){
+        obj[a] = findDefinitionObj(aid, getDefinitionName(f.$ref));
+      }else if(typeof (f.type) !== 'undefined' && f.type === 'array'){
+        obj[a] = [];
+        obj[a].push(findDefinitionObj(aid, getDefinitionName(f.items.$ref)));
+      }else if(typeof (f.type) !== 'undefined' && f.type === 'object'){
+        if(typeof (f.additionalProperties) === 'undefined' || typeof (f.additionalProperties.$ref) === 'undefined' ){
+          obj[a] = f.type;
+        }else{
+          obj[a] = findDefinitionObj(aid, getDefinitionName(f.additionalProperties.$ref));
+        }
+      }else{
+        obj[a] = f.type;
+      }
+    }
+  }
   return obj;
 }

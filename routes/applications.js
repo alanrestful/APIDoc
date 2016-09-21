@@ -6,7 +6,7 @@ var http = require('http');
 var application = require('../models/Application').Application;
 var apiDocument = require('../models/APIDocument').APIDocument;
 var apiPath = require('../models/APIPath').APIPath;
-var apiDifinition = require('../models/APIDifinition').APIDifinition;
+var apiDefinition = require('../models/APIDefinition').APIDefinition;
 
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
@@ -114,7 +114,7 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
   for(var def in JSON.parse(data).definitions){
     var def_obj = {};
     def_obj[def] = JSON.parse(data).definitions[def];
-    apiDifinition.create({applicationId: req.body._id, difinition_json: def_obj}, function(error) {
+    apiDefinition.create({applicationId: req.body._id, definition_json: def_obj}, function(error) {
       if(error) {
           console.log('create definitions error:%s', error);
       } else {
@@ -127,11 +127,11 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
 });
 
 // 查询实体参数定义
-router.get('/difinition', function(req, res) {
+router.get('/definition', function(req, res) {
   var data = {};
-  data['difinition_json.' + req.query.ref] = { $exists: true };
+  data['definition_json.' + req.query.ref] = { $exists: true };
   data['applicationId'] = req.query.id
-  apiDifinition.find(data, function (err, def){
+  apiDefinition.find(data, function (err, def){
     if(err){
       throw err;
     }
