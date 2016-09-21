@@ -90,7 +90,7 @@ router.post('/register',function(req,res,next){
     var u = new User.User;
     u.findExists(obj,function(err,doc){
       if(err) next(err);
-      if(doc) {
+      if(doc.length) {
         if (doc[0].name == obj.userName) {res.send({success:false,reason:'duplicate name'});return; };
         if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
         if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
