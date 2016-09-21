@@ -69,6 +69,7 @@ var APP = {
         this.codeImg.on('click',this.genCode);
         this.registerBtn.on('click',this.openRegisterEvent);
         this.registerModal.on('shown.bs.modal',this.registerFormShown);
+        registerValidator();
     },
     submitRegister: function(){
         this.registerForm = $('form.register-form');
@@ -108,7 +109,7 @@ var APP = {
 };
 
 var registerValidator = function(){
-    $('#defaultForm')
+    $('#register-form')
         .bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {/*input状态样式图片*/
