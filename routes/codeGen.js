@@ -78,20 +78,20 @@ var swaggerServerCodeGen = function(req,res,fileName,type) {
     }
 };
 
-var jsonUpload = function(req,res) {
+var jsonUpload = function(req,res,next) {
     if(req.file){
         var tmpPath = tmpFloderPath + req.file.filename ;
         var descPath = tmpFloderPath + req.session.user + "_" + req.file.originalname;
         try {
             fs.rename(tmpPath, descPath, function (err) {
                 if (err) {
-                    throw err;
+                    next(err);
                 }
                 console.log("make new file:%s", descPath);
                 //删除临时文件
                 fs.unlink(tmpPath, function () {
                     if (err) {
-                        throw err;
+                        next(err);
                     }
                 })
             })

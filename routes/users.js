@@ -138,10 +138,10 @@ router.post('/register',function(req,res,next){
   }
 });
 
-router.get("/center",function(req,res){
+router.get("/center",function(req,res,next){
   User.User.findOne({_id:req.session.userId},function(err,doc){
     if (err){
-      throw err;
+      next(err);
     }
     console.log(doc);
     res.render("user/user",{user:doc});
