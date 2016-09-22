@@ -1,35 +1,41 @@
 {{> header}}
 <style type="text/css">
 .body-main{
-  background-color: #f5f5f5;
+  background-color: #f1f2f6;
 }
 </style>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-12 col-md-12 main">
-      <h3 class="page-header" style="margin:0;border:none;">
-        <button type="button" class="btn new-project" data-toggle="modal" data-target="#createProjectModal">New project</button>
-      </h3>
+    <div class="col-sm-12">
       <div class="row placeholders">
         <div class="row">
-          {{#each projects}}
-            <div class="col-md-3">
-              <div class="project" data-this="{{this}}">
-                <div class="project-title">{{name}}</div>
-                <div class="project-owner">{{owner}}</div>
-                <div class="project-env" data-this="{{env_json}}">
-                  {{#each env_json}}
-                    <a class="btn btn-xs {{name}} env-app" href="javascript:;" data-env="{{name}}" data-domain="{{domain}}" data-id="{{../_id}}">{{name}}</a>
-                  {{/each}}
-                  <!-- <a class="btn btn-xs prod" href="javascript:;" >生产</a>
-                  <a class="btn btn-xs pre" href="javascript:;" >预发</a>
-                  <a class="btn btn-xs test" href="javascript:;" >测试</a>
-                  <a class="btn btn-xs dev" href="javascript:;" >开发</a> -->
-                </div>
-                <div class="project-action"><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" data-id="{{_id}}"></a></div>
-              </div>
+          <div class="col-sm-12">
+            <div class="project-header">
+              <button type="button" class="btn new-project" data-toggle="modal" data-target="#createProjectModal">New project</button>
             </div>
-          {{/each}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="project-manager">
+            {{#each projects}}
+              <div class="col-md-3">
+                <div class="project" data-this="{{this}}">
+                  <div class="project-title">{{name}}</div>
+                  <div class="project-owner">{{owner}}</div>
+                  <div class="project-env" data-this="{{env_json}}">
+                    {{#each env_json}}
+                      <a class="btn btn-xs {{name}} env-app" href="javascript:;" data-env="{{name}}" data-domain="{{domain}}" data-id="{{../_id}}">{{name}}</a>
+                    {{/each}}
+                    <!-- <a class="btn btn-xs prod" href="javascript:;" >生产</a>
+                    <a class="btn btn-xs pre" href="javascript:;" >预发</a>
+                    <a class="btn btn-xs test" href="javascript:;" >测试</a>
+                    <a class="btn btn-xs dev" href="javascript:;" >开发</a> -->
+                  </div>
+                  <div class="project-action"><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" data-id="{{_id}}"></a></div>
+                </div>
+              </div>
+            {{/each}}
+          </div>
         </div>
       </div>
     </div>
