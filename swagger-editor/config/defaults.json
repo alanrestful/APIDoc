@@ -1,14 +1,9 @@
 {
   "codegen": {
-    "servers": "http://generator.swagger.io/api/gen/servers",
+    "servers": "http://localhost:9010/codegen/servers",
     "clients": "http://generator.swagger.io/api/gen/clients",
-    "server": "http://generator.swagger.io/api/gen/servers/{language}",
+    "server": "http://localhost:9010/codegen/servers/{language}",
     "client": "http://generator.swagger.io/api/gen/clients/{language}"
-  },
-  "analytics": {
-    "google": {
-      "id": "UA-51231036-1"
-    }
   },
   "disableCodeGen": false,
   "examplesFolder": "spec-files/",
