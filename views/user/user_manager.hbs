@@ -1,12 +1,12 @@
 {{> header}}
 <style type="text/css">
 .body-main{
-  background-color: #f5f5f5;
+  background-color: #f1f2f6;
 }
 </style>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-12 col-md-12">
+    <div class="col-sm-12">
       <div class="user-manager">
         <div class="user-header">
           <span class="user-count">12 users</span>
@@ -26,9 +26,9 @@
               {{#each users}}
               <tr>
                 <td><img src="./images/avatar.png" style="width:25px;height:25px" alt="avatar" class="img-circle"/>{{name}}</td>
-                <td>18720909728</td>
-                <td><span class="btn btn-xs develop">develop</span></td>
-                <td><a href="#">edit</a> <a href="#">delete</a></td>
+                <td>{{mobile}}</td>
+                <td><span class="btn btn-xs {{position}}">{{position}}</span></td>
+                <td><a href="javascript:;" class="edit-user">edit</a> <a href="#" class="del-user">delete</a></td>
               </tr>
               {{/each}}
             </tbody>
@@ -42,7 +42,7 @@
 <!-- 创建项目 -->
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form action="/usrs" method="post" class="add-project-form">
+    <form action="/usrs" method="post" class="add-user-form">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">

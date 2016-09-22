@@ -4,42 +4,26 @@ $(function(){
   });
   // $(document).on('click', '.del-project', delProjectEvent);
   // $(document).on('click', '.env-app', getEnvAppsEvent);
-  // $(document).on('submit', '.create-project-form', createProjectEvent);
+  $(document).on('submit', '.add-user-form', addUserEvent);
 });
 
-var createProjectEvent = function(event){
+var addUserEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
-
-  var dev, test, pre, prod;
-  var env_json = []
-  if(typeof(data.dev)!=='undefined'){
-    env_json.push({name: "dev", domain: data.dev_domain});
-  }
-  if(typeof(data.test)!=='undefined'){
-    env_json.push({name: "test", domain: data.test_domain});
-  }
-  if(typeof(data.pre)!=='undefined'){
-    env_json.push({name: "pre", domain: data.pre_domain});
-  }
-  if(typeof(data.prod)!=='undefined'){
-    env_json.push({name: "prod", domain: data.prod_domain});
-  }
-
   var obj = {
     name: data.name,
-    owner: data.owner,
-    env_json: env_json
+    mobile: data.mobile,
+    position: data.position
   }
   $.ajax({
-      url: '/projects',
+      url: '/users',
       type: 'POST',
       data: obj,
       success:function(data){
         if(data.status){
           location.reload();
         }else{
-          alert('fail: ' + data.messages);
+          alert(data.messages);
         }
       }
   })

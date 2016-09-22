@@ -9,6 +9,12 @@
 .navbar{
   background-color: #8895B4;
 }
+.navbar-inverse .navbar-right>li:hover{
+  background-color: #fff;
+}
+.navbar-inverse .navbar-right>li a:hover{
+  color: #9d9d9d;
+}
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a{
   color: #fff;
 }
@@ -22,6 +28,18 @@
 }
 
 /* project */
+
+.project-manager{
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.project-header{
+  margin: 0 auto;
+  border: none;
+  width: 80%;
+  margin-top: 40px;
+}
 .project{
   background-color: #fff;
   border: 1px solid #ddd;
@@ -61,6 +79,9 @@
   font-size: 24px;
   margin: 0 3px;
   text-decoration: none;
+}
+.new-project{
+  float: left;
 }
 /* 创建项目 */
 #createProjectModal label{
@@ -175,14 +196,17 @@
 .user-manager .user-table table td .develop{
   background-color: #F5A623;
   color: #fff;
+  width: 60px;
 }
 .user-manager .user-table table td .PM{
   background-color: #7ED321;
   color: #fff;
+  width: 60px;
 }
 .user-manager .user-table table td .tester{
   background-color: #4A90E2;
   color: #fff;
+  width: 60px;
 }
 
 #addUserModal .form-control{
