@@ -1,0 +1,81 @@
+/* validator */
+.error input, .error textarea {
+    outline: 0;
+    border-color: #f20;
+    color: #f20;
+}
+
+/* header */
+.navbar{
+  background-color: #8895B4;
+}
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a{
+  color: #fff;
+}
+.new-project{
+  background-color: #8895B4;
+  color: #fff;
+}
+.new-project:hover{
+  background-color: #727b90;
+  color: #fff;
+}
+
+/* project */
+.project{
+  border: 1px solid #b1b1b1;
+  padding: 50px 20px 20px;
+  margin: 10px 0;
+}
+.project-title{
+  color: #8895B4;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.project-owner{
+  color: #ACACAC;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.project-env{
+  margin-bottom: 10px;
+}
+.project-env .prod{
+  background-color: #7ED321;
+  color: #fff;
+}
+.project-env .pre{
+  background-color: #F5A623;
+  color: #fff;
+}
+.project-env .test{
+  background-color: #4A90E2;
+  color: #fff;
+}
+.project-env .dev{
+  background-color: #26BBF0;
+  color: #fff;
+}
+.project-action a{
+  font-size: 24px;
+  margin: 0 3px;
+  text-decoration: none;
+}
+#createProjectModal label{
+  color: #828282;
+}
+#createProjectModal .form-control{
+  display: inline;
+  width: 200px;
+}
+#createProjectModal .evniroment{
+  height: 150px;
+}
+#createProjectModal .evniroment input[type=checkbox] {
+  margin: 11px -20px 0;
+}
+#createProjectModal .evniroment span{
+  width: 100px;
+  line-height: 34px;
+  display: inherit;
+}

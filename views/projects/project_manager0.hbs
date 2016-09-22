@@ -1,31 +1,51 @@
 {{> header}}
 <div class="container-fluid">
-
   <div class="row">
-    <div class="col-sm-12 col-md-12 main">
+
+    <div class="col-sm-3 col-md-2 sidebar">
+      <a style="text-decoration: none;" data-toggle="modal" data-target="#createProjectModal" href="#">新建项目</a>
+      <hr style="margin: 5px auto;">
+      <ul class="nav nav-sidebar">
+        {{#each projects}}
+          <li><a href="/projects?id={{this.id}}">{{this.name}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h3 class="page-header">
-        <button type="button" class="btn new-project" data-toggle="modal" data-target="#createProjectModal">New project</button>
+        应用列表
+        {{#if applications}}
+            <div class="pull-right">
+                <a class="btn btn-primary" data-toggle="modal" data-target=".server-modal" href="#" style="font-size:13px">
+                    生成Server
+                </a>
+
+                <a style="float:right;font-size:14px;line-height:40px;text-decoration: none;" data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
+            </div>
+        {{/if}}
       </h3>
       <div class="row placeholders">
-        <div class="row">
-          {{#each projects}}
-            <div class="col-md-3">
-              <div class="project">
-                <div class="project-title">{{name}}</div>
-                <div class="project-owner">{{owner}}</div>
-                <div class="project-env">
-                  <a class="btn btn-xs prod" href="javascript:;" >生产</a>
-                  <a class="btn btn-xs pre" href="javascript:;" >预发</a>
-                  <a class="btn btn-xs test" href="javascript:;" >测试</a>
-                  <a class="btn btn-xs dev" href="javascript:;" >开发</a>
-                </div>
-                <div class="project-action"><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" data-id="{{_id}}"></a></div>
+        {{#if applications}}
+          {{#each applications}}
+            <a href="/applications?pid={{../pid}}&id={{this.id}}">
+              <div class="col-xs-6 col-sm-3 placeholder">
+                <img class="img-responsive" style="width:200px;height:200px;" alt="200x200" src="{{#if this.avatar}}{{this.avatar}}{{else}}./images/avatar.png{{/if}}" data-holder-rendered="true">
+                <h4>{{this.name}}</h4>
+                <span class="text-muted">{{this.tag}}</span>
               </div>
-            </div>
+            </a>
           {{/each}}
-        </div>
+        {{else}}
+          {{#if pid}}
+            该项目未创建应用，现在<a data-toggle="modal" data-target="#createApplicationModal" href="#">新建应用</a>
+          {{else}}
+            请选择项目进行应用管理。
+          {{/if}}
+        {{/if}}
       </div>
     </div>
+
   </div>
 
   <!-- 创建项目 -->
@@ -37,56 +57,26 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             &times;
           </button>
-          <h4 class="modal-title" id="createProjectModalLabel" style="color: #8895B4;">
-            Add new project
+          <h4 class="modal-title" id="createProjectModalLabel">
+            新建项目
           </h4>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label style="width: 60px;">Name：</label>
-            <input type="text" class="form-control" placeholder="Name..." name="name" required>
+              <label>项目名称</label>
+              <input type="text" class="form-control" placeholder="请填写项目名称" name="name" required>
           </div>
           <div class="form-group">
-            <label style="width: 60px;">Owner：</label>
-            <input type="text" class="form-control" placeholder="Owner..." name="owner" required>
-          </div>
-          <div class="form-group evniroment">
-            <label style="float: left;margin-top: 15px;">Enviroment：</label>
-            <div style="float: left;">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" checked />
-                  <span>Development</span>
-                  <input type="text" class="form-control" placeholder="Ddomain..." name="domain">
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" checked />
-                  <span>Test</span>
-                  <input type="text" class="form-control" name="domain">
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" checked />
-                  <span>Pre-publish</span>
-                  <input type="text" class="form-control" name="domain">
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" checked />
-                  <span>Publish</span>
-                  <input type="text" class="form-control" name="domain">
-                </label>
-              </div>
-            </div>
+              <label>项目备注</label>
+              <input type="text" class="form-control" placeholder="请填写项目备注" name="tag" required>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+          </button>
+          <button type="submit" class="btn btn-primary">
+            提交
+          </button>
         </div>
       </form>
       </div><!-- /.modal-content -->
@@ -174,4 +164,3 @@
     </div>
 </div>
 <iframe name="myiframe" width=0 height=0 scrolling="no"></iframe>
-<script type="text/javascript" src="../javascripts/project.js"></script>
