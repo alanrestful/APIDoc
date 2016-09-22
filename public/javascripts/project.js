@@ -39,7 +39,7 @@ var createProjectEvent = function(event){
         if(data.status){
           location.reload();
         }else{
-          alert('fail: ' + data.messages);
+          alert(data.messages);
         }
       }
   })

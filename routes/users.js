@@ -14,6 +14,33 @@ router.get('/', function(req, res) {
   });
 });
 
+router.post('/', function (req, res) {
+  var obj = req.body;
+  User.findOne({name : obj.name},function(err,doc){
+    var result = {};
+    if(err){
+      result.status = false;
+      result.messages = 'save.user.fail';
+      res.json(result);
+      return;
+    }
+    if (!doc){
+      var user = new User({
+        name: obj.name,
+        mobile: obj.mobile,
+        position: obj.position
+      });
+      user.save();
+      result.status = true;
+      result.messages = '';
+    }else{
+      result.status = false;
+      result.messages = 'user.is.exists';
+    }
+    res.json(result);
+  })
+});
+
 router.post('/login', function (req, res) {
   var obj = req.body;
   User.findOne({name : obj.userName,password: obj.password},function(err,doc){
