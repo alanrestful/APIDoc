@@ -81,8 +81,7 @@ var delProjectEvent = function(event){
         type:'DELETE',
         data: data,
         success:function(data){
-          $.cookie('user',null,{path:'/',expires:-1});
-          window.location.reload();
+          location.reload();
         }
     })
   }else{

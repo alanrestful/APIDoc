@@ -28,7 +28,7 @@
                 <td><img src="./images/avatar.png" style="width:25px;height:25px" alt="avatar" class="img-circle"/>{{name}}</td>
                 <td>{{mobile}}</td>
                 <td><span class="btn btn-xs {{position}}">{{position}}</span></td>
-                <td><a href="javascript:;" class="edit-user">edit</a> <a href="#" class="del-user">delete</a></td>
+                <td><a href="javascript:;" class="edit-user" data-id="{{_id}}">edit</a> <a href="#" class="del-user" data-id="{{_id}}">delete</a></td>
               </tr>
               {{/each}}
             </tbody>

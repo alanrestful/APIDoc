@@ -41,6 +41,23 @@ router.post('/', function (req, res) {
   })
 });
 
+/* 删除项目 */
+router.delete('/', function(req, res) {
+  var result = {};
+  User.remove({_id: req.body.id}, function(err) {
+    if(err) {
+      result.status = false;
+      result.messages = err;
+      console.log('delete user error:%s', err);
+    } else {
+      result.status = true;
+      result.messages = '';
+      console.log('delete user success!');
+    }
+    res.json(result);
+  });
+});
+
 router.post('/login', function (req, res) {
   var obj = req.body;
   User.findOne({name : obj.userName,password: obj.password},function(err,doc){
