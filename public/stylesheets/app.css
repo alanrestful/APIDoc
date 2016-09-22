@@ -17,19 +17,20 @@
   color: #fff;
 }
 .new-project:hover{
-  background-color: #727b90;
+  background-color: #6f7c9a;
   color: #fff;
 }
 
 /* project */
 .project{
-  border: 1px solid #b1b1b1;
+  background-color: #fff;
+  border: 1px solid #ddd;
   padding: 50px 20px 20px;
   margin: 10px 0;
 }
 .project-title{
   color: #8895B4;
-  font-size: 22px;
+  font-size: 24px;
   margin-bottom: 10px;
 }
 .project-owner{
@@ -61,6 +62,7 @@
   margin: 0 3px;
   text-decoration: none;
 }
+/* 创建项目 */
 #createProjectModal label{
   color: #828282;
 }
@@ -78,4 +80,30 @@
   width: 100px;
   line-height: 34px;
   display: inherit;
+}
+
+/* 选择应用 */
+.modal-app-title{
+  padding: 0;
+}
+.modal-app-title>li{
+  background-color: #fff;
+  border: 1px solid #ddd;
+  list-style-type:none;
+  margin: 10px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  display: inline-block;
+  text-align: center;
+}
+.modal-app-title>li:hover{
+  background-color: #8895B4;
+}
+.modal-app-title>li a{
+  display: block;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
