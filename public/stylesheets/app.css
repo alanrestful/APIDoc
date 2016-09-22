@@ -66,6 +66,10 @@
 #createProjectModal label{
   color: #828282;
 }
+#createProjectModal .modal-title{
+  color: #8895B4;
+  font-weight: 200;
+}
 #createProjectModal .form-control{
   display: inline;
   width: 200px;
@@ -80,6 +84,11 @@
   width: 100px;
   line-height: 34px;
   display: inherit;
+}
+
+#selectApplicationModal .modal-title{
+  color: #8895B4;
+  font-weight: 200;
 }
 
 /* 选择应用 */
@@ -106,4 +115,92 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.user-manager{
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+.user-manager .user-header{
+  height: 50px;
+  widht: 100%;
+  background-color: #8895B4;
+}
+.user-manager .user-header .user-count{
+  line-height: 50px;
+  color: #fff;
+  margin-left: 30px;
+}
+.user-manager .user-header .user-add{
+  line-height: 50px;
+  color: #fff;
+  float: right;
+  margin-right: 30px;
+  text-decoration: none;
+}
+
+.user-manager .user-table{
+  margin: 0 auto;
+  min-height: 700px;
+  background-color: #fff;
+}
+.user-manager .user-table table{
+  width: 90%;
+  margin: 0 auto;
+}
+
+.user-manager .user-table table th{
+  color: #8895B4;
+  font-size: 14px;
+  font-weight: normal;
+  border: none;
+}
+.user-manager .user-table table td{
+  color: #666666;
+  font-size: 14px;
+  font-weight: normal;
+  border-top: none;
+  border-bottom: 1px solid #ddd;
+}
+.user-manager .user-table table td img{
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+.user-manager .user-table table td a{
+  text-decoration: none;
+}
+
+.user-manager .user-table table td .develop{
+  background-color: #F5A623;
+  color: #fff;
+}
+.user-manager .user-table table td .PM{
+  background-color: #7ED321;
+  color: #fff;
+}
+.user-manager .user-table table td .tester{
+  background-color: #4A90E2;
+  color: #fff;
+}
+
+#addUserModal .form-control{
+  display: inline;
+  width: 200px;
+}
+#addUserModal .modal-content{
+  width: 400px;
+}
+#addUserModal .modal-title{
+  color: #8895B4;
+  font-weight: 200;
+}
+#addUserModal .modal-body{
+  margin: 0 auto;
+  width: 300px;
+}
+#addUserModal .modal-body label{
+  font-weight: 200;
+  width: 60px;
 }

@@ -1,5 +1,5 @@
 var express = require('express');
-var User = require('../models/User');
+var User = require('../models/User').User;
 var http = require('http');
 // var ccap = require('ccap');
 var async = require('async');
@@ -9,13 +9,14 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-
-    res.render('user/user_manager', {title: '用户管理'});
+  User.find(function(err, users) {
+    res.render('user/user_manager', {title: '用户管理', users: users});
+  });
 });
 
 router.post('/login', function (req, res) {
   var obj = req.body;
-  User.User.findOne({name : obj.userName,password: obj.password},function(err,doc){
+  User.findOne({name : obj.userName,password: obj.password},function(err,doc){
     console.log(doc);
     if (doc){
       console.log(obj.userName + " login success");
@@ -58,7 +59,7 @@ router.post('/register',function(req,res,next){
   //   return;
   // }
   try {
-    var u = new User.User;
+    var u = new User;
     u.findExists(obj,function(err,doc){
       if(err) next(err);
       if(doc.length) {
@@ -66,7 +67,7 @@ router.post('/register',function(req,res,next){
         if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
         if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
       }
-      var user = new User.User({
+      var user = new User({
         name:obj.userName,
         mobile:obj.mobile,
         email:obj.email,
@@ -82,7 +83,7 @@ router.post('/register',function(req,res,next){
 });
 
 router.get("/center",function(req,res,next){
-  User.User.findOne({_id:req.session.userId},function(err,doc){
+  User.findOne({_id:req.session.userId},function(err,doc){
     if (err){
       next(err);
     }
@@ -96,7 +97,7 @@ router.get('/passport',function(req,res){
 });
 
 router.post("/change-password",function(req,res){
-  User.User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
+  User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
     if (doc.n == 0) {
       res.send({success:false,reason:"origin.error"});
       res.end();
