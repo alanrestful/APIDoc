@@ -72,7 +72,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     secret: 'anywhere',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     store: new MongoStore({
         url : config.get("mongodb.uri"),
@@ -88,7 +88,7 @@ app.use(function(req,res,next){
         next();
     } else {
         var filters = ['/','/users/login','/users/register','/codegen/gen'];
-        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0) {
+        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/codegen') < 0) {
             res.redirect('/');
         } else {
             next();
