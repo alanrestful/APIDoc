@@ -10,7 +10,7 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/', function(req, res) {
   User.find(function(err, users) {
-    res.render('user/user_manager', {title: '用户管理', users: users});
+    res.render('user/user_manager', {title: '用户管理', users: users, total: users.length});
   });
 });
 
