@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
   })
 });
 
-router.get('/:id', function(req, res,next) {
+router.get('/id/:id', function(req, res,next) {
   var aid = req.params.id;
   if(!aid){
     res.redirect('../projects');
@@ -58,7 +58,7 @@ router.get('/:id', function(req, res,next) {
         arr.sort(function(a,b){
           return a.name < b.name ? -1:1;
         });
-        res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: aid, pid: req.query.pid});
+        res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: aid});
       });
     });
   }
@@ -126,21 +126,23 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
     });
   }
   console.log("##############");
-  res.redirect('../applications?id='+req.body._id);
+  res.redirect('../applications/'+req.body._id);
 });
 
 // 查询实体参数定义
 router.get('/definition', function(req, res,next) {
+  console.log('$$$$$');
   var data = {};
   data['definition_json.' + req.query.ref] = { $exists: true };
-  data['applicationId'] = req.query.id;
-  apiDefinition.find(data, function (err, def){
+  data['applicationId'] = req.query.id
+  console.log('$$$$$'+data);
+    apiDefinition.find(data, function (err, def){
     if(err){
-      next(err);
+      res.json({status:false,messages:''});
+      return;
     }
     res.json(def);
   });
-
 });
 
 /**
