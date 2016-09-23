@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var _UpdateLog = new Schema({
     applicationId: {type: String},
     author: {type: String},
+    path: {type: String},
     oldContent: {type: Object, default: ''},
     newContent: {type: Object, default: ''},
     action: {type: String},

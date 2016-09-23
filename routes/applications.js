@@ -154,7 +154,8 @@ router.get('/definition', function(req, res,next) {
 /**
  * 手动保存编辑器时候,记录修改log
  */
-router.get('/save', function(req, res, next) {
+router.post('/save', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
   var newContents = req.body.specs,
       applicationId = req.body.appId;
   apiPath.find({applicationId: applicationId}, function(err, doc) {
@@ -172,7 +173,7 @@ router.get('/save', function(req, res, next) {
       if (JSON.stringify(oldPath) === JSON.stringify(newPath)) {
         continue ;
       }
-      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user);
+      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, o);
       if (oldPath == null) {
         // add
         query.action = "add";
@@ -190,7 +191,7 @@ router.get('/save', function(req, res, next) {
       var oldPath = oldContents[o],
           newPath = newContents[o];
 
-      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user);
+      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, o);
       if (newPath) {
         continue;
       } else {
@@ -236,11 +237,12 @@ var parsePathJson = function(doc) {
  * @param author
  * @returns {{}}
  */
-var initUpdateLog = function(applicationId, oldPath, newPath, author) {
+var initUpdateLog = function(applicationId, oldPath, newPath, author, path) {
   var query = {};
   query.applicationId = applicationId;
   query.oldContent = oldPath;
   query.newContent = newPath;
   query.author = author;
+  query.path = path;
   return query;
 }

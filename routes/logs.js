@@ -28,13 +28,14 @@ router.get("/", function(req, res, next) {
             return;
         }
         // 改变记录的定位
-        for (var d in doc) {
-            logCompare(doc[d], function(err, doc) {
-                if (err) errHandler(res, err, "compare.json.false");
-                result.push(doc);
-            });
-        }
-        res.send(result);
+        // for (var d in doc) {
+        //     logCompare(doc[d], function(err, rc) {
+        //         if (err) errHandler(res, err, "compare.json.false");
+        //         rc.updatedAt = doc[d].createdAt;
+        //         result.push(rc);
+        //     });
+        // }
+        res.render('logs/logs',{title:'Logs',data:doc});
     });
 });
 

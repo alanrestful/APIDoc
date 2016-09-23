@@ -90,7 +90,7 @@ app.use(function(req,res,next){
         next();
     } else {
         var filters = ['/','/users/login','/users/register','/codegen/gen'];
-        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0) {
+        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
             res.redirect('/');
         } else {
             next();
