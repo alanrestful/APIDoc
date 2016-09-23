@@ -110,18 +110,8 @@
   line-height: 34px;
   display: inherit;
 }
-
-#selectApplicationModal .modal-title{
-  color: #8895B4;
-  font-weight: 200;
-}
-
 #addAppModal .modal-content{
   width: 400px;
-}
-#addAppModal .modal-title{
-  color: #8895B4;
-  font-weight: 200;
 }
 #addAppModal .modal-body{
   margin: 0 auto;
@@ -328,6 +318,7 @@
   color: #A8A8A8;
 }
 
+
 /* application */
 h2.operation-title {
     font-size: 32px;
@@ -383,22 +374,17 @@ p.operations {
   padding: 20px;
   border-radius: 6px;
 }
+#importApiModal .modal-content{
+  width: 400px;
+}
+#importApiModal .modal-body{
+  margin: 0 auto;
+  width: 350px;
+}
 
-
-
-/*
- * Base structure
- */
-
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
 }
-
-
-/*
- * Global add-ons
- */
 
 .sub-header {
   padding-bottom: 10px;

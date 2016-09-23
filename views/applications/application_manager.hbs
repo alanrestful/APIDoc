@@ -6,13 +6,13 @@
   <div class="row">
     <div class="application-manager">
     <div class="col-sm-3 col-md-2 sidebar">
-      <a style="text-decoration: none;" href="../projects" ><< 返回应用列表</a>
+      <a style="text-decoration: none;" href="../../projects" ><< 返回应用列表</a>
       <hr>
       <ul class="nav nav-sidebar">
         <span style="margin-left: 20px;color: #8c8c8c;">API REFERENCE</span>
         {{#each nav}}
         <li>
-          <a href="#{{name}}" class="nav-header collapsed" data-toggle="collapse">{{name}}<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+          <a href="#{{name}}" class="nav-header collapsed" data-toggle="collapse">{{name}}<span class="pull-right glyphicon glyphicon-chevron-down" style="font-size: 12px;"></span></a>
           <ul id="{{name}}" class="nav nav-list collapse">
             {{#each key}}
               <li><a href="#{{this}}" title="{{this}}" style="margin-left: 20px;">{{this}}</a></li>
@@ -74,7 +74,7 @@
                             {{/each}}
                           {{/if}}
                           <p class="operations">Test this endpoint</p>
-                          <input type="submit" class="btn btn-primary endpoint" value="Try"/>
+                          <input type="submit" class="btn btn-sm btn-primary endpoint" value="Try"/>
                           <h5>Response Messages</h5>
                           {{#each responses}}
                             <p style="display:none;" data-t="{{json this}}"></p>
@@ -120,9 +120,9 @@
            接口文件：<input type="file" name="apifile" />
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+          <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
           </button>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-sm btn-primary">
             上传
           </button>
         </div>
@@ -131,3 +131,4 @@
     </div><!-- /.modal -->
   </div>
 </div>
+<script type="text/javascript" src="/javascripts/application.js"></script>

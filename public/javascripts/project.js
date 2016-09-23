@@ -93,7 +93,7 @@ var getEnvAppsEvent = function(event){
         $('.modal-app-title').html('');
         var html = '';
         for(var i in data){
-          html = html + '<li><a href="/applications/'+ data[i]._id +'">'+ data[i].name +'</a></li>'
+          html = html + '<li><a href="/applications/id/'+ data[i]._id +'">'+ data[i].name +'</a></li>'
         }
         $('.modal-app-title').html(html);
         $('#selectApplicationModal').modal('show')

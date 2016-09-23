@@ -41,7 +41,7 @@ var showSamplesEvent = function(e){
   }
   var parameters = $target.data("parameters");
   var responses = $target.data("responses");
-  var aid = $(".jumbotron").data("aid");
+  var aid = $(".app-header").data("aid");
   var samples = {}, p;
   for(var i in parameters){
     p = parameters[i];
