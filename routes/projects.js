@@ -11,18 +11,6 @@ router.get('/', function(req, res) {
   });
 });
 
-/* 获取项目应用 */
-router.get('/apps', function(req, res) {
-  if(!req.body.id && !req.body.env){
-    console.log(req.body);
-    application.find({projectId: req.body.id, env: req.body.env}, function (err, applications){
-      res.json(applications);
-    });
-  }else{
-    res.json({});
-  }
-});
-
 /* 创建项目 */
 router.post('/', function(req, res) {
   var params = {

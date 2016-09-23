@@ -3,21 +3,35 @@ var router = express.Router();
 var path = require('path');
 var fs = require("fs");
 var http = require('http');
-var application = require('../models/Application').Application;
+var Application = require('../models/Application').Application;
 var apiDocument = require('../models/APIDocument').APIDocument;
 var apiPath = require('../models/APIPath').APIPath;
 var apiDefinition = require('../models/APIDefinition').APIDefinition;
 
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
+
 /* GET page. */
-router.get('/', function(req, res,next) {
-  if(!req.query.id){
-    res.redirect('./projects');
+/* 获取项目应用 */
+router.get('/', function(req, res) {
+  var app = new Application;
+  app.findByPidAndEnv(req.query.id, req.query.env, function(err,apps){
+    if(err){
+      res.json({status: false, messages: err});
+      return;
+    }
+    res.json(apps);
+  })
+});
+
+router.get('/:id', function(req, res,next) {
+  var aid = req.params.id;
+  if(!aid){
+    res.redirect('../projects');
   }else{
-    apiPath.find({"applicationId": req.query.id}, {'path_json' : 1}, function (err, paths){
+    apiPath.find({"applicationId": aid}, {'path_json' : 1}, function (err, paths){
       if(err) next(err);
-      apiDocument.find({"applicationId": req.query.id}, function(err, document){
+      apiDocument.find({"applicationId": aid}, function(err, document){
         if(err) next(err);
         var nav = {};
         for(var path in paths) {
@@ -42,51 +56,28 @@ router.get('/', function(req, res,next) {
         arr.sort(function(a,b){
           return a.name < b.name ? -1:1;
         });
-        res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: req.query.id, pid: req.query.pid});
+        res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: aid, pid: req.query.pid});
       });
     });
   }
 });
 
 /* 创建应用 */
-router.post('/', upload.single('appAvatar'), function(req, res,next) {
+router.post('/', function(req, res,next) {
   console.log(req.body);
-  var avatar = 'images/avatar.png';
-  if(req.file){
-    console.log(req.file);
-    var tmpPath = 'temp/' + req.file.filename;
-  	//移动到指定的目录，一般放到public的images文件下面
-  	//在移动的时候确定路径已经存在，否则会报错
-    avatar = 'uploads/' + req.file.filename + '.png';
-  	//将上传的临时文件移动到指定的目录下
-  	fs.rename(tmpPath, 'public/' + avatar , function(err) {
-  		if(err){
-  			next(err);
-  		}
-  		//删除临时文件
-  		fs.unlink(tmpPath, function(){
-  			if(err) {
-  				next(err);
-  			}
-  		})
-  	})
+  var envArr = JSON.parse(req.body.envJson);
+  for(var e in envArr){
+    var app = new Application({
+      projectId: req.body.projectId,
+      name: req.body.name,
+      owner: req.session.user,
+      tag: req.body.tag,
+      env: envArr[e].name,
+      domain: envArr[e].domain
+    });
+    app.save();
   }
-
-  var params = {
-    projectId: req.body.projectId,
-    name: req.body.name,
-    tag: req.body.tag,
-    avatar: './' + avatar
-  };
-
-  application.create(params, function(error) {
-    if(error) {
-        console.log('create application error:%s', error);
-    } else {
-        console.log('create application success!');
-    }
-  });
-  res.redirect('/projects');
+  res.json({status: true, messages:''});
 });
 
 /* 导入api */
