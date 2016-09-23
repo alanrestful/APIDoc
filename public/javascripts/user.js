@@ -32,23 +32,12 @@ var addUserEvent = function(event){
 var editUserEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
-
-  var data ={
-    id: id,
-    env: env
-  }
   $.ajax({
-      url:'/projects/apps',
+      url:'/users',
       type:'GET',
-      data: data,
+      data: {id: id},
       success:function(data){
-        // $('.modal-app-title').html('');
-        // var html = '';
-        // for(var i in data){
-        //   html = html + '<li><a href="#">'+ data[i] +'</a></li>'
-        // }
-        // $('.modal-app-title').html(html);
-        $('#selectApplicationModal').modal('show')
+        $('#editUserModal').modal('show')
       }
   })
 
@@ -58,7 +47,7 @@ var editUserEvent = function(event){
 var delUserEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
-  if(confirm('确定要删除该项目吗？')){
+  if(confirm('确定要删除该用户吗？')){
     var data ={id: id}
     $.ajax({
         url:'/users',

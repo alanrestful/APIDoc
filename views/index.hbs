@@ -12,17 +12,16 @@
                         </div>
                         <div class="col-md-6 column">
                             <ul class="nav nav-pills pull-right">
-                                <li><a href="/users/center">{{User}}</a></li>
-                                <li class="active">
-                                    <a href="/">首页</a>
-                                </li>
-                                <li>
-                                    <a href="/projects">Program</a>
-                                </li>
+                                <li class="active"><a href="/">首页</a></li>
+                                <li><a href="/projects">Program</a></li>
                                 {{#if User}}
-                                    <li>
-                                        <a href="#" onclick="logoutEvent()">注销</a>
-                                    </li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{User}} <span class="caret"></span></a>
+                                  <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/users/center">个人中心</a></li>
+                                    <li><a href="#" onclick="logoutEvent()">注销</a></li>
+                                  </ul>
+                                </li>
                                 {{/if}}
                             </ul>
                         </div>
@@ -43,25 +42,27 @@
         </div>
     </div>
 </div>
-<div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:400px;height:250px;margin-top:150px;opacity: 0.9">
-        <div class="modal-content" style="height:100%;padding:30px 40px;">
-            <form role="form " class="login-form">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" id="userName" placeholder="Please input your user name!" name="userName" required/>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="passWord" placeholder="Please input your password!" name="password" required/>
-                </div>
-                <div class="footer pull-right">
-                    <a href="#" class="btn register-btn" id="registerBtn">注册</a>
-                    <button type="submit" class="btn btn-success pull-right" name="login" onclick="loginEvent(event)">Login</button>
-                </div>
-            </form>
+<div class="modal fade login-modal" style="margin-top:150px;" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" style="width: 320px;margin:0 auto;">
+      <form role="form " class="login-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" id="userName" placeholder="Username..." name="userName" required/>
+          </div>
+          <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" id="passWord" placeholder="Password..." name="password" required/>
+          </div>
+          <div class="form-group" style="margin: 0 auto;text-align: center;">
+            <a href="#" class="btn btn-sm register-btn" id="registerBtn">注册</a>
+            <button type="submit" class="btn btn-sm btn-success " name="login" onclick="loginEvent(event)">Login</button>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 </div>
 <div class="modal fade register-modal" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width:400px;height:550px;margin-top:50px;opacity: 0.9">
