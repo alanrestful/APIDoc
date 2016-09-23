@@ -29,16 +29,17 @@ router.get("/", function(req, res, next) {
         }
         // 改变记录的定位
         for (var d in doc) {
+            var obj = {};
+            obj = doc[d]._doc;
             if (doc[d].action == "update") {
                 logCompare(doc[d], function (err, rc) {
                     if (err) errHandler(res, err, "compare.json.false");
-                    // result.push(rc);
-                    var obj = {};
-                    obj = doc[d]._doc;
                     // doc[d].detail = rc;
                     obj.detail = rc;
                     result.push(obj);
                 });
+            } else {
+               result.push(obj) ;
             }
         }
         res.render('logs/logs',{title:'Logs',data:result});
