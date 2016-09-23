@@ -7,12 +7,10 @@
  * path,desc:{old:XX,new:XX}
  * @type {{}}
  */
-var result = {};
-    result["add"] = [];
-    result["del"] = [];
-    result["update"] = [];
+var result ;
 
 function initResult(){
+    result = {};
     result["add"] = [];
     result["del"] = [];
     result["update"] = [];

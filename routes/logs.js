@@ -33,11 +33,15 @@ router.get("/", function(req, res, next) {
                 logCompare(doc[d], function (err, rc) {
                     if (err) errHandler(res, err, "compare.json.false");
                     // result.push(rc);
-                    doc[d].detail = rc;
+                    var obj = {};
+                    obj = doc[d]._doc;
+                    // doc[d].detail = rc;
+                    obj.detail = rc;
+                    result.push(obj);
                 });
             }
         }
-        res.render('logs/logs',{title:'Logs',data:doc});
+        res.render('logs/logs',{title:'Logs',data:result});
     });
 });
 
