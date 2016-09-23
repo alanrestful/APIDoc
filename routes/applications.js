@@ -7,6 +7,7 @@ var application = require('../models/Application').Application;
 var apiDocument = require('../models/APIDocument').APIDocument;
 var apiPath = require('../models/APIPath').APIPath;
 var apiDefinition = require('../models/APIDefinition').APIDefinition;
+var updateLogs = require('../models/UpdateLogs').UpdateLogs;
 
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
@@ -140,7 +141,7 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
 router.get('/definition', function(req, res,next) {
   var data = {};
   data['definition_json.' + req.query.ref] = { $exists: true };
-  data['applicationId'] = req.query.id
+  data['applicationId'] = req.query.id;
   apiDefinition.find(data, function (err, def){
     if(err){
       next(err);
@@ -150,4 +151,96 @@ router.get('/definition', function(req, res,next) {
 
 });
 
+/**
+ * 手动保存编辑器时候,记录修改log
+ */
+router.get('/save', function(req, res, next) {
+  var newContents = req.body.specs,
+      applicationId = req.body.appId;
+  apiPath.find({applicationId: applicationId}, function(err, doc) {
+    if (err) next(err);
+    if (!doc.length) {
+      res.send({success:false, reason: '应用为空,请新建应用文档。'});
+      return ;
+    }
+    var querys = [];
+    var oldContents = parsePathJson(doc);
+    // 已新的为基础与old对比
+    for (var n in newContents) {
+      var oldPath = oldContents[n],
+          newPath = newContents[n];
+      if (JSON.stringify(oldPath) === JSON.stringify(newPath)) {
+        continue ;
+      }
+      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user);
+      if (oldPath == null) {
+        // add
+        query.action = "add";
+      } else if (newPath == null) {
+        // delete
+        query.action = "del";
+      } else {
+        // update
+        query.action = "update";
+      }
+      querys.push(query);
+    }
+    // 以old为基础,查看新的,检查是否有删除的。
+    for (var o in oldContents) {
+      var oldPath = oldContents[o],
+          newPath = newContents[o];
+
+      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user);
+      if (newPath) {
+        continue;
+      } else {
+        query.action = "del";
+      }
+      querys.push(query);
+    }
+    updateLogs.create(querys, function(err, doc) {
+      if (err) {
+        console.error(err);
+        res.send({success:false});
+      }
+      res.send({success:true})
+    })
+  });
+
+
+});
 module.exports = router;
+
+/**
+ * 编译查找出来的paths array 转换为 path json对象
+ * @param doc
+ * @returns {{}}
+ */
+var parsePathJson = function(doc) {
+  // 编译doc array => json
+  var oldContent = {};
+  for(var i in doc) {
+    var obj = doc[i].path_json;
+    for(var k in obj) {
+      oldContent[k] = obj[k];
+    }
+  }
+  return oldContent;
+};
+
+/**
+ * 组装UpdateLog Schema
+ * @param applicationId
+ * @param oldPath
+ * @param newPath
+ * @param author
+ * @returns {{}}
+ */
+var initUpdateLog = function(applicationId, oldPath, newPath, author) {
+  var query = {};
+  query.applicationId = applicationId;
+  query.oldContent = oldPath;
+  query.newContent = newPath;
+  query.author = author;
+  return query;
+}
