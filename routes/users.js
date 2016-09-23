@@ -1,5 +1,5 @@
 var express = require('express');
-var User = require('../models/User');
+var User = require('../models/User').User;
 var http = require('http');
 // var ccap = require('ccap');
 var async = require('async');
@@ -9,42 +9,41 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res) {
+  User.find(function(err, users) {
+    res.render('user/user_manager', {title: '用户管理', users: users});
+  });
+});
 
-  // var swaggerWithCallback = new SwaggerClient({
-  //     url: "http://petstore.swagger.io/v2/swagger.json",
-  //     success: function () {
-  //       res.send(swaggerWithCallback);
-  //         // console.log('callback ready', swaggerWithCallback);
-  //     }
-  // });
-
-  // the post options
-    // var optionspost = {
-    //     host : 'jidd.com',
-    //     port : '80',
-    //     path : '/v2/api-docs?group=api',
-    //     method : 'GET'
-    // };
-    //
-    // // do the POST call
-    // // 服务器端发送REST请求
-    // var reqPost = http.request(optionspost, function(resPost) {
-    //     resPost.on('data', function(d) {
-    //         res.send(d);
-    //     });
-    // });
-    // reqPost.end();
-    // reqPost.on('error', function(e) {
-    //     console.error(e);
-    // });
-
-
-    res.send('respond with a resource');
+router.post('/', function (req, res) {
+  var obj = req.body;
+  User.findOne({name : obj.name},function(err,doc){
+    var result = {};
+    if(err){
+      result.status = false;
+      result.messages = 'save.user.fail';
+      res.json(result);
+      return;
+    }
+    if (!doc){
+      var user = new User({
+        name: obj.name,
+        mobile: obj.mobile,
+        position: obj.position
+      });
+      user.save();
+      result.status = true;
+      result.messages = '';
+    }else{
+      result.status = false;
+      result.messages = 'user.is.exists';
+    }
+    res.json(result);
+  })
 });
 
 router.post('/login', function (req, res) {
   var obj = req.body;
-  User.User.findOne({name : obj.userName,password: obj.password},function(err,doc){
+  User.findOne({name : obj.userName,password: obj.password},function(err,doc){
     console.log(doc);
     if (doc){
       console.log(obj.userName + " login success");
@@ -87,7 +86,7 @@ router.post('/register',function(req,res,next){
   //   return;
   // }
   try {
-    var u = new User.User;
+    var u = new User;
     u.findExists(obj,function(err,doc){
       if(err) next(err);
       if(doc.length) {
@@ -95,7 +94,7 @@ router.post('/register',function(req,res,next){
         if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
         if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
       }
-      var user = new User.User({
+      var user = new User({
         name:obj.userName,
         mobile:obj.mobile,
         email:obj.email,
@@ -111,7 +110,7 @@ router.post('/register',function(req,res,next){
 });
 
 router.get("/center",function(req,res,next){
-  User.User.findOne({_id:req.session.userId},function(err,doc){
+  User.findOne({_id:req.session.userId},function(err,doc){
     if (err){
       next(err);
     }
@@ -125,7 +124,7 @@ router.get('/passport',function(req,res){
 });
 
 router.post("/change-password",function(req,res){
-  User.User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
+  User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
     if (doc.n == 0) {
       res.send({success:false,reason:"origin.error"});
       res.end();

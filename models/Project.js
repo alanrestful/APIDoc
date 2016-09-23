@@ -3,12 +3,11 @@ var Schema = mongoose.Schema;
 
 //Project schema
 var _Project = new Schema({
-    _id : {type : String},
-    name : {type : String, default : ''},
-    type : {type : Number, default : 1},
-    owner : {type : String, default : ''},
-    created_at : {type : Date, default: Date.now},
-    updated_at : {type : Date, default: Date.now}
+  name : {type : String, default : ''},
+  owner : {type : String, default : ''},
+  env_json : {},
+  created_at : {type : Date, default: Date.now},
+  updated_at : {type : Date, default: Date.now}
 });
 
 _Project.method('findByName', function(name ,callback){
