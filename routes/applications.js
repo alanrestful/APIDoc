@@ -8,6 +8,7 @@ var apiDocument = require('../models/APIDocument').APIDocument;
 var apiPath = require('../models/APIPath').APIPath;
 var apiDefinition = require('../models/APIDefinition').APIDefinition;
 var updateLogs = require('../models/UpdateLogs').UpdateLogs;
+var jsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
 
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
@@ -147,7 +148,7 @@ router.get('/definition', function(req, res,next) {
  */
 router.post('/save', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  var newContents = req.body.specs,
+  var newContents = JSON.parse(req.body.specs).paths,
       applicationId = req.body.appId;
   apiPath.find({applicationId: applicationId}, function(err, doc) {
     if (err) next(err);
@@ -161,21 +162,29 @@ router.post('/save', function(req, res, next) {
     for (var n in newContents) {
       var oldPath = oldContents[n],
           newPath = newContents[n];
-      if (JSON.stringify(oldPath) === JSON.stringify(newPath)) {
-        continue ;
-      }
-      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, o);
-      if (oldPath == null) {
-        // add
-        query.action = "add";
-      } else if (newPath == null) {
-        // delete
-        query.action = "del";
-      } else {
-        // update
-        query.action = "update";
-      }
-      querys.push(query);
+      var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, n);
+
+        jsonComparer(oldPath, newPath, function(err, result) {
+          if (!result) {
+              // 如果是错的 即证明旧的json没有,是新加的
+              query.action = "add";
+              querys.push(query);
+          } else {
+              if (result.add.length != 0 || result.update.length != 0 || result.del.length != 0) {
+                  if (oldPath == null) {
+                      // add
+                      query.action = "add";
+                  } else if (newPath == null) {
+                      // delete
+                      query.action = "del";
+                  } else {
+                      // update
+                      query.action = "update";
+                  }
+                  querys.push(query);
+              }
+          }
+        });
     }
     // 以old为基础,查看新的,检查是否有删除的。
     for (var o in oldContents) {
