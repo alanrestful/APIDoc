@@ -19,10 +19,10 @@
           <div class="project-manager">
             {{#each projects}}
               <div class="col-md-3">
-                <div class="project" data-this="{{this}}">
+                <div class="project">
                   <div class="project-title">{{name}}</div>
                   <div class="project-owner">{{owner}}</div>
-                  <div class="project-env" data-this="{{env_json}}">
+                  <div class="project-env">
                     {{#each env_json}}
                       <a class="btn btn-xs {{name}} env-app" href="javascript:;" data-env="{{name}}" data-domain="{{domain}}" data-id="{{../_id}}">{{name}}</a>
                     {{/each}}
@@ -31,7 +31,7 @@
                     <a class="btn btn-xs test" href="javascript:;" >测试</a>
                     <a class="btn btn-xs dev" href="javascript:;" >开发</a> -->
                   </div>
-                  <div class="project-action"><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" data-id="{{_id}}"></a></div>
+                  <div class="project-action"><a href="javascript:;" class="iconfont icon-add add-app" data-id="{{_id}}" data-env="{{json env_json}}"></a><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" style="color: #f15252;" data-id="{{_id}}"></a></div>
                 </div>
               </div>
             {{/each}}
@@ -121,44 +121,35 @@
       </div>
       <div class="modal-body">
         <ul class="modal-app-title">
-          <li><a href="#">terminus</a></li>
-          <li><a href="#">jidd</a></li>
-          <li><a href="#">wechat</a></li>
-          <li><a href="#">何海洋</a></li>
-          <li><a href="#">你好帅你好帅你好帅你好帅</a></li>
         </ul>
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- 创建应用 -->
-<div class="modal fade" id="createApplicationModal" tabindex="-1" role="dialog" aria-labelledby="createApplicationModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAppModal" tabindex="-1" role="dialog" aria-labelledby="addAppModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    <form action="/applications" method="post" class="create-application-form" enctype="multipart/form-data">
+    <form action="/applications" method="post" class="create-app-form">
+      <input type="hidden" name="projectId" id="addAppPid" value=""/>
+      <input type="hidden" name="envJson" id="addAppEnv" value=""/>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
           &times;
         </button>
         <h4 class="modal-title">
-          新建应用
+          Add new application
         </h4>
       </div>
       <div class="modal-body">
-        <input type="hidden" name="projectId" value="{{pid}}">
         <div class="form-group">
-          <label>应用名称</label>
+          <label>应用名称：</label>
           <input type="text" class="form-control" placeholder="请填写应用名称" name="name" required>
         </div>
         <div class="form-group">
-          <label>应用备注</label>
+          <label>应用备注：</label>
           <input type="text" class="form-control" placeholder="请填写应用备注" name="tag">
-        </div>
-        <div class="form-group">
-          <label>应用图标</label>
-          <input type="file" name="appAvatar">
         </div>
       </div>
       <div class="modal-footer">
@@ -210,5 +201,4 @@
         </div>
     </div>
 </div>
-<link href="./stylesheets/dashboard.css" rel="stylesheet">
 <script type="text/javascript" src="../javascripts/project.js"></script>

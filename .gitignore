@@ -2,3 +2,5 @@ node_modules/*
 temp/*
 codeGenTmp/*
 config/default.json
+.DS_Store
+.idea/

@@ -2,9 +2,9 @@ $(function(){
   $(".add-user-form").validator({
     isErrorOnParent: true
   });
-  $(document).on('submit', '.add-user-form', addUserEvent);
-  $(document).on('click', '.del-user', delUserEvent);
-  $(document).on('click', '.edit-user', editUserEvent);
+  // $(document).on('submit', '.add-user-form', addUserEvent);
+  // $(document).on('click', '.del-user', delUserEvent);
+  // $(document).on('click', '.edit-user', editUserEvent);
 });
 
 var addUserEvent = function(event){

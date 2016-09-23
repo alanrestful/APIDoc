@@ -1,82 +1,48 @@
 {{> header}}
 <style type="text/css">
-.body-main{
-  background-color: #f1f2f6;
-}
+.body-main{ background-color: #f1f2f6; }
 </style>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-12 col-md-12">
-      <div class="case-manager">
-        <div class="case-header">
-          <span class="case-count">12 users</span>
-          <a href="#" class="case-add" data-toggle="modal" data-target="#addUserModal">Add</a>
+    <div class="case-manager">
+      <div class="col-sm-3 case-left">
+        <div class="setting">
+          <div class="setting-header"></div>
+          <div class="setting-content">
+            <a class="btn btn-sm setting-project" href="javascript:;">Jidd</a>
+            <a class="btn btn-sm setting-env" href="javascript:;">测试环境</a>
+          </div>
         </div>
-        <div class="case-table">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Position</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each users}}
-              <tr>
-                <td><img src="./images/avatar.png" style="width:25px;height:25px" alt="avatar" class="img-circle"/>{{name}}</td>
-                <td>18720909728</td>
-                <td><span class="btn btn-xs develop">develop</span></td>
-                <td><a href="#">edit</a> <a href="#">delete</a></td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
+        <div class="group">
+          <ul id="group-tab">
+            <li class="active"><a href="#template" data-toggle="tab">Template Group</a></li>
+            <li><a href="#Case" data-toggle="tab">Case Group</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="template">
+              <ul>
+                <li>
+                  <div class="template-name">用户模块</div>
+                  <div class="template-time">latest: 2016-10-10 12:12:12</div>
+                </li>
+                <li>
+                  <div class="template-name">商品模块</span>
+                  <div class="template-time">latest: 2016-10-10 12:12:12</div>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="Case">
+                <p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch 和 Apple
+                    TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X 操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="col-sm-9 case-right">
+        <div class="detail-header"></div>
+        <div class="detail-content"></div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- 创建项目 -->
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="/usrs" method="post" class="add-project-form">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
-        <h4 class="modal-title">
-          Add new user
-        </h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label style="width: 60px;">Position：</label>
-          <select class="form-control" name="position" required>
-            <option value="develop">develop</option>
-            <option value="PM">PM</option>
-            <option value="tester">tester</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Name：</label>
-          <input type="text" class="form-control" placeholder="Name..." name="name" required/>
-        </div>
-        <div class="form-group">
-          <label>Mobile：</label>
-          <input type="text" class="form-control" placeholder="Mobile..." name="mobile" required/>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
-        <input type="submit" class="btn btn-sm btn-primary" value="Add"/>
-      </div>
-    </div>
-  </form>
-  </div>
-</div>
-<link href="./stylesheets/dashboard.css" rel="stylesheet">
-<script type="text/javascript" src="../javascripts/user.js"></script>
+<script type="text/javascript" src="../javascripts/case.js"></script>
