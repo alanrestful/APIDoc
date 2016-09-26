@@ -31,7 +31,7 @@
 </div>
 
 <div class="modal fade detail-modal" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width:auto;">
         <div class="modal-content">
 
         </div>
@@ -51,7 +51,7 @@
     var template = function(data){
         var json = data;
         var head = "<table class='table'><thead><tr><td>Path</td><td>Action</td><td>Before</td><td>After</td></tr></thead><tbody>";
-        var foot = "</tbody>"
+        var foot = "</tbody>";
         var unit = "<tr><td>%path%</td><td>%Action%</td><td>%desc.base%</td><td>%desc.top%</td></tr>";
         var body = "";
         for (var a in json.add) {
@@ -64,8 +64,8 @@
         for (var a in json.update) {
             var d = json.update[a];
             body += unit.replace("%path%",d.path)
-                    .replace("%desc.base%",d.desc.base)
-                    .replace("%desc.top%",d.desc.top)
+                    .replace("%desc.base%",d.desc.base.constructor == Array ? JSON.stringify(d.desc.base) : d.desc.base)
+                    .replace("%desc.top%",d.desc.top.constructor == Array ? JSON.stringify(d.desc.top) : d.desc.top)
                     .replace("%Action%","Update");
         }
         for (var a in json.del) {

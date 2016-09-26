@@ -8,7 +8,7 @@ var apiDocument = require('../models/APIDocument').APIDocument;
 var apiPath = require('../models/APIPath').APIPath;
 var apiDefinition = require('../models/APIDefinition').APIDefinition;
 var updateLogs = require('../models/UpdateLogs').UpdateLogs;
-var jsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
+var JsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
 
 var multer  = require('multer');
 var upload = multer({dest: path.join(__dirname,'../temp/')});
@@ -212,8 +212,8 @@ router.post('/save', function(req, res, next) {
       var oldPath = oldContents[n],
           newPath = newContents[n];
       var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, n);
-
-        jsonComparer(oldPath, newPath, function(err, result) {
+      var jsonComparer = new JsonComparer();
+        jsonComparer.start(oldPath, newPath, function(err, result) {
           if (!result) {
               // 如果是错的 即证明旧的json没有,是新加的
               query.action = "add";

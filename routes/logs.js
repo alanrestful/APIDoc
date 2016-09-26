@@ -4,7 +4,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var jsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
+var JsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
 
 var updateLogs = require('../models/UpdateLogs').UpdateLogs;
 
@@ -55,7 +55,8 @@ var logCompare = function(updateLog, cb) {
     updateLog = updateLog || {};
     var newLog = updateLog.newContent;
     var oldLog = updateLog.oldContent;
-    jsonComparer(oldLog, newLog, cb) ;
+    var comparer = new JsonComparer();
+    comparer.start(oldLog, newLog, cb) ;
 };
 
 module.exports = router;
