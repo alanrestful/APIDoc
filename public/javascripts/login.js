@@ -13,7 +13,6 @@ var loginEvent = function(e) {
                 $(".login-modal").modal('hide');
                 $(".login-btn").addClass('hide');
                 $(".logout-btn").removeClass('hide');
-                $.cookie('user',data.user,{path:'/',expires:1});
                 window.location.reload();
             } else {
                 alert("login failed");
@@ -28,7 +27,6 @@ var logoutEvent = function(e){
         url:'/users/logout',
         type:'POST',
         success:function(data){
-            $.cookie('user',null,{expires:-1});
             window.location.reload();
         }
     })

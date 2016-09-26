@@ -542,6 +542,10 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+.cursor{
+  cursor: pointer;
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
