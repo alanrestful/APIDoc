@@ -198,84 +198,50 @@ router.get('/json', function (req, res, next) {
 router.post('/save', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     var newContents = JSON.parse(req.body.specs).paths,
-        applicationId = req.body.appId;
-    apiPath.find({applicationId: applicationId}, function (err, doc) {
-        if (err) next(err);
-        if (!doc.length) {
-            res.send({success: false, reason: '应用为空,请新建应用文档。'});
-            return;
-        }
-        var querys = [];
-        var oldPaths = parsePathJson(doc);
-        var oldContents = oldPaths.oldContent;
-        var pathMap = oldPaths.pathMap;
-        // 已新的为基础与old对比
-        for (var n in newContents) {
-            (function () {
-                var pathBean = new apiPath;
-                var oldPath = oldContents[n],
-                    newPath = newContents[n];
-                var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, n);
-                var jsonComparer = new JsonComparer();
-                jsonComparer.start(oldPath, newPath, function (err, result) {
-                    if (!result) {
-                        // 如果是错的 即证明旧的json没有,是新加的
-                        query.action = "add";
-                        querys.push(query);
-                        new apiPath({
-                            applicationId:applicationId,path_json: newPath
-                        }).save();
-                    } else {
-                        if (result.add.length != 0 || result.update.length != 0 || result.del.length != 0) {
-                            if (oldPath == null) {
-                                // add
-                                query.action = "add";
-                                new apiPath({
-                                    applicationId:applicationId,path_json: newPath
-                                }).save();
-                            } else if (newPath == null) {
-                                // delete
-                                query.action = "del";
-                                pathBean.deleteById(pathMap[n]);
-                            } else {
-                                // update
-                                query.action = "update";
-                                var d = {};
-                                d[n] = newPath;
-                                var pathModel = new apiPath;
-                                pathModel.updatePath(d, pathMap[n], applicationId);
-                            }
-                            querys.push(query);
-                        }
-                    }
-                });
-            })();
-        }
-        // 以old为基础,查看新的,检查是否有删除的。
-        for (var o in oldContents) {
-            var pathBean = new apiPath;
-
-            var oldPath = oldContents[o],
-                newPath = newContents[o];
-
-            var query = initUpdateLog(applicationId, oldPath, newPath, req.session.user, o);
-            if (newPath) {
-                continue;
-            } else {
-                query.action = "del";
-                pathBean.deleteById(pathMap[o]);
-            }
-            querys.push(query);
-        }
-        updateLogs.create(querys, function (err, doc) {
-            if (err) {
-                console.error(err);
-                res.send({success: false});
-            }
-            res.send({success: true})
-        })
-    });
-
+        applicationId = req.body.appId,
+        newDefinitions = JSON.parse(req.body.specs).definitions;
+    var pathBean = new apiPath,
+        definitionBean = new apiDefinition;
+    var pathOpt = {
+        res: res,
+        applicationId: applicationId,
+        newContents: newContents,
+        parseJsonFn: parsePathJson,
+        save: function(newPath) {
+            new apiPath({
+                applicationId:applicationId,path_json: newPath
+            }).save()
+        },
+        del: function(obj) {
+            pathBean.deleteById(obj);
+        },
+        update: function(d, obj, applicationId) {
+            pathBean.updatePath(d, obj, applicationId);
+        },
+        user: req.session.user,
+        model: apiPath
+    };
+    parseDiff(pathOpt);
+    var definitionOpt = {
+        res: res,
+        applicationId: applicationId,
+        newContents: newDefinitions,
+        parseJsonFn: parseDefinitionJson,
+        save: function(newPath) {
+            new apiDefinition({
+                applicationId:applicationId,definition_id: newPath
+            }).save()
+        },
+        del: function(obj) {
+            definitionBean.deleteById(obj);
+        },
+        update: function(d, obj, applicationId) {
+            definitionBean.updatePath(d, obj, applicationId);
+        },
+        user: req.session.user,
+        model: apiDefinition
+    };
+    parseDiff(definitionOpt);
 
 });
 module.exports = router;
@@ -303,6 +269,28 @@ var parsePathJson = function (doc) {
 };
 
 /**
+ * definitions
+ * @param doc
+ * @returns {{oldContent: {}, pathMap: {}}}
+ */
+var parseDefinitionJson = function (doc) {
+    // 编译doc array => json
+    var oldContent = {};
+    var pathMap = {};
+    for (var i in doc) {
+        var obj = doc[i].definition_json;
+        for (var k in obj) {
+            oldContent[k] = obj[k];
+            pathMap[k] = doc[i]._id;
+        }
+    }
+    return {
+        oldContent: oldContent,
+        pathMap: pathMap
+    };
+};
+
+/**
  * 组装UpdateLog Schema
  * @param applicationId
  * @param oldPath
@@ -318,4 +306,81 @@ var initUpdateLog = function (applicationId, oldPath, newPath, author, path) {
     query.author = author;
     query.path = path;
     return query;
+};
+
+/**
+ * req, user, applicationId, newContents, parseJsonFn, save, del, update
+ * @param opt
+ */
+var parseDiff = function(opt) {
+    opt = opt || {};
+    var newContents = opt.newContents;
+    opt.model.find({applicationId: opt.applicationId}, function (err, doc) {
+        if (err) next(err);
+        if (!doc.length) {
+            res.send({success: false, reason: '应用为空,请新建应用文档。'});
+            return;
+        }
+        var querys = [];
+        var oldPaths = opt.parseJsonFn(doc);
+        var oldContents = oldPaths.oldContent;
+        var pathMap = oldPaths.pathMap;
+        // 已新的为基础与old对比
+        for (var n in newContents) {
+            (function () {
+                var oldPath = oldContents[n],
+                    newPath = newContents[n];
+                var query = initUpdateLog(opt.applicationId, oldPath, newPath, opt.user, n);
+                var jsonComparer = new JsonComparer();
+                jsonComparer.start(oldPath, newPath, function (err, result) {
+                    if (!result) {
+                        // 如果是错的 即证明旧的json没有,是新加的
+                        query.action = "add";
+                        querys.push(query);
+                        opt.save();
+                    } else {
+                        if (result.add.length != 0 || result.update.length != 0 || result.del.length != 0) {
+                            if (oldPath == null) {
+                                // add
+                                query.action = "add";
+                                opt.save();
+                            } else if (newPath == null) {
+                                // delete
+                                query.action = "del";
+                                opt.del(pathMap[n]);
+                            } else {
+                                // update
+                                query.action = "update";
+                                var d = {};
+                                d[n] = newPath;
+                                opt.update(d, pathMap[n], opt.applicationId);
+                            }
+                            querys.push(query);
+                        }
+                    }
+                });
+            })();
+        }
+        // 以old为基础,查看新的,检查是否有删除的。
+        for (var o in oldContents) {
+            var oldPath = oldContents[o],
+                newPath = newContents[o];
+
+            var query = initUpdateLog(opt.applicationId, oldPath, newPath, opt.user, o);
+            if (newPath) {
+                continue;
+            } else {
+                query.action = "del";
+                opt.del(pathMap[n]);
+            }
+            querys.push(query);
+        }
+        updateLogs.create(querys, function (err, doc) {
+            if (err) {
+                console.error(err);
+                opt.res.send({success: false});
+            }
+            opt.res.send({success: true})
+        })
+    });
 }
