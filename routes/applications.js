@@ -150,7 +150,7 @@ router.get('/definition', function(req, res,next) {
 
 /* 组装 swagger json */
 router.get('/json', function(req, res,next) {
-    var aid = req.query.id;
+    var aid = req.query.appId;
     var doc = new apiDocument;
     doc.findByAid(aid, function(err,doc){
         if(err){
