@@ -28,4 +28,8 @@ var _APIDocument = Schema({
     basePath: {type : String, default : ''},
 });
 
+_APIDocument.method("findByAid", function(aId, cb) {
+    return this.model('api_documents').findOne({'applicationId': aId}, {_id:0}, cb);
+});
+
 exports.APIDocument = mongoose.model('api_documents', _APIDocument);

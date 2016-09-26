@@ -129,11 +129,9 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
 
 // 查询实体参数定义
 router.get('/definition', function(req, res,next) {
-  console.log('$$$$$');
   var data = {};
   data['definition_json.' + req.query.ref] = { $exists: true };
   data['applicationId'] = req.query.id;
-  console.log('$$$$$'+data);
   apiDefinition.find(data, {}, function (err, def){
     if(err){
       res.json({status:false,messages:''});
@@ -142,5 +140,54 @@ router.get('/definition', function(req, res,next) {
     res.json(def);
   });
 });
+
+router.get('/json', function(req, res,next) {
+  var aid = '57e4d2405dbf8556358b00d8';
+  var idoc, ipath, idef;
+  var doc = new apiDocument;
+  doc.findByAid(aid, function(err,docs){
+    if(err){
+      res.json({status: false, messages: err});
+      return;
+    }
+    idoc = docs;
+    var path = new apiPath;
+    path.findByAid(aid, function(err,paths){
+      if(err){
+        res.json({status: false, messages: err});
+        return;
+      }
+      ipath = paths;
+
+      var def = new apiDefinition;
+      def.findByAid(aid, function(err,defs){
+        if(err){
+          res.json({status: false, messages: err});
+          return;
+        }
+        idef = defs;
+        var json = {};
+        json.swagger = idoc.swagger;
+        json.info = idoc.info;
+        json.host = idoc.host;
+        json.basePath = idoc.basePath;
+        json.paths = {};
+        for(var i in ipath){
+          for(var j in ipath[i].path_json){
+            json.paths[j] = ipath[i].path_json[j];
+          }
+        }
+        json.definitions = {};
+        for(var i in idef){
+          for(var j in idef[i].definition_json){
+            json.definitions[j] = idef[i].definition_json[j];
+          }
+        }
+        res.json(json);
+      });
+    });
+  });
+});
+
 
 module.exports = router;

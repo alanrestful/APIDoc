@@ -9,4 +9,8 @@ var _APIDefinition = new Schema({
     updated_at : {type : Date, default: Date.now}
 });
 
+_APIDefinition.method("findByAid", function(aId, cb) {
+    return this.model('api_definitions').find({'applicationId': aId}, {_id:0}, cb);
+});
+
 exports.APIDefinition = mongoose.model('api_definitions', _APIDefinition);
