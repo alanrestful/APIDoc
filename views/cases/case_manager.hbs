@@ -24,16 +24,16 @@
           <div class="tab-content">
             <div class="tab-pane fade in active" id="template">
               <ul>
-                <li>
+                <li class="active-obj">
                   <div class="group-obj">
                     <div class="name">用户模块</div>
-                    <div class="time">latest: 2016-10-10 12:12:12</div>
+                    <div class="time"><i class="iconfont icon-shijian"></i> 2016-10-10 12:12:12</div>
                   </div>
                 </li>
                 <li>
                   <div class="group-obj">
                     <div class="name">商品模块</div>
-                    <div class="time">latest: 2016-10-10 12:12:12</div>
+                    <div class="time"><i class="iconfont icon-shijian"></i> latest: 2016-10-10 12:12:12</div>
                   </div>
                 </li>
               </ul>
@@ -43,13 +43,13 @@
                 <li>
                   <div class="group-obj">
                     <div class="name">用户模块</div>
-                    <div class="time">latest: 2016-10-10 12:12:12</div>
+                    <div class="time"><i class="iconfont icon-shijian"></i> latest: 2016-10-10 12:12:12</div>
                   </div>
                 </li>
                 <li>
                   <div class="group-obj">
                     <div class="name">商品模块</div>
-                    <div class="time">latest: 2016-10-10 12:12:12</div>
+                    <div class="time"><i class="iconfont icon-shijian"></i> latest: 2016-10-10 12:12:12</div>
                   </div>
                 </li>
               </ul>
@@ -66,27 +66,40 @@
         <div class="detail-content">
           <div class="detail-left">
             <div class="detail-search">
-              <input type="text" name="template">
+              <input type="text" name="template" placeholder="Enter id or name">
               <input type="submit" value="search"/>
             </div>
             <ul>
-              <li>
-                <input type="radio" />
+              <li class="active-obj">
+                <input type="radio" name="radio-obj" />
                 <div class="group-obj">
                   <div class="name">用户模块</div>
-                  <div class="time">latest: 2016-10-10 12:12:12</div>
+                  <div class="time"><i class="iconfont icon-shijian"></i> 2016-10-10 12:12:12 <i class="iconfont icon-ren"></i> Leo</div>
                 </div>
               </li>
               <li>
-                <input type="radio" />
+                <input type="radio" name="radio-obj"/>
                 <div class="group-obj">
                   <div class="name">商品模块</div>
-                  <div class="time">latest: 2016-10-10 12:12:12</div>
+                  <div class="time"><i class="iconfont icon-shijian"></i> 2016-10-10 12:12:12 <i class="iconfont icon-ren"></i> Leo</div>
                 </div>
               </li>
             </ul>
           </div>
-          <div class="detail-right">s</div>
+          <div class="detail-right">
+            <header>
+              <div class="title">172- 商品详情页加入购物车 <span>json</span></div>
+              <div class="result">预期结果：以下报错均出现<span><i class="iconfont icon-bianji"></i> edit <i class="iconfont icon-shanchu"></i> delete</span></div>
+            </header>
+            <ul>
+              <li>
+                <div class="path">
+                  <span><i class="iconfont icon-dingwei"></i> //*[@id='button']</span>
+                  <span style="color: #90B36A;margin-left:30px;"><i class="iconfont icon-banshou"></i> click</span></div>
+                <div class="info">请输入至少6位且含字母的密码 edit  delete</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

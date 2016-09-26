@@ -322,6 +322,7 @@
 }
 .case-manager .group .tab-content .tab-pane ul li{
   list-style-type: none;
+  padding-left: 10px;
   height: 50px;
   border-bottom: 1px solid #f1f2f6;
 }
@@ -369,19 +370,92 @@
 .case-manager .detail-content .detail-left .detail-search{
   padding-left: 30px;
 }
+.case-manager .detail-content .detail-left .detail-search input[name="template"]{
+  height: 30px;
+  width: 200px;
+  border: 1px solid #8895B4;
+  border-radius: 3px;
+}
+
+.case-manager .detail-content .detail-left .detail-search input[type='submit']{
+  background-color: #F5F5F5;
+  border: none;
+  border-radius: 3px;
+  height: 30px;
+  color: #666666;
+  outline: none;
+}
+
 .case-manager .detail-content .detail-left>ul{
-  padding-left: 30px;
+  padding: 0;
   padding-top: 10px;
   list-style-type: none;
+}
+.case-manager .detail-content .detail-left>ul li{
+  height: 50px;
+  padding-left: 15px;
+}
+.case-manager .detail-content .detail-left>ul li input{
+  display: inline-block;
+  height: 42px;
+}
+.case-manager .detail-content .detail-left>ul li .group-obj{
+  display: inline-block;
 }
 .case-manager .detail-content .detail-right{
   width: 48%;
   display: inline-block;
   border-left: 1px solid #f1f2f6;
   height: 100%;
+  float: right;
+}
+.case-manager .detail-content .detail-right header .title{
+  color: #8895B4;
+  margin: 5px 10px;
+}
+.case-manager .detail-content .detail-right header .result{
+  margin: 5px 10px;
+  padding: 0 10px;
+  color: #666666;
+  height: 40px;
+  line-height: 40px;
+  background-color: #f5f5f5;
+  font-size: 12px;
+}
+.case-manager .detail-content .detail-right header .result span{
+  float: right;
+}
+.case-manager .detail-content .detail-right>ul{
+  color: #8895B4;
+  list-style-type: decimal;
+}
+.case-manager .detail-content .detail-right>ul li{
+  list-style-type: none;
+  list-style-type: decimal;
+}
+.case-manager .detail-content .detail-right>ul li .path{
+  color: #8895B4;
+  height: 40px;
+  line-height: 40px;
+}
+.case-manager .detail-content .detail-right>ul li .info{
+  background-color: #FD8181;
+  border-radius: 3px;
+  height: 38px;
+  line-height: 38px;
+  color: #fff;
+  display: block;
+  font-size: 12px;
+  padding: 0px 20px;
+  margin-right: 20px;
+}
+
+
+.active-obj{
+  border-left: 3px solid #8895B4;
 }
 .group-obj{
-  padding-left: 20px;
+  padding: 5px 10px;
 }
 .group-obj .name{
   font-size: 14px;
@@ -391,7 +465,6 @@
   font-size: 12px;
   color: #A8A8A8;
 }
-
 
 /* application */
 h2.operation-title {
