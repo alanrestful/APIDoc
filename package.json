@@ -17,6 +17,7 @@
     "express-handlebars": "*",
     "express-session": "*",
     "json-unlike": "0.0.14",
+    "moment": "^2.15.1",
     "mongoose": "*",
     "morgan": "~1.0.0",
     "multer": "^1.2.0",
