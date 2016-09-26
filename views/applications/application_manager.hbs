@@ -6,13 +6,13 @@
   <div class="row">
     <div class="application-manager">
     <div class="col-sm-3 col-md-2 sidebar">
-      <a style="text-decoration: none;" href="../../projects" ><< 返回应用列表</a>
+      <a style="text-decoration: none;" href="../../projects" ><i class="iconfont icon-fanhui"></i> 返回应用列表</a>
       <hr>
       <ul class="nav nav-sidebar">
         <span style="margin-left: 20px;color: #8c8c8c;">API REFERENCE</span>
         {{#each nav}}
         <li>
-          <a href="#{{name}}" class="nav-header collapsed" data-toggle="collapse">{{name}}<span class="pull-right glyphicon glyphicon-chevron-down" style="font-size: 12px;"></span></a>
+          <a href="#{{name}}" class="nav-header collapsed" data-toggle="collapse">{{name}}<span class="pull-right iconfont icon-xiangxia" style="font-size: 12px;"></span></a>
           <ul id="{{name}}" class="nav nav-list collapse">
             {{#each key}}
               <li><a href="#{{this}}" title="{{this}}" style="margin-left: 20px;">{{this}}</a></li>

@@ -7,6 +7,7 @@ $(function(){
   $(document).on('click', '.edit-user', editUserEvent);
 });
 
+/* 添加用户 */
 var addUserEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
@@ -29,18 +30,11 @@ var addUserEvent = function(event){
   })
 };
 
+/* 编辑用户 */
 var editUserEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
-  $.ajax({
-      url:'/users',
-      type:'GET',
-      data: {id: id},
-      success:function(data){
-        $('#editUserModal').modal('show')
-      }
-  })
-
+  alert('edit user');
 };
 
 /* 删除用户 */
