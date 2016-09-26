@@ -16,6 +16,10 @@
     "express": "^4.2.0",
     "express-handlebars": "*",
     "express-session": "*",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-sequence": "^0.4.6",
+    "gulp-uglify": "^2.0.0",
     "mongoose": "*",
     "morgan": "~1.0.0",
     "multer": "^1.2.0",
@@ -23,6 +27,7 @@
     "static-favicon": "~1.0.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
     "webpack": "^1.13.2",
     "webpack-dashboard": "^0.1.8"
   }

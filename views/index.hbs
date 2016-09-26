@@ -1,7 +1,7 @@
 <style type="text/css">
  body { padding-top: 0px; }
 </style>
-<div class="container" style="background-image:url(images/back.jpg);width:100%;height:680px;background-position:center; background-repeat:repeat-y">
+<div class="container" style="background-image:url(images/back.png);width:100%;height:680px;background-position:center; background-repeat:repeat-y">
   <div class="row clearfix">
     <div class="col-md-12 column">
       <div class="row clearfix">
@@ -30,8 +30,8 @@
       </div>
       <div class="row clearfix" style="color:white;margin-top:170px;">
         <div class="col-md-12 column">
-          <h3 class="text-center">APIDoc 云端 RestFul API 管理</h3>
-          <h1 class="text-center" style="margin-top:30px;">简洁明了的接口文档管理 构建高效的团队协作</h1>
+          <h3 class="text-center" style="color: #357ebd;">APIDoc 云端 RestFul API 管理</h3>
+          <h1 class="text-center" style="margin-top: 30px;color: #357ebd;">简洁明了的接口文档管理 构建高效的团队协作</h1>
           <div class="col-md-12 column text-center" style="margin-top:50px;">
             {{#unless User}}
               <a class="btn btn-primary btn-large login-btn" data-toggle="modal" data-target=".login-modal">快速登入</a>
@@ -70,27 +70,27 @@
       <form class="register-form" id="register-form">
         <div class="form-group">
           <label>用户名</label>
-          <input type="text" class="form-control" id="userName" placeholder="请填写您的用户名" name="userName" data-bv-notempty-message="用户名不能为空" required/>
+          <input type="text" class="form-control" placeholder="请填写您的用户名" name="userName" data-bv-notempty-message="用户名不能为空" required/>
         </div>
         <div class="form-group">
           <label>手机号码</label>
-          <input type="text" class="form-control" id="mobile" placeholder="请填写您的手机号码" name="mobile" required/>
+          <input type="text" class="form-control" placeholder="请填写您的手机号码" name="mobile" required/>
         </div>
         <div class="form-group">
           <label>电子邮箱</label>
-          <input type="text" class="form-control" id="email" placeholder="电子邮箱" name="email" required/>
+          <input type="text" class="form-control" placeholder="电子邮箱" name="email" required/>
         </div>
         <div class="form-group">
           <label>密码</label>
-          <input type="password" class="form-control" id="passWord" placeholder="输入密码" name="password" required/>
+          <input type="password" class="form-control" placeholder="输入密码" name="password" required/>
         </div>
         <div class="form-group">
           <label>确认密码</label>
-          <input type="password" class="form-control" id="passWord2" placeholder="再次输入上面的密码" required/>
+          <input type="password" class="form-control" placeholder="再次输入上面的密码" required/>
         </div>
         <div class="form-group">
           <label>验证码</label>
-          <input type="text" class="form-control" id="code" name="code" style="width:120px" placeholder="请输入图片中的字符" required/>
+          <input type="text" class="form-control" name="code" style="width:120px" placeholder="请输入图片中的字符" required/>
           <img src="" id="codeImg" style="width:120px;" />
         </div>
         <div class="footer pull-right">
