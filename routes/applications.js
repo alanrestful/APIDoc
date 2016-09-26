@@ -29,8 +29,12 @@ router.get('/id/:id', function(req, res,next) {
   if(!aid){
     res.redirect('../projects');
   }else{
-    apiPath.find({"applicationId": aid}, {'path_json' : 1}, function (err, paths){
-      if(err) next(err);
+    var path = new apiPath;
+    path.findByAid(aid, function(err,paths){
+      if(err){
+        res.json({status: false, messages: err});
+        return;
+      }
       apiDocument.find({"applicationId": aid}, function(err, document){
         if(err) next(err);
         var nav = {};
@@ -141,46 +145,42 @@ router.get('/definition', function(req, res,next) {
   });
 });
 
+/* 组装 swagger json */
 router.get('/json', function(req, res,next) {
-  var aid = '57e4d2405dbf8556358b00d8';
-  var idoc, ipath, idef;
+  var aid = req.query.id;
   var doc = new apiDocument;
-  doc.findByAid(aid, function(err,docs){
+  doc.findByAid(aid, function(err,doc){
     if(err){
       res.json({status: false, messages: err});
       return;
     }
-    idoc = docs;
     var path = new apiPath;
     path.findByAid(aid, function(err,paths){
       if(err){
         res.json({status: false, messages: err});
         return;
       }
-      ipath = paths;
-
       var def = new apiDefinition;
       def.findByAid(aid, function(err,defs){
         if(err){
           res.json({status: false, messages: err});
           return;
         }
-        idef = defs;
         var json = {};
-        json.swagger = idoc.swagger;
-        json.info = idoc.info;
-        json.host = idoc.host;
-        json.basePath = idoc.basePath;
+        json.swagger = doc.swagger;
+        json.info = doc.info;
+        json.host = doc.host;
+        json.basePath = doc.basePath;
         json.paths = {};
-        for(var i in ipath){
-          for(var j in ipath[i].path_json){
-            json.paths[j] = ipath[i].path_json[j];
+        for(var i in paths){
+          for(var j in paths[i].path_json){
+            json.paths[j] = paths[i].path_json[j];
           }
         }
         json.definitions = {};
-        for(var i in idef){
-          for(var j in idef[i].definition_json){
-            json.definitions[j] = idef[i].definition_json[j];
+        for(var i in defs){
+          for(var j in defs[i].definition_json){
+            json.definitions[j] = defs[i].definition_json[j];
           }
         }
         res.json(json);
