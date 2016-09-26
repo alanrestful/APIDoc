@@ -233,22 +233,24 @@
     }
   }
 }
+#addUserModal{
+  .modal-content{
+    width: 400px;
+  }
+  .modal-title{
+    color: #8895B4;
+    font-weight: 200;
+  }
+  .modal-body{
+    margin: 0 auto;
+    width: 300px;
+    label{
+      font-weight: 200;
+      width: 60px;
+    }
+  }
+}
 
-#addUserModal .modal-content{
-  width: 400px;
-}
-#addUserModal .modal-title{
-  color: #8895B4;
-  font-weight: 200;
-}
-#addUserModal .modal-body{
-  margin: 0 auto;
-  width: 300px;
-}
-#addUserModal .modal-body label{
-  font-weight: 200;
-  width: 60px;
-}
 
 /* case */
 .case-manager{
@@ -261,41 +263,42 @@
   width: 100%;
   background-color: #8895B4;
 }
-.case-manager .setting .setting-header-left{
-  width: 50%;
-  height: 50px;
-  line-height: 50px;
-  color: #fff;
-  padding-left: 20px;
-  display: inline-block;
-}
-.case-manager .setting .setting-header-right {
-  height: 50px;
-  line-height: 50px;
-  color: #fff;
-  float: right;
-  padding-right: 20px;
-  display: inline-block;
-}
-.case-manager .setting .setting-content{
-  background-color: #fff;
-  margin-bottom:20px;
-  .setting-project{
-    background-color: #7ED321;
+.case-manager .setting{
+  .setting-header-left{
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
     color: #fff;
-    min-width: 80px;
-    font-size: 12px;
-    margin:10px 0 10px 20px;
+    padding-left: 20px;
+    display: inline-block;
   }
-  .setting-env{
-    background-color: #F5A623;
+  .setting-header-right {
+    height: 50px;
+    line-height: 50px;
     color: #fff;
-    min-width: 80px;
-    font-size: 12px;
-    margin:10px 0 10px 20px;
+    float: right;
+    padding-right: 20px;
+    display: inline-block;
+  }
+  .setting-content{
+    background-color: #fff;
+    margin-bottom:20px;
+    .setting-project{
+      background-color: #7ED321;
+      color: #fff;
+      min-width: 80px;
+      font-size: 12px;
+      margin:10px 0 10px 20px;
+    }
+    .setting-env{
+      background-color: #F5A623;
+      color: #fff;
+      min-width: 80px;
+      font-size: 12px;
+      margin:10px 0 10px 20px;
+    }
   }
 }
-
 
 .case-manager .group #group-tab{
   margin: 0;
@@ -319,12 +322,10 @@
    margin-bottom: -6px;
    border-bottom: 3px #fff solid;
  }
-
 }
 
 .case-manager .group .tab-content{
   background-color: #fff;
-
   .tab-pane ul{
     margin: 0;
     padding: 0;
@@ -388,6 +389,7 @@
         border: 1px solid #8895B4;
         border-radius: 3px;
         outline: none;
+        padding: 5px;
       }
       input[type='submit']{
         background-color: #F5F5F5;
@@ -398,22 +400,21 @@
         outline: none;
       }
     }
-  }
-}
-
-.case-manager .detail-content .detail-left>ul{
-  padding: 0;
-  padding-top: 10px;
-  list-style-type: none;
-  li{
-    height: 50px;
-    padding-left: 20px;
-    input{
-      display: inline-block;
-      height: 42px;
-    }
-    .group-obj{
-      display: inline-block;
+    ul{
+      padding: 0;
+      padding-top: 10px;
+      list-style-type: none;
+      li{
+        height: 50px;
+        padding-left: 20px;
+        input{
+          display: inline-block;
+          height: 42px;
+        }
+        .group-obj{
+          display: inline-block;
+        }
+      }
     }
   }
 }
@@ -442,30 +443,28 @@
       }
     }
   }
-
-}
-
-.case-manager .detail-content .detail-right>ul{
-  color: #8895B4;
-  list-style-type: decimal;
-  li{
-    list-style-type: none;
+  ul{
+    color: #8895B4;
     list-style-type: decimal;
-    .path{
-      color: #8895B4;
-      height: 40px;
-      line-height: 40px;
-    }
-    .info{
-      background-color: #FD8181;
-      border-radius: 3px;
-      height: 38px;
-      line-height: 38px;
-      color: #fff;
-      display: block;
-      font-size: 12px;
-      padding: 0px 20px;
-      margin-right: 20px;
+    li{
+      list-style-type: none;
+      list-style-type: decimal;
+      .path{
+        color: #8895B4;
+        height: 40px;
+        line-height: 40px;
+      }
+      .info{
+        background-color: #FD8181;
+        border-radius: 3px;
+        height: 38px;
+        line-height: 38px;
+        color: #fff;
+        display: block;
+        font-size: 12px;
+        padding: 0px 20px;
+        margin-right: 20px;
+      }
     }
   }
 }
