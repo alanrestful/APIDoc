@@ -3,6 +3,7 @@ $(function(){
     isErrorOnParent: true
   });
   $(document).on('click', '.del-project', delProjectEvent);
+  $(document).on('click', '.edit-project', editProjectEvent);
   $(document).on('click', '.env-app', getEnvAppsEvent);
   $(document).on('click', '.add-app', addAppEvent);
   $(document).on('submit', '.create-project-form', createProjectEvent);
@@ -56,6 +57,12 @@ var addAppEvent = function(event){
   $("#addAppPid").val(id);
   $("#addAppEnv").val(JSON.stringify(env));
   $('#addAppModal').modal('show');
+};
+
+/* 编辑项目 */
+var editProjectEvent = function(event){
+  event && event.preventDefault();
+  alert("edit project");
 };
 
 /* 保存创建应用 */

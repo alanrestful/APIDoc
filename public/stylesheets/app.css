@@ -44,6 +44,10 @@
   width: 200px;
 }
 
+.btn{
+  outline: none;
+}
+
 /* project */
 
 .project-manager{
@@ -100,6 +104,7 @@
 }
 .new-project{
   float: left;
+  outline: none;
 }
 /* 创建项目 */
 #createProjectModal label{
@@ -173,6 +178,7 @@
 .user-manager .user-header .user-add{
   line-height: 50px;
   color: #fff;
+  outline: none;
   float: right;
   margin: 0;
   padding-right: 50px;
@@ -375,6 +381,7 @@
   width: 200px;
   border: 1px solid #8895B4;
   border-radius: 3px;
+  outline: none;
 }
 
 .case-manager .detail-content .detail-left .detail-search input[type='submit']{
@@ -393,7 +400,7 @@
 }
 .case-manager .detail-content .detail-left>ul li{
   height: 50px;
-  padding-left: 15px;
+  padding-left: 20px;
 }
 .case-manager .detail-content .detail-left>ul li input{
   display: inline-block;
@@ -450,11 +457,11 @@
   margin-right: 20px;
 }
 
-
 .active-obj{
   border-left: 3px solid #8895B4;
 }
 .group-obj{
+  height: 50px;
   padding: 5px 10px;
 }
 .group-obj .name{
