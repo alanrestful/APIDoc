@@ -18,4 +18,8 @@ _APIPath.method("findByPath", function(pathKey, applicationId, cb) {
     return this.model('api_paths').find(query,cb);
 });
 
+_APIPath.method("findByAid", function(aId, cb) {
+    return this.model('api_paths').find({'applicationId': aId}, {_id:0},cb);
+});
+
 exports.APIPath = mongoose.model('api_paths', _APIPath);

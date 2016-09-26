@@ -57,7 +57,5 @@ var delUserEvent = function(event){
           location.reload();
         }
     })
-  }else{
-    alert('取消了删除操作！');
   }
 };

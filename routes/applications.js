@@ -31,8 +31,12 @@ router.get('/id/:id', function(req, res,next) {
   if(!aid){
     res.redirect('../projects');
   }else{
-    apiPath.find({"applicationId": aid}, {'path_json' : 1}, function (err, paths){
-      if(err) next(err);
+    var path = new apiPath;
+    path.findByAid(aid, function(err,paths){
+      if(err){
+        res.json({status: false, messages: err});
+        return;
+      }
       apiDocument.find({"applicationId": aid}, function(err, document){
         if(err) next(err);
         var nav = {};
@@ -131,18 +135,61 @@ router.post('/importAPI', upload.single('apifile'), function(req, res) {
 
 // 查询实体参数定义
 router.get('/definition', function(req, res,next) {
-  console.log('$$$$$');
   var data = {};
   data['definition_json.' + req.query.ref] = { $exists: true };
-  data['applicationId'] = req.query.id
-  console.log('$$$$$'+data);
-    apiDefinition.find(data, function (err, def){
+  data['applicationId'] = req.query.id;
+  apiDefinition.find(data, {}, function (err, def){
     if(err){
       res.json({status:false,messages:''});
       return;
     }
     res.json(def);
   });
+});
+
+
+/* 组装 swagger json */
+router.get('/json', function(req, res,next) {
+    var aid = req.query.id;
+    var doc = new apiDocument;
+    doc.findByAid(aid, function(err,doc){
+        if(err){
+            res.json({status: false, messages: err});
+            return;
+        }
+        var path = new apiPath;
+        path.findByAid(aid, function(err,paths){
+            if(err){
+                res.json({status: false, messages: err});
+                return;
+            }
+            var def = new apiDefinition;
+            def.findByAid(aid, function(err,defs){
+                if(err){
+                    res.json({status: false, messages: err});
+                    return;
+                }
+                var json = {};
+                json.swagger = doc.swagger;
+                json.info = doc.info;
+                json.host = doc.host;
+                json.basePath = doc.basePath;
+                json.paths = {};
+                for(var i in paths){
+                    for(var j in paths[i].path_json){
+                        json.paths[j] = paths[i].path_json[j];
+                    }
+                }
+                json.definitions = {};
+                for(var i in defs){
+                    for(var j in defs[i].definition_json){
+                        json.definitions[j] = defs[i].definition_json[j];
+                    }
+                }
+                res.json(json);
+            });
+        });
+    });
 });
 
 /**
