@@ -19,7 +19,7 @@ _APIPath.method("findByPath", function(pathKey, applicationId, cb) {
 });
 
 _APIPath.method("findByAid", function(aId, cb) {
-    return this.model('api_paths').find({'applicationId': aId}, {_id:0},cb);
+    return this.model('api_paths').find({'applicationId': aId}, {_id:0}).sort('_id').exec(cb);
 });
 
 _APIPath.method("updatePath", function(obj, id, appId, cb) {
@@ -27,13 +27,20 @@ _APIPath.method("updatePath", function(obj, id, appId, cb) {
     model.remove({_id: id}, function(err,doc) {
         console.log("delete " + err);
     });
-    model.create({
+    new model({
         _id: id,
         path_json: obj,
         applicationId: appId
-    }, function(err,doc ) {
-        console.log("create " + err);
-    })
+    }).save(function(err, doc) {
+        console.log(err);
+    });
+    // model.create({
+    //     _id: id,
+    //     path_json: obj,
+    //     applicationId: appId
+    // }, function(err,doc ) {
+    //     console.log("create " + err);
+    // })
 });
 
 _APIPath.method("deleteById", function(id, cb) {

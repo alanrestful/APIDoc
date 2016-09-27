@@ -31,15 +31,15 @@ router.post('/', function (req, res, next) {
     console.log(req.body);
     var envArr = JSON.parse(req.body.envJson);
     for (var e in envArr) {
-        var app = new Application({
-            projectId: req.body.projectId,
-            name: req.body.name,
-            owner: req.session.user,
-            tag: req.body.tag,
-            env: envArr[e].name,
-            domain: envArr[e].domain
-        });
-        app.save();
+      var app = new Application({
+        projectId: req.body.projectId,
+        name: req.body.name,
+        owner: req.session.user,
+        tag: req.body.tag,
+        env: envArr[e].name,
+        domain: envArr[e].domain
+      });
+      app.save();
     }
     res.json({status: true, messages: null, result: null});
 });
@@ -58,24 +58,24 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
     apiDocument.save();
 
     for (var path in JSON.parse(data).paths) {
-        var path_obj = {};
-        path_obj[path] = JSON.parse(data).paths[path];
+      var path_obj = {};
+      path_obj[path] = JSON.parse(data).paths[path];
 
-        var apiPath = ApiPath({
-          applicationId: req.body._id,
-          path_json: path_obj
-        });
-        apiPath.save();
+      var apiPath = ApiPath({
+        applicationId: req.body._id,
+        path_json: path_obj
+      });
+      apiPath.save();
     }
 
     for (var def in JSON.parse(data).definitions) {
-        var def_obj = {};
-        def_obj[def] = JSON.parse(data).definitions[def];
-        var apiDefinition = new ApiDefinition({
-          applicationId: req.body._id,
-          definition_json: def_obj
-        });
-        apiDefinition.save();
+      var def_obj = {};
+      def_obj[def] = JSON.parse(data).definitions[def];
+      var apiDefinition = new ApiDefinition({
+        applicationId: req.body._id,
+        definition_json: def_obj
+      });
+      apiDefinition.save();
     }
     console.log("##############");
     res.redirect('../applications/id/' + req.body._id);
@@ -97,48 +97,62 @@ router.get('/definition', function (req, res, next) {
 });
 
 /* 组装 swagger json */
-router.get('/', function (req, res, next) {
+router.get('/json', function (req, res, next) {
     var aid = req.query.appId;
-    var apiDocument = new ApiDocument;
-    apiDocument.findByAid(aid, function (err, doc) {
+    var doc = new ApiDocument;
+    var json = {};
+    json.paths = {};
+    json.definitions = {};
+
+    doc.findByAid(aid, function (err, doc) {
         if (err) {
           console.log('find applications error:%s', err);
           res.json({status: false, messages: '查询api文档失败', result: null});
           return;
         }
-        var apiPath = new ApiPath;
-        apiPath.findByAid(aid, function (err, paths) {
+        json.swagger = doc.swagger;
+        json.info = doc.info;
+        json.host = doc.host;
+        json.basePath = doc.basePath;
+        var path = new ApiPath;
+        path.findByAid(aid, function (err, paths) {
+          if (err) {
+            console.log('find paths error:%s', err);
+            res.json({status: false, messages: '查询api接口失败', result: null});
+            return;
+          }
+          var apiDefinition = new ApiDefinition;
+          apiDefinition.findByAid(aid, function (err, defs) {
             if (err) {
-                console.log('find paths error:%s', err);
-                res.json({status: false, messages: '查询api接口失败', result: null});
-                return;
+              console.log('find definitions error:%s', err);
+              res.json({status: false, messages: '查询api模型失败', result: null});
+              return;
             }
-            var apiDefinition = new ApiDefinition;
-            apiDefinition.findByAid(aid, function (err, defs) {
-                if (err) {
-                  console.log('find definitions error:%s', err);
-                  res.json({status: false, messages: '查询api模型失败', result: null});
-                  return;
-                }
-                var json = {};
-                json.swagger = doc.swagger;
-                json.info = doc.info;
-                json.host = doc.host;
-                json.basePath = doc.basePath;
-                json.paths = {};
-                for (var i in paths) {
-                    for (var j in paths[i].path_json) {
-                        json.paths[j] = paths[i].path_json[j];
-                    }
-                }
-                json.definitions = {};
-                for (var i in defs) {
-                    for (var j in defs[i].definition_json) {
-                        json.definitions[j] = defs[i].definition_json[j];
-                    }
-                }
-                res.json({status: true, messages: null, result: json});
-            });
+            var json = {};
+            json.swagger = doc.swagger;
+            json.info = doc.info;
+            json.host = doc.host;
+            json.basePath = doc.basePath;
+            json.paths = {};
+            for (var i in paths) {
+              for (var j in paths[i].path_json) {
+                json.paths[j] = paths[i].path_json[j];
+              }
+            }
+          }
+        });
+        var def = new ApiDefinition;
+        def.findByAid(aid, function (err, defs) {
+          if (err) {
+            res.json({status: false, messages: err});
+            return;
+          }
+          for (var i in defs) {
+            for (var j in defs[i].definition_json) {
+                json.definitions[j] = defs[i].definition_json[j];
+            }
+            res.json({status: true, messages: null, result: json});
+          });
         });
     });
 });
@@ -159,8 +173,8 @@ router.post('/save', function (req, res, next) {
         newContents: newContents,
         parseJsonFn: parsePathJson,
         save: function(newPath) {
-            new ApiPath({
-                applicationId:applicationId,path_json: newPath
+            new apiPath({
+                applicationId: applicationId, path_json: newPath
             }).save()
         },
         del: function(obj) {
@@ -170,7 +184,7 @@ router.post('/save', function (req, res, next) {
             pathBean.updatePath(d, obj, applicationId);
         },
         user: req.session.user,
-        model: apiPath
+        model: ApiPath
     };
     parseDiff(pathOpt);
     var definitionOpt = {
@@ -180,7 +194,7 @@ router.post('/save', function (req, res, next) {
         parseJsonFn: parseDefinitionJson,
         save: function(newPath) {
             new ApiDefinition({
-                applicationId:applicationId,definition_id: newPath
+                applicationId:applicationId,definition_json: newPath
             }).save()
         },
         del: function(obj) {
@@ -190,7 +204,7 @@ router.post('/save', function (req, res, next) {
             definitionBean.updatePath(d, obj, applicationId);
         },
         user: req.session.user,
-        model: apiDefinition
+        model: ApiDefinition
     };
     parseDiff(definitionOpt);
 
@@ -288,13 +302,17 @@ var parseDiff = function(opt) {
                         // 如果是错的 即证明旧的json没有,是新加的
                         query.action = "add";
                         querys.push(query);
-                        opt.save();
+                        var saveObj = {};
+                        saveObj[n] = newPath;
+                        opt.save(saveObj);
                     } else {
                         if (result.add.length != 0 || result.update.length != 0 || result.del.length != 0) {
                             if (oldPath == null) {
                                 // add
                                 query.action = "add";
-                                opt.save();
+                                var saveObj = {};
+                                saveObj[n] = newPath;
+                                opt.save(saveObj);
                             } else if (newPath == null) {
                                 // delete
                                 query.action = "del";
@@ -322,7 +340,7 @@ var parseDiff = function(opt) {
                 continue;
             } else {
                 query.action = "del";
-                opt.del(pathMap[n]);
+                opt.del(pathMap[o]);
             }
             querys.push(query);
         }
