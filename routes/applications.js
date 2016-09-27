@@ -96,9 +96,9 @@ router.get('/definition', function (req, res, next) {
 });
 
 /* 组装 swagger json */
-router.get('/', function (req, res, next) {
+router.get('/json', function (req, res, next) {
     var aid = req.query.appId;
-    var doc = new apiDocument;
+    var doc = new ApiDocument;
     var json = {};
     json.paths = {};
     json.definitions = {};
@@ -112,7 +112,7 @@ router.get('/', function (req, res, next) {
         json.info = doc.info;
         json.host = doc.host;
         json.basePath = doc.basePath;
-        var path = new apiPath;
+        var path = new ApiPath;
         path.findByAid(aid, function (err, paths) {
             if (err) {
                 res.json({status: false, messages: err});
@@ -124,7 +124,7 @@ router.get('/', function (req, res, next) {
                 }
             }
         });
-        var def = new apiDefinition;
+        var def = new ApiDefinition;
         def.findByAid(aid, function (err, defs) {
             if (err) {
                 res.json({status: false, messages: err});
@@ -167,7 +167,7 @@ router.post('/save', function (req, res, next) {
             pathBean.updatePath(d, obj, applicationId);
         },
         user: req.session.user,
-        model: apiPath
+        model: ApiPath
     };
     parseDiff(pathOpt);
     var definitionOpt = {
@@ -176,7 +176,7 @@ router.post('/save', function (req, res, next) {
         newContents: newDefinitions,
         parseJsonFn: parseDefinitionJson,
         save: function(newPath) {
-            new apiDefinition({
+            new ApiDefinition({
                 applicationId:applicationId,definition_json: newPath
             }).save()
         },
@@ -187,7 +187,7 @@ router.post('/save', function (req, res, next) {
             definitionBean.updatePath(d, obj, applicationId);
         },
         user: req.session.user,
-        model: apiDefinition
+        model: ApiDefinition
     };
     parseDiff(definitionOpt);
 
