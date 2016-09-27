@@ -169,6 +169,10 @@ router.get('/json', function (req, res, next) {
                     res.json({status: false, messages: err});
                     return;
                 }
+                if (doc) {
+                    res.json({status: false, messages: "文档未找到"});
+                    return;
+                }
                 var json = {};
                 json.swagger = doc.swagger;
                 json.info = doc.info;
@@ -318,7 +322,7 @@ var parseDiff = function(opt) {
     opt.model.find({applicationId: opt.applicationId}, function (err, doc) {
         if (err) next(err);
         if (!doc.length) {
-            res.send({success: false, reason: '应用为空,请新建应用文档。'});
+            opt.res.send({success: false, reason: '应用为空,请新建应用文档。'});
             return;
         }
         var querys = [];

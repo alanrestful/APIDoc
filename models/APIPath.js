@@ -40,5 +40,5 @@ _APIPath.method("deleteById", function(id, cb) {
     return this.model('api_paths').remove({_id: id}, function(err,doc) {
         console.error("delete " + err);
     });
-})
+});
 exports.APIPath = mongoose.model('api_paths', _APIPath);
