@@ -15,7 +15,7 @@ var _Application = new Schema({
 
 
 _Application.method('findByPidAndEnv', function(pid, env ,callback){
-    return this.model('api_applications').find({projectId: pid, env: env}, callback);
+    return this.model('api_applications').find({projectId: pid, env: env}, {}, callback);
 });
 
 

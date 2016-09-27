@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
     data: data.data
   });
   conanCaseData.save();
-  res.json({status: true, messages: 'success'});
+  res.json({status: true, messages: null,result: null});
 });
 
 /* 获取用例组 */
@@ -39,10 +39,11 @@ router.get('/groups', function(req, res) {
   var conanGroup = new ConanGroup;
   conanGroup.findById(id, function(err, groups){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find groups error:%s', err);
+      res.json({status: false, messages: '获取用例组失败',result: null});
       return;
     }
-    res.json(groups);
+    res.json({status: true, messages: null,result: groups});
   });
 });
 
@@ -52,10 +53,11 @@ router.get('/models', function(req, res) {
   var conanCaseModel = new ConanCaseModel;
   conanCaseModel.findById(id, function(err, models){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find models error:%s', err);
+      res.json({status: false, messages: '获取用例模版失败',result: null});
       return;
     }
-    res.json(models);
+    res.json({status: true, messages: null,result: models});
   });
 });
 
@@ -65,10 +67,11 @@ router.get('/datas', function(req, res) {
   var conanCaseData = new ConanCaseData;
   conanCaseDatas.findById(id, function(err, datas){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find datas error:%s', err);
+      res.json({status: false, messages: '获取模版数据失败',result: null});
       return;
     }
-    res.json(datas);
+    res.json({status: true, messages: null,result: datas});
   });
 });
 

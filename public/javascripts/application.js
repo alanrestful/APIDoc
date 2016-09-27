@@ -87,8 +87,11 @@ function findDefinitionObj(aid, ref){
       async: false,
       data: {"id": aid, "ref": ref},
       success:function(data){
-        if(typeof (data[0]) !== "undefined"){
-          obj = TraversalObject(aid, data[0]["definition_json"][ref]["properties"]);
+        if(data.status){
+          var result = data.result;
+          if(typeof (result[0]) !== "undefined"){
+            obj = TraversalObject(aid, result[0]["definition_json"][ref]["properties"]);
+          }
         }
       }
   })

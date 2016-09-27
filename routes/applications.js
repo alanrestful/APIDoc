@@ -13,16 +13,16 @@ var JsonComparer = require("../helpers/json-processor/json-compare").json_compar
 var multer = require('multer');
 var upload = multer({dest: path.join(__dirname, '../temp/')});
 
-/* GET page. */
-/* 获取项目应用 */
+/* 获取应用列表 */
 router.get('/', function (req, res) {
     var app = new Application;
     app.findByPidAndEnv(req.query.id, req.query.env, function (err, apps) {
-        if (err) {
-            res.json({status: false, messages: err});
-            return;
-        }
-        res.json(apps);
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '获取项目应用失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: apps});
     })
 });
 
@@ -41,14 +41,14 @@ router.post('/', function (req, res, next) {
         });
         app.save();
     }
-    res.json({status: true, messages: ''});
+    res.json({status: true, messages: null, result: null});
 });
 
 /* 导入api */
 router.post('/importAPI', upload.single('apifile'), function (req, res) {
     console.log(req.file);  // 上传的文件信息
     var data = fs.readFileSync(req.file.path, "utf-8");
-    var apiDocument = ApiDocument({
+    var apiDocument = new ApiDocument({
       applicationId: req.body._id,
       swagger: JSON.parse(data).swagger,
       info: JSON.parse(data).info,
@@ -87,11 +87,12 @@ router.get('/definition', function (req, res, next) {
     data['definition_json.' + req.query.ref] = {$exists: true};
     data['applicationId'] = req.query.id;
     ApiDefinition.find(data, {}, function (err, def) {
-        if (err) {
-            res.json({status: false, messages: ''});
-            return;
-        }
-        res.json(def);
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '查询定义失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: def});
     });
 });
 
@@ -101,24 +102,23 @@ router.get('/', function (req, res, next) {
     var apiDocument = new ApiDocument;
     apiDocument.findByAid(aid, function (err, doc) {
         if (err) {
-            res.json({status: false, messages: err});
-            return;
+          console.log('find applications error:%s', err);
+          res.json({status: false, messages: '查询api文档失败', result: null});
+          return;
         }
         var apiPath = new ApiPath;
         apiPath.findByAid(aid, function (err, paths) {
             if (err) {
-                res.json({status: false, messages: err});
+                console.log('find paths error:%s', err);
+                res.json({status: false, messages: '查询api接口失败', result: null});
                 return;
             }
             var apiDefinition = new ApiDefinition;
             apiDefinition.findByAid(aid, function (err, defs) {
                 if (err) {
-                    res.json({status: false, messages: err});
-                    return;
-                }
-                if (doc) {
-                    res.json({status: false, messages: "文档未找到"});
-                    return;
+                  console.log('find definitions error:%s', err);
+                  res.json({status: false, messages: '查询api模型失败', result: null});
+                  return;
                 }
                 var json = {};
                 json.swagger = doc.swagger;
@@ -137,7 +137,7 @@ router.get('/', function (req, res, next) {
                         json.definitions[j] = defs[i].definition_json[j];
                     }
                 }
-                res.json(json);
+                res.json({status: true, messages: null, result: json});
             });
         });
     });
