@@ -9,9 +9,11 @@ var application = require('../models/Application').Application;
 router.get('/', function(req, res) {
   project.find(function(err, projects) {
     if(err){
-      res.json({status: false, messages: 'find.projects.fail'});
+      console.log('find projects error:%s', err);
+      res.json({status: false, messages: 'find.projects.fail', result: null});
+      return;
     }
-    res.json({status: true, messages:'', result: projects});
+    res.json({status: true, messages: null, result: projects});
   });
 });
 
@@ -22,33 +24,28 @@ router.post('/', function(req, res) {
     owner: req.session.user,
     env_json: req.body.env_json
   };
-  var result = {};
   project.create(params, function(err) {
     if(err) {
-      result.status = false;
-      result.messages = error;
       console.log('create project error:%s', err);
+      res.json({status: false, messages: 'create.projects.fail', result: null});
+      return;
     } else {
-      result.status = true;
-      result.messages = '';
       console.log('create project success!');
+      res.json({status: true, messages: null, result: null});
     }
-    res.json(result);
   });
 });
 
 /* 删除项目 */
 router.delete('/', function(req, res) {
-  var result = {};
   project.remove({_id: req.body.id}, function(err) {
     if(err) {
-      result.status = false;
-      result.messages = err;
       console.log('delete project error:%s', err);
+      res.json({status: false, messages: 'create.projects.fail', result: null});
+      return;
     } else {
-      result.status = true;
-      result.messages = '';
       console.log('delete project success!');
+      res.json({status: true, messages: null, result: null});
     }
     res.json(result);
   });
