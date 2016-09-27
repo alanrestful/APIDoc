@@ -230,7 +230,7 @@ router.post('/save', function (req, res, next) {
         parseJsonFn: parseDefinitionJson,
         save: function(newPath) {
             new apiDefinition({
-                applicationId:applicationId,definition_id: newPath
+                applicationId:applicationId,definition_json: newPath
             }).save()
         },
         del: function(obj) {
