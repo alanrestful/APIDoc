@@ -17,12 +17,12 @@ var endpointEvent = function(e){
     path = path.replace("{"+d+"}",data[d]);
   }
   $.ajax({
-      url: "http://" + host + path,
-      type: method,
-      data: data,
-      success:function(data){
-        alert(data)
-      }
+    url: "http://" + host + path,
+    type: method,
+    data: data,
+    success:function(data){
+      alert(data);
+    }
   })
 };
 
