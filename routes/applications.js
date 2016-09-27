@@ -152,46 +152,43 @@ router.get('/definition', function (req, res, next) {
 router.get('/json', function (req, res, next) {
     var aid = req.query.appId;
     var doc = new apiDocument;
+    var json = {};
+    json.paths = {};
+    json.definitions = {};
+
     doc.findByAid(aid, function (err, doc) {
         if (err) {
             res.json({status: false, messages: err});
             return;
         }
+        json.swagger = doc.swagger;
+        json.info = doc.info;
+        json.host = doc.host;
+        json.basePath = doc.basePath;
         var path = new apiPath;
         path.findByAid(aid, function (err, paths) {
             if (err) {
                 res.json({status: false, messages: err});
                 return;
             }
-            var def = new apiDefinition;
-            def.findByAid(aid, function (err, defs) {
-                if (err) {
-                    res.json({status: false, messages: err});
-                    return;
+            for (var i in paths) {
+                for (var j in paths[i].path_json) {
+                    json.paths[j] = paths[i].path_json[j];
                 }
-                if (doc) {
-                    res.json({status: false, messages: "文档未找到"});
-                    return;
+            }
+        });
+        var def = new apiDefinition;
+        def.findByAid(aid, function (err, defs) {
+            if (err) {
+                res.json({status: false, messages: err});
+                return;
+            }
+            for (var i in defs) {
+                for (var j in defs[i].definition_json) {
+                    json.definitions[j] = defs[i].definition_json[j];
                 }
-                var json = {};
-                json.swagger = doc.swagger;
-                json.info = doc.info;
-                json.host = doc.host;
-                json.basePath = doc.basePath;
-                json.paths = {};
-                for (var i in paths) {
-                    for (var j in paths[i].path_json) {
-                        json.paths[j] = paths[i].path_json[j];
-                    }
-                }
-                json.definitions = {};
-                for (var i in defs) {
-                    for (var j in defs[i].definition_json) {
-                        json.definitions[j] = defs[i].definition_json[j];
-                    }
-                }
-                res.json(json);
-            });
+            }
+            res.json(json);
         });
     });
 });
@@ -213,7 +210,7 @@ router.post('/save', function (req, res, next) {
         parseJsonFn: parsePathJson,
         save: function(newPath) {
             new apiPath({
-                applicationId:applicationId,path_json: newPath
+                applicationId: applicationId, path_json: newPath
             }).save()
         },
         del: function(obj) {
@@ -341,13 +338,17 @@ var parseDiff = function(opt) {
                         // 如果是错的 即证明旧的json没有,是新加的
                         query.action = "add";
                         querys.push(query);
-                        opt.save();
+                        var saveObj = {};
+                        saveObj[n] = newPath;
+                        opt.save(saveObj);
                     } else {
                         if (result.add.length != 0 || result.update.length != 0 || result.del.length != 0) {
                             if (oldPath == null) {
                                 // add
                                 query.action = "add";
-                                opt.save();
+                                var saveObj = {};
+                                saveObj[n] = newPath;
+                                opt.save(saveObj);
                             } else if (newPath == null) {
                                 // delete
                                 query.action = "del";
@@ -375,7 +376,7 @@ var parseDiff = function(opt) {
                 continue;
             } else {
                 query.action = "del";
-                opt.del(pathMap[n]);
+                opt.del(pathMap[o]);
             }
             querys.push(query);
         }

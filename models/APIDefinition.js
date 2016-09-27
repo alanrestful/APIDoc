@@ -10,7 +10,7 @@ var _APIDefinition = new Schema({
 });
 
 _APIDefinition.method("findByAid", function(aId, cb) {
-    return this.model('api_definitions').find({'applicationId': aId}, {_id:0}, cb);
+    return this.model('api_definitions').find({'applicationId': aId}, {_id:0}).sort('_id').exec(cb);
 });
 
 _APIDefinition.method("updatePath", function(obj, id, appId, cb) {
@@ -18,13 +18,20 @@ _APIDefinition.method("updatePath", function(obj, id, appId, cb) {
     model.remove({_id: id}, function(err,doc) {
         console.log("delete " + err);
     });
-    model.create({
+    new model({
         _id: id,
         definition_json: obj,
         applicationId: appId
-    }, function(err,doc ) {
-        console.log("create " + err);
-    })
+    }).save(function(err, doc) {
+        console.log(err);
+    });
+    // model.create({
+    //     _id: id,
+    //     definition_json: obj,
+    //     applicationId: appId
+    // }, function(err,doc ) {
+    //     console.log("create " + err);
+    // })
 });
 
 _APIDefinition.method("deleteById", function(id, cb) {
