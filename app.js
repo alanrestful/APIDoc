@@ -42,13 +42,15 @@ var util = require('util'),
 
 var app = express();
 
-// app.all('*', function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE");
-//     res.header("X-Powered-By",' 1.0.0')
-//     res.header("Content-Type", "application/json;charset=utf-8");
-// });
+//设置跨域访问
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE");
+    res.header("X-Powered-By",' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -96,10 +98,11 @@ app.use(session({
 app.use(function(req,res,next){
     app.locals.User = req.session.user;
     var url = req.originalUrl;
+    console.log(url);
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register','/codegen/gen'];
+        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects'];
         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
             res.redirect('/');
         } else {
