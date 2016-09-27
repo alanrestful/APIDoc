@@ -33,6 +33,7 @@ router.post('/', function(req, res) {
   res.json({status: true, messages: 'success'});
 });
 
+/* 获取用例组 */
 router.get('/groups', function(req, res) {
   var id = req.body.pid;
   var conanGroup = new ConanGroup;
@@ -45,17 +46,8 @@ router.get('/groups', function(req, res) {
   });
 });
 
-router.post('/group', function(req, res) {
-  var obj = req.body;
-  var conanGroup = new ConanGroup({
-    pid: obj.pid,
-    name: obj.name,
-    flag: obj.flag
-  });
-  conanGroup.save();
-  res.json({status: false, messages: 'success'});
-});
 
+/* 获取用例模版 */
 router.get('/models', function(req, res) {
   var id = req.body.gid;
   var conanCaseModel = new ConanCaseModel;
@@ -68,17 +60,7 @@ router.get('/models', function(req, res) {
   });
 });
 
-router.post('/model', function(req, res) {
-  var obj = req.body;
-  var conanCaseModel = new ConanCaseModel({
-    gid: obj.gid,
-    name: obj.name,
-    fragment: obj.flag
-  });
-  conanCaseModel.save();
-  res.json({status: false, messages: 'success'});
-});
-
+/* 获取模版数据 */
 router.get('/datas', function(req, res) {
   var id = req.body.mid;
   var conanCaseData = new ConanCaseData;
@@ -89,32 +71,6 @@ router.get('/datas', function(req, res) {
     }
     res.json(datas);
   });
-});
-
-router.post('/data', function(req, res) {
-  var obj = req.body;
-  var conanCaseData = new ConanCaseData({
-    gid: obj.gid,
-    name: obj.name,
-    fragment: obj.flag
-  });
-  conanCaseData.save();
-  res.json({status: true, messages: 'success'});
-});
-
-router.get('/result', function(req, res) {
-
-  res.json();
-});
-
-router.post('/result', function(req, res) {
-  var obj = req.body;
-  var conanResult = new conanResult({
-    did: obj.did,
-    result: obj.result
-  });
-  conanResult.save();
-  res.json({status: true, messages: 'success'});
 });
 
 module.exports = router;

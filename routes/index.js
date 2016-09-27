@@ -20,7 +20,7 @@ router.get('/projects', function(req, res) {
   });
 });
 
-/**/
+/* 应用api接口管理页 */
 router.get('/applications/id/:id', function (req, res, next) {
     var aid = req.params.id;
     if (!aid) {
