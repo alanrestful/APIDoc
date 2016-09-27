@@ -4,9 +4,9 @@ var path = require('path');
 var fs = require("fs");
 var http = require('http');
 var Application = require('../models/Application').Application;
-var apiDocument = require('../models/APIDocument').APIDocument;
-var apiPath = require('../models/APIPath').APIPath;
-var apiDefinition = require('../models/APIDefinition').APIDefinition;
+var ApiDocument = require('../models/APIDocument').APIDocument;
+var ApiPath = require('../models/APIPath').APIPath;
+var ApiDefinition = require('../models/APIDefinition').APIDefinition;
 var updateLogs = require('../models/UpdateLogs').UpdateLogs;
 var JsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
 
@@ -24,48 +24,6 @@ router.get('/', function (req, res) {
         }
         res.json(apps);
     })
-});
-
-router.get('/id/:id', function (req, res, next) {
-    var aid = req.params.id;
-    if (!aid) {
-        res.redirect('../projects');
-    } else {
-        var path = new apiPath;
-        path.findByAid(aid, function (err, paths) {
-            if (err) {
-                res.json({status: false, messages: err});
-                return;
-            }
-            apiDocument.find({"applicationId": aid}, function (err, document) {
-                if (err) next(err);
-                var nav = {};
-                for (var path in paths) {
-                    for (var p in paths[path]["path_json"]) {
-                        for (var m in paths[path]["path_json"][p]) {
-                            if (!nav[paths[path]["path_json"][p][m].tags[0]]) {
-                                nav[paths[path]["path_json"][p][m].tags[0]] = [];
-                            }
-                            if (nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary) == -1) {
-                                nav[paths[path]["path_json"][p][m].tags[0]].push(paths[path]["path_json"][p][m].summary);
-                            }
-                        }
-                    }
-                }
-                var arr = [];
-                for (var n in nav) {
-                    nav[n].sort(function (a, b) {
-                        return a < b ? -1 : 1;
-                    });
-                    arr.push({name: n, key: nav[n]})
-                }
-                arr.sort(function (a, b) {
-                    return a.name < b.name ? -1 : 1;
-                });
-                res.render('applications/application_manager', {nav: arr, paths: paths, document: document, aid: aid});
-            });
-        });
-    }
 });
 
 /* 创建应用 */
@@ -90,44 +48,34 @@ router.post('/', function (req, res, next) {
 router.post('/importAPI', upload.single('apifile'), function (req, res) {
     console.log(req.file);  // 上传的文件信息
     var data = fs.readFileSync(req.file.path, "utf-8");
-    var params = {
-        applicationId: req.body._id,
-        swagger: JSON.parse(data).swagger,
-        info: JSON.parse(data).info,
-        host: JSON.parse(data).host,
-        basePath: JSON.parse(data).basePath
-    };
-
-    apiDocument.create(params, function (error) {
-        if (error) {
-            console.log('create document error:%s', error);
-        } else {
-            console.log('create document success!');
-        }
+    var apiDocument = ApiDocument({
+      applicationId: req.body._id,
+      swagger: JSON.parse(data).swagger,
+      info: JSON.parse(data).info,
+      host: JSON.parse(data).host,
+      basePath: JSON.parse(data).basePath
     });
+    apiDocument.save();
 
     for (var path in JSON.parse(data).paths) {
         var path_obj = {};
         path_obj[path] = JSON.parse(data).paths[path];
-        apiPath.create({applicationId: req.body._id, path_json: path_obj}, function (error) {
-            if (error) {
-                console.log('create paths error:%s', error);
-            } else {
-                console.log('create paths success!');
-            }
+
+        var apiPath = ApiPath({
+          applicationId: req.body._id,
+          path_json: path_obj
         });
+        apiPath.save();
     }
 
     for (var def in JSON.parse(data).definitions) {
         var def_obj = {};
         def_obj[def] = JSON.parse(data).definitions[def];
-        apiDefinition.create({applicationId: req.body._id, definition_json: def_obj}, function (error) {
-            if (error) {
-                console.log('create definitions error:%s', error);
-            } else {
-                console.log('create definitions success!');
-            }
+        var apiDefinition = new ApiDefinition({
+          applicationId: req.body._id,
+          definition_json: def_obj
         });
+        apiDefinition.save();
     }
     console.log("##############");
     res.redirect('../applications/id/' + req.body._id);
@@ -138,7 +86,7 @@ router.get('/definition', function (req, res, next) {
     var data = {};
     data['definition_json.' + req.query.ref] = {$exists: true};
     data['applicationId'] = req.query.id;
-    apiDefinition.find(data, {}, function (err, def) {
+    ApiDefinition.find(data, {}, function (err, def) {
         if (err) {
             res.json({status: false, messages: ''});
             return;
@@ -147,9 +95,8 @@ router.get('/definition', function (req, res, next) {
     });
 });
 
-
 /* 组装 swagger json */
-router.get('/json', function (req, res, next) {
+router.get('/', function (req, res, next) {
     var aid = req.query.appId;
     var doc = new apiDocument;
     var json = {};
@@ -201,8 +148,8 @@ router.post('/save', function (req, res, next) {
     var newContents = JSON.parse(req.body.specs).paths,
         applicationId = req.body.appId,
         newDefinitions = JSON.parse(req.body.specs).definitions;
-    var pathBean = new apiPath,
-        definitionBean = new apiDefinition;
+    var pathBean = new ApiPath,
+        definitionBean = new ApiDefinition;
     var pathOpt = {
         res: res,
         applicationId: applicationId,

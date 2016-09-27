@@ -82,7 +82,7 @@ function getDefinitionName(ref){
 function findDefinitionObj(aid, ref){
   var obj;
   $.ajax({
-      url: "/applications/definition",
+      url: "/api/applications/definition",
       type: "GET",
       async: false,
       data: {"id": aid, "ref": ref},

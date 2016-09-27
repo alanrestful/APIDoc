@@ -36,7 +36,7 @@ var createProjectEvent = function(event){
     env_json: env_json
   }
   $.ajax({
-      url: '/projects',
+      url: '/api/projects',
       type: 'POST',
       data: obj,
       success:function(data){
@@ -70,7 +70,7 @@ var createAppEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
   $.ajax({
-      url: '/applications',
+      url: '/api/applications',
       type: 'POST',
       data: data,
       success:function(data){
@@ -93,7 +93,7 @@ var getEnvAppsEvent = function(event){
     env: env
   }
   $.ajax({
-      url:'/applications',
+      url:'/api/applications',
       type:'GET',
       data: data,
       success:function(data){
@@ -115,7 +115,7 @@ var delProjectEvent = function(event){
   if(confirm('确定要删除该项目吗？')){
     var data ={id: id}
     $.ajax({
-        url:'/projects',
+        url:'/api/projects',
         type:'DELETE',
         data: data,
         success:function(data){

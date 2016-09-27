@@ -40,6 +40,15 @@ var util = require('util'),
 
 var app = express();
 
+//设置跨域访问
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE");
+    res.header("X-Powered-By",' 3.2.1');
+    next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
@@ -52,19 +61,6 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 
-// app.use(function(req, res, next){
-//     var reqData = [];
-//     var size = 0;
-//     req.on('data', function (data) {
-//       console.log('>>>req on');
-//       reqData.push(data);
-//       size += data.length;
-//     });
-//     req.on('end', function () {
-//       req.reqData = Buffer.concat(reqData, size);
-//     });
-//     next();
-// });
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -86,10 +82,11 @@ app.use(session({
 app.use(function(req,res,next){
     app.locals.User = req.session.user;
     var url = req.originalUrl;
+    console.log(url);
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register','/codegen/gen'];
+        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects'];
         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
             res.redirect('/');
         } else {
@@ -122,9 +119,9 @@ app.use(SWAGGER_EDITOR_SERVE_PATH, serveStatic(SWAGGER_EDITOR_DIR));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/projects', projects);
-app.use('/cases', cases);
-app.use('/applications', applications);
+app.use('/api/projects', projects);
+app.use('/api/cases', cases);
+app.use('/api/applications', applications);
 app.use('/codegen', codeGen);
 app.use('/logs', logs);
 
@@ -137,7 +134,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
 
 /// error handlers
 
