@@ -26,7 +26,7 @@ _UpdateLog.method("queryLogs", function(opts, cb) {
     if (opts.action) {
         query.action = opts.action;
     }
-    return this.model('update_logs').find(query, function(err, doc) {
+    return this.model('update_logs').find(query).sort('-_id').exec( function(err, doc) {
         cb(err, doc);
     });
 });

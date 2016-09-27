@@ -2,11 +2,31 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
+            <form class="form">
+                <fieldset>
+                    <span class="span3">
+                        <label>Action:</label>
+                        <select name="action">
+                            <option value="">All</option>
+                            <option value="update">update</option>
+                            <option value="del">delete</option>
+                            <option value="add">add</option>
+                        </select>
+                    </span>
+                    <span class="span3">
+                        <label>Author:</label>
+                        <input name="author"/>
+                    </span>
+                    <span class="span1">
+                      <button type="submit" class="btn btn-primary">search</button>
+                    </span>
+                </fieldset>
+            </form>
             <table class="table">
                 <thead>
                     <tr>
                         <td>AppId</td>
-                        <td>Path</td>
+                        <td>Path/Definition</td>
                         <td>Author</td>
                         <td>Action</td>
                         <td>UpdateTime</td>
@@ -57,7 +77,7 @@
         for (var a in json.add) {
             var d = json.add[a];
             body += unit.replace("%path%",d.path)
-                    .replace("%desc.base%",d.desc.base)
+                    .replace("%desc.base%",'')
                     .replace("%desc.top%",d.desc.top)
                     .replace("%Action%","Add");
         }
@@ -72,7 +92,7 @@
             var d = json.del[a];
             body += unit.replace("%path%",d.path)
                     .replace("%desc.base%",d.desc.base)
-                    .replace("%desc.top%",d.desc.top)
+                    .replace("%desc.top%",'')
                     .replace("%Action%","Del");
         }
         return head + body + foot;
