@@ -11,6 +11,15 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/json', function(req, res) {
+  project.find(function(err, projects) {
+    if(err){
+      res.json({status: false, messages: 'find.projects.fail'});
+    }
+    res.json(projects);
+  });
+});
+
 /* 创建项目 */
 router.post('/', function(req, res) {
   var params = {

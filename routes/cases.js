@@ -13,7 +13,6 @@ router.get('/', function(req, res) {
   res.render('cases/case_manager', {title: 'case管理'});
 });
 
-
 router.post('/', function(req, res) {
   var data = req.body;
   var conanGroup = new ConanGroup({
@@ -24,16 +23,16 @@ router.post('/', function(req, res) {
   conanGroup.save();
 
   var conanCaseModel = new ConanCaseModel({
-    pid: caseData.pid,
-    name: caseData.name,
-    fragment: caseData.flag
+    pid: data.pid,
+    name: data.name,
+    fragment: data.flag
   });
   conanCaseModel.save();
 
   var conanCaseData = new ConanCaseData({
-    mid: caseData.pid,
-    name: caseData.name,
-    data: caseData.data
+    mid: data.pid,
+    name: data.name,
+    data: data.data
   });
   conanCaseData.save();
   res.json({status: true, messages: 'success'});
@@ -110,7 +109,7 @@ router.post('/data', function(req, res) {
 
 router.get('/result', function(req, res) {
 
-  res.render('cases/case_manager', {title: 'case管理'});
+  res.json();
 });
 
 router.post('/result', function(req, res) {
