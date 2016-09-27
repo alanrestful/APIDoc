@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     if(err){
       res.json({status: false, messages: 'find.projects.fail'});
     }
-    res.json(projects);
+    res.json({status: true, messages:'', result: projects});
   });
 });
 
