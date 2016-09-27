@@ -1,0 +1,100 @@
+{{> header}}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form">
+                <fieldset>
+                    <span class="span3">
+                        <label>Action:</label>
+                        <select name="action">
+                            <option value="">All</option>
+                            <option value="update">update</option>
+                            <option value="del">delete</option>
+                            <option value="add">add</option>
+                        </select>
+                    </span>
+                    <span class="span3">
+                        <label>Author:</label>
+                        <input name="author"/>
+                    </span>
+                    <span class="span1">
+                      <button type="submit" class="btn btn-primary">search</button>
+                    </span>
+                </fieldset>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>AppId</td>
+                        <td>Path/Definition</td>
+                        <td>Author</td>
+                        <td>Action</td>
+                        <td>UpdateTime</td>
+                        <td>Detail</td>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#each data}}
+                    <tr>
+                        <td>{{applicationId}}</td>
+                        <td>{{path}}</td>
+                        <td>{{author}}</td>
+                        <td>{{action}}</td>
+                        <td>{{formatDate createdAt}}</td>
+                        <td class="detail" data-detail="{{json detail}}"><button class="btn" >View Detail</button></td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade detail-modal" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:auto;">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function(){
+        $(".detail").click(function(e){
+            var data = $(e.currentTarget).data('detail');
+            $(".detail-modal .modal-dialog .modal-content").html(template(data));
+            $("#detail-modal").modal('show');
+        })
+    });
+
+    var template = function(data){
+        var json = data;
+        var head = "<table class='table'><thead><tr><td>Path</td><td>Action</td><td>Before</td><td>After</td></tr></thead><tbody>";
+        var foot = "</tbody>";
+        var unit = "<tr><td>%path%</td><td>%Action%</td><td>%desc.base%</td><td>%desc.top%</td></tr>";
+        var body = "";
+        for (var a in json.add) {
+            var d = json.add[a];
+            body += unit.replace("%path%",d.path)
+                    .replace("%desc.base%",'')
+                    .replace("%desc.top%",d.desc.top)
+                    .replace("%Action%","Add");
+        }
+        for (var a in json.update) {
+            var d = json.update[a];
+            body += unit.replace("%path%",d.path)
+                    .replace("%desc.base%",d.desc.base.constructor == Array ? JSON.stringify(d.desc.base) : d.desc.base)
+                    .replace("%desc.top%",d.desc.top.constructor == Array ? JSON.stringify(d.desc.top) : d.desc.top)
+                    .replace("%Action%","Update");
+        }
+        for (var a in json.del) {
+            var d = json.del[a];
+            body += unit.replace("%path%",d.path)
+                    .replace("%desc.base%",d.desc.base)
+                    .replace("%desc.top%",'')
+                    .replace("%Action%","Del");
+        }
+        return head + body + foot;
+    }
+</script>

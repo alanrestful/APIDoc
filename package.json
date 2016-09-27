@@ -16,6 +16,7 @@
     "express": "^4.2.0",
     "express-handlebars": "*",
     "express-session": "*",
+    "moment": "^2.15.1",
     "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.3.2",
     "gulp-sequence": "^0.4.6",

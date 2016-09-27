@@ -13,4 +13,24 @@ _APIDefinition.method("findByAid", function(aId, cb) {
     return this.model('api_definitions').find({'applicationId': aId}, {_id:0}, cb);
 });
 
+_APIDefinition.method("updatePath", function(obj, id, appId, cb) {
+    var model = this.model('api_definitions');
+    model.remove({_id: id}, function(err,doc) {
+        console.log("delete " + err);
+    });
+    model.create({
+        _id: id,
+        definition_json: obj,
+        applicationId: appId
+    }, function(err,doc ) {
+        console.log("create " + err);
+    })
+});
+
+_APIDefinition.method("deleteById", function(id, cb) {
+    return this.model('api_definitions').remove({_id: id}, function(err,doc) {
+        console.error("delete " + err);
+    });
+});
+
 exports.APIDefinition = mongoose.model('api_definitions', _APIDefinition);
