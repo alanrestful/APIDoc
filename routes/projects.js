@@ -4,14 +4,9 @@ var rf = require("fs");
 var project = require('../models/Project').Project;
 var application = require('../models/Application').Application;
 
-/* 项目列表 */
-router.get('/', function(req, res) {
-  project.find(function(err, projects) {
-    res.render('projects/project_manager', {projects: projects});
-  });
-});
 
-router.get('/json', function(req, res) {
+/* 获取项目列表json */
+router.get('/', function(req, res) {
   project.find(function(err, projects) {
     if(err){
       res.json({status: false, messages: 'find.projects.fail'});

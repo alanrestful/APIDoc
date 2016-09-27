@@ -5,14 +5,9 @@ var ConanGroup = require('../models/ConanGroup').ConanGroup;
 var ConanCaseModel = require('../models/ConanCaseModel').ConanCaseModel;
 var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 
-
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  res.render('cases/case_manager', {title: 'case管理'});
-});
-
+/* 创建用例 */
 router.post('/', function(req, res) {
   var data = req.body;
   var conanGroup = new ConanGroup({
@@ -38,8 +33,8 @@ router.post('/', function(req, res) {
   res.json({status: true, messages: 'success'});
 });
 
-router.get('/group', function(req, res) {
-  var id = req.params.id;
+router.get('/groups', function(req, res) {
+  var id = req.body.pid;
   var conanGroup = new ConanGroup;
   conanGroup.findById(id, function(err, groups){
     if(err){
@@ -61,8 +56,8 @@ router.post('/group', function(req, res) {
   res.json({status: false, messages: 'success'});
 });
 
-router.get('/model/id/:id', function(req, res) {
-  var id = req.params.id;
+router.get('/models', function(req, res) {
+  var id = req.body.gid;
   var conanCaseModel = new ConanCaseModel;
   conanCaseModel.findById(id, function(err, models){
     if(err){
@@ -84,8 +79,8 @@ router.post('/model', function(req, res) {
   res.json({status: false, messages: 'success'});
 });
 
-router.get('/data/id/:id', function(req, res) {
-  var id = req.params.id;
+router.get('/datas', function(req, res) {
+  var id = req.body.mid;
   var conanCaseData = new ConanCaseData;
   conanCaseDatas.findById(id, function(err, datas){
     if(err){

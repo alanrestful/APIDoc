@@ -22,8 +22,6 @@ var applications = require('./routes/applications');
 var codeGen = require('./routes/codeGen');
 var logs = require('./routes/logs');
 
-var api = require('./routes/api');
-
 
 var util = require('util'),
     serveStatic = require('serve-static'),
@@ -47,8 +45,7 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE");
-    res.header("X-Powered-By",' 3.2.1')
-    res.header("Content-Type", "application/json;charset=utf-8");
+    res.header("X-Powered-By",' 3.2.1');
     next();
 });
 
@@ -64,19 +61,6 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 
-// app.use(function(req, res, next){
-//     var reqData = [];
-//     var size = 0;
-//     req.on('data', function (data) {
-//       console.log('>>>req on');
-//       reqData.push(data);
-//       size += data.length;
-//     });
-//     req.on('end', function () {
-//       req.reqData = Buffer.concat(reqData, size);
-//     });
-//     next();
-// });
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -135,12 +119,11 @@ app.use(SWAGGER_EDITOR_SERVE_PATH, serveStatic(SWAGGER_EDITOR_DIR));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/projects', projects);
-app.use('/cases', cases);
-app.use('/applications', applications);
+app.use('/api/projects', projects);
+app.use('/api/cases', cases);
+app.use('/api/applications', applications);
 app.use('/codegen', codeGen);
 app.use('/logs', logs);
-app.use('/api', api);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
@@ -151,7 +134,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
 
 /// error handlers
 
