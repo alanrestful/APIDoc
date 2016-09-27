@@ -22,6 +22,8 @@ var applications = require('./routes/applications');
 var codeGen = require('./routes/codeGen');
 var logs = require('./routes/logs');
 
+var api = require('./routes/api');
+
 
 var util = require('util'),
     serveStatic = require('serve-static'),
@@ -135,6 +137,7 @@ app.use('/cases', cases);
 app.use('/applications', applications);
 app.use('/codegen', codeGen);
 app.use('/logs', logs);
+app.use('/api', api);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
