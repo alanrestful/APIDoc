@@ -26,7 +26,7 @@ var delGroupEvent = function(event){
   alert("del group");
 };
 
-/* 编辑详细 */
+/* 编辑详情 */
 var editDetailEvent = function(event){
   event && event.preventDefault();
   alert("edit detail");

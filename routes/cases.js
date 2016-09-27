@@ -46,7 +46,6 @@ router.get('/groups', function(req, res) {
   });
 });
 
-
 /* 获取用例模版 */
 router.get('/models', function(req, res) {
   var id = req.body.gid;

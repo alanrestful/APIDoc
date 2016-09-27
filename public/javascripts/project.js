@@ -15,7 +15,6 @@ var createProjectEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
 
-  var dev, test, pre, prod;
   var env_json = []
   if(typeof(data.dev)!=='undefined'){
     env_json.push({name: "dev", domain: data.dev_domain});
@@ -46,7 +45,7 @@ var createProjectEvent = function(event){
           alert(data.messages);
         }
       }
-  })
+  });
 };
 
 /* 创建应用弹框 */
