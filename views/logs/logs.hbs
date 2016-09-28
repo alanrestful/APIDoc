@@ -41,11 +41,18 @@
                         <td>{{author}}</td>
                         <td>{{action}}</td>
                         <td>{{formatDate createdAt}}</td>
-                        <td class="detail" data-detail="{{json detail}}"><button class="btn" >View Detail</button></td>
+                        <td class="detail" data-detail="{{json detail}}">
+                            {{#equals action 'update'}}<button class="btn" >View Detail</button>{{/equals}}
+                        </td>
                     </tr>
                 {{/each}}
                 </tbody>
             </table>
+            <nav>
+                <ul class="pagination" >
+
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

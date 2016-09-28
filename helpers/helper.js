@@ -31,5 +31,9 @@ module.exports = {
           return moment(date).format("YYYY-MM-DD HH:mm:ss");
         }
     }
+  },
+
+  add: function(a, b, opts) {
+    return a + b;
   }
 }

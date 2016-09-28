@@ -3,7 +3,6 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var _UpdateLog = new Schema({
     applicationId: {type: String},
     author: {type: String},
@@ -26,11 +25,14 @@ _UpdateLog.method("queryLogs", function(opts, cb) {
     if (opts.action) {
         query.action = opts.action;
     }
-    return this.model('update_logs').find(query).sort('-_id').exec( function(err, doc) {
-        cb(err, doc);
+    return this.model('update_logs')
+        .find(query)
+        .sort('-_id')
+        .skip(opts.start)
+        .limit(opts.size)
+        .exec( function(err, doc) {
+            cb(err, doc);
     });
 });
-
-
 
 exports.UpdateLogs = mongoose.model('update_logs',_UpdateLog);
