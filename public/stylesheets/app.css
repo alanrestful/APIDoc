@@ -54,7 +54,7 @@
   margin: 0 auto;
   border: none;
   width: 90%;
-  margin-top: 40px; }
+  margin-top: 20px; }
 
 .project {
   border-radius: 6px;
@@ -149,7 +149,7 @@
 .user-manager {
   width: 90%;
   margin: 0 auto;
-  margin-top: 40px; }
+  margin-top: 20px; }
   .user-manager .user-header {
     height: 50px;
     width: 100%;
@@ -223,7 +223,7 @@
 .case-manager {
   width: 90%;
   margin: 0 auto;
-  margin-top: 40px; }
+  margin-top: 20px; }
 
 .case-manager .setting .setting-header, .case-manager .group #group-tab {
   height: 50px;
