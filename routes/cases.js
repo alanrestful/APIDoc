@@ -29,8 +29,7 @@ router.post('/group', function(req, res) {
   var data = req.body;
   var tempGroup = new ConanGroup({
     pid: data.pid,
-    name: data.tempGroup,
-    isCase: false
+    name: data.tempGroup
   });
   tempGroup.save();
 
@@ -41,28 +40,26 @@ router.post('/group', function(req, res) {
   });
   tempModel.save();
 
-  if(data.caseGroup && data.caseName){
-    var caseGroup = new ConanGroup({
-      pid: data.pid,
-      name: data.caseGroup,
-      isCase: true
-    });
-    caseGroup.save();
+  var caseGroup = new ConanGroup({
+    pid: data.pid,
+    name: data.caseGroup
+  });
+  caseGroup.save();
 
-    var caseModel = new ConanCaseModel({
-      pid: caseGroup._id,
-      name: data.caseName,
-      fragment: data.fragment
-    });
-    caseModel.save();
+  var caseModel = new ConanCaseModel({
+    pid: caseGroup._id,
+    name: data.caseName,
+    fragment: data.fragment
+  });
+  caseModel.save();
 
-    var conanCaseData = new ConanCaseData({
-      mid: caseModel._id,
-      name: data.name,
-      data: data.data
-    });
-    conanCaseData.save();
-  }
+  var conanCaseData = new ConanCaseData({
+    mid: caseModel._id,
+    name: data.name,
+    data: data.data
+  });
+  conanCaseData.save();
+
   res.json({status: true, messages: null,result: null});
 });
 

@@ -136,7 +136,7 @@ router.get('/json', function (req, res, next) {
             res.json({status: false, messages: '查询api模型失败', result: null});
             return;
           }
-          json.definitions = {};
+          json.definitions = {}
           for (var i in defs) {
             for (var j in defs[i].definition_json) {
                 json.definitions[j] = defs[i].definition_json[j];

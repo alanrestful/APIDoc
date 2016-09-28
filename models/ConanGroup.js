@@ -5,7 +5,6 @@ var _ConanGroup = new Schema({
     pid : {type: String},
     name : {type: String, default: ''},
     flag : {type: Boolean, default: ''},
-    isCase : {type: Boolean, default: ''},
     created_at : {type : Date, default: Date.now},
     updated_at : {type : Date, default: Date.now}
 });
