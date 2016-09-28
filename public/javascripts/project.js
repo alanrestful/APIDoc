@@ -75,7 +75,7 @@ var editProjectEvent = function(event){
           $('#editProjectModal input[name=_id]').val(result._id);
           $('#editProjectModal input[name=name]').val(result.name);
           for(var i in result.env_json){
-            $('#editProjectModal input[name='+ result.env_json[i].name +']').attr("checked", true).attr("disabled", true);
+            $('#editProjectModal input[name='+ result.env_json[i].name +']').attr("checked", true).attr("onclick", 'return false;');
             $('#editProjectModal input[name='+ result.env_json[i].name +'_domain]').val(result.env_json[i].domain);
           }
           $('#editProjectModal').modal('show');
