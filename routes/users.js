@@ -97,7 +97,7 @@ router.get('/code',function(req,res,next){
 
 router.post('/register',function(req,res,next){
   var obj = req.body;
-  var code = req.session.code;
+  // var code = req.session.code;
   // if (obj.code.toUpperCase() !== code) {
   //   res.send({success: false, reason: 'code.error'});
   //   return;

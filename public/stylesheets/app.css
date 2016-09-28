@@ -44,6 +44,9 @@
 .btn {
   outline: none; }
 
+#registerModal label {
+  width: 70px; }
+
 /* project */
 .project-manager {
   width: 90%;
