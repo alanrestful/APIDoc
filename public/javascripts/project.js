@@ -34,6 +34,9 @@ var createProjectEvent = function(event){
     owner: data.owner,
     env_json: env_json
   }
+  if(data._id){
+    obj['_id'] = data._id
+  }
   var type = data._id ? 'PUT': 'POST';
   $.ajax({
       url: '/api/projects',
