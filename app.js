@@ -86,8 +86,16 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects', '/api/cases/group'];
-        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
+        var allow = ['/','/users/login','/users/register','/codegen/gen', '/api/.*', '/api/cases/group'];
+        var allowTag = false;
+        for (var s in allow) {
+            if(new RegExp("^" + allow[s] + "$").test(url)) {
+                allowTag = true;
+                break;
+            }
+        }
+
+        if (!allowTag) {
             res.redirect('/');
         } else {
             next();

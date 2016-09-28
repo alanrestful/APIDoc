@@ -164,7 +164,7 @@ router.post('/save', function (req, res, next) {
         newContents: newContents,
         parseJsonFn: parsePathJson,
         save: function(newPath) {
-            new apiPath({
+            new ApiPath({
                 applicationId: applicationId, path_json: newPath
             }).save()
         },
