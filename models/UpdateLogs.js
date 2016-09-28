@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Paging = require('../helpers/paging').Paging;
 
 var _UpdateLog = new Schema({
     applicationId: {type: String},
@@ -35,7 +36,5 @@ _UpdateLog.method("queryLogs", function(opts, cb) {
             cb(err, doc);
     });
 });
-
-
 
 exports.UpdateLogs = mongoose.model('update_logs',_UpdateLog);

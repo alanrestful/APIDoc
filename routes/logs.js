@@ -16,8 +16,8 @@ router.get("/", function(req, res, next) {
     var appId = params.appId,
         author = params.author,
         action = params.action,
-        page = params.page,
-        size = params.size;
+        page = params.page || 1,
+        size = params.size || 10;
     var result = [];
     var upLog = new updateLogs;
     upLog.queryLogs({
