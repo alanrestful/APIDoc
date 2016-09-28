@@ -103,3 +103,42 @@ var APP = {
         $("#codeImg").attr('src','/users/code?tm=' + new Date().getTime());
     }
 };
+(function() {
+    this.pagination = $(".pagination");
+    if (!this.pagination) {
+        return;
+    }
+    this.total = this.pagination.data('total');
+    var pageNo = parseInt(getQueryString('page')) || 1;
+    var pageSize = getQueryString('size') || 10;
+    var pageUnit = "<li  class='%class%'><a href='javascript:;'>%text%</a></li>";
+    this.pagination.append(pageUnit.replace('%text%','<').replace('%class%','pre'))
+        .append(pageUnit.replace('%text%',pageNo).replace('%class%','active'))
+        .append(pageUnit.replace('%text%',pageNo + 1))
+        .append(pageUnit.replace('%text%',pageNo + 2))
+        .append(pageUnit.replace('%text%',pageNo + 3))
+        .append(pageUnit.replace('%text%',pageNo + 4))
+        .append(pageUnit.replace('%text%','>').replace('%class%','next'));
+
+    if (pageNo == 1) {
+        this.pagination.find('li').first().addClass('disabled');
+    }
+    this.pagination.find('li').click(function(e) {
+        var page = $(this).text();
+        if ($(this).hasClass('pre')) {
+            page = pageNo - 1;
+        }
+        if ($(this).hasClass('next')) {
+            page = pageNo + 1;
+        }
+        var origin = location.href;
+        var target = origin.split('page=' + pageNo).join('page=' + page);
+        location.href = target;
+    })
+})();
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
