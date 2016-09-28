@@ -25,22 +25,27 @@ router.get("/", function(req, res, next) {
     }, function (err, doc) {
         if (err) {
             errHandler(req, err, "query.logs.error");
+            next(err);
             return;
         }
         // 改变记录的定位
         for (var d in doc) {
-            var obj = {};
-            obj = doc[d]._doc;
-            if (doc[d].action == "update") {
-                logCompare(doc[d], function (err, rc) {
-                    if (err) errHandler(res, err, "compare.json.false");
-                    // doc[d].detail = rc;
-                    obj.detail = rc;
-                    result.push(obj);
-                });
-            } else {
-               result.push(obj) ;
-            }
+            (function(){
+                var obj = {};
+                if (doc.hasOwnProperty(d)) {
+                    obj = doc[d]._doc;
+                    if (doc[d].action == "update") {
+                        logCompare(doc[d], function (err, rc) {
+                            if (err) errHandler(res, err, "compare.json.false");
+                            // doc[d].detail = rc;
+                            obj.detail = rc;
+                            result.push(obj);
+                        });
+                    } else {
+                        result.push(obj);
+                    }
+                }
+            })()
         }
         res.render('logs/logs',{title:'Logs',data:result});
     });
