@@ -78,22 +78,22 @@ app.use(session({
     })
 }));
 
-/// session拦截器
-// app.use(function(req,res,next){
-//     app.locals.User = req.session.user;
-//     var url = req.originalUrl;
-//     console.log(url);
-//     if (req.session.user) {
-//         next();
-//     } else {
-//         var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects', '/api/cases/group'];
-//         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
-//             res.redirect('/');
-//         } else {
-//             next();
-//         }
-//     }
-// });
+// session拦截器
+app.use(function(req,res,next){
+    app.locals.User = req.session.user;
+    var url = req.originalUrl;
+    console.log(url);
+    if (req.session.user) {
+        next();
+    } else {
+        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects', '/api/cases/group'];
+        if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
+            res.redirect('/');
+        } else {
+            next();
+        }
+    }
+});
 
 app.use(SWAGGER_EDITOR_SAVE_PATH, function (req, res, next) {
 
