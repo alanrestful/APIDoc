@@ -8,29 +8,62 @@ var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 var router = express.Router();
 
 /* 创建用例 */
-router.post('/', function(req, res) {
+router.post('/group', function(req, res) {
+
+  // 1.创建模版组 2.模版 3.用例组 4.用例
+  // 5.用例 6.数据
+  /*
+  pid: 项目id
+  tempGroup: 模版组
+  tempName: 模版名称
+  caseGroup: 用例组 ~
+  caseName: 用例名称 ~
+  fragment:
+    [{rela_path:xxxxx, elements:[[{hash:xxxx, tagName: tagName,
+    type:type, id: id, className: className, name: name,
+    value:value, placeholder:placeholder, baseURI:baseURI,
+    innerText:innerText, href:href, xPath:”xxxx”, isFormEl: true},{一个页面的第二个element},{}]]}, {第二个页面}]
+  data: [[{m_hash:xxx, value:sherry, expect:xx},{一个页面的第二个数据}],[第二个页面里的数据]] ～
+  */
+
   var data = req.body;
-  var conanGroup = new ConanGroup({
+  var tempGroup = new ConanGroup({
     pid: data.pid,
-    name: data.name,
-    flag: data.flag
+    name: data.tempGroup,
+    isCase: false
   });
-  conanGroup.save();
+  tempGroup.save();
 
-  var conanCaseModel = new ConanCaseModel({
-    pid: data.pid,
-    name: data.name,
-    fragment: data.flag
+  var tempModel = new ConanCaseModel({
+    pid: tempGroup._id,
+    name: data.tempName,
+    fragment: data.fragment
   });
-  conanCaseModel.save();
+  tempModel.save();
 
-  var conanCaseData = new ConanCaseData({
-    mid: data.pid,
-    name: data.name,
-    data: data.data
-  });
-  conanCaseData.save();
-  res.json({status: true, messages: 'success'});
+  if(data.caseGroup && data.caseName){
+    var caseGroup = new ConanGroup({
+      pid: data.pid,
+      name: data.caseGroup,
+      isCase: true
+    });
+    caseGroup.save();
+
+    var caseModel = new ConanCaseModel({
+      pid: caseGroup._id,
+      name: data.caseName,
+      fragment: data.fragment
+    });
+    caseModel.save();
+
+    var conanCaseData = new ConanCaseData({
+      mid: caseModel._id,
+      name: data.name,
+      data: data.data
+    });
+    conanCaseData.save();
+  }
+  res.json({status: true, messages: null,result: null});
 });
 
 /* 获取用例组 */
@@ -39,10 +72,11 @@ router.get('/groups', function(req, res) {
   var conanGroup = new ConanGroup;
   conanGroup.findById(id, function(err, groups){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find groups error:%s', err);
+      res.json({status: false, messages: '获取用例组失败',result: null});
       return;
     }
-    res.json(groups);
+    res.json({status: true, messages: null,result: groups});
   });
 });
 
@@ -52,10 +86,11 @@ router.get('/models', function(req, res) {
   var conanCaseModel = new ConanCaseModel;
   conanCaseModel.findById(id, function(err, models){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find models error:%s', err);
+      res.json({status: false, messages: '获取用例模版失败',result: null});
       return;
     }
-    res.json(models);
+    res.json({status: true, messages: null,result: models});
   });
 });
 
@@ -65,10 +100,11 @@ router.get('/datas', function(req, res) {
   var conanCaseData = new ConanCaseData;
   conanCaseDatas.findById(id, function(err, datas){
     if(err){
-      res.json({status: false, messages: err});
+      console.log('find datas error:%s', err);
+      res.json({status: false, messages: '获取模版数据失败',result: null});
       return;
     }
-    res.json(datas);
+    res.json({status: true, messages: null,result: datas});
   });
 });
 

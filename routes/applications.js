@@ -13,16 +13,16 @@ var JsonComparer = require("../helpers/json-processor/json-compare").json_compar
 var multer = require('multer');
 var upload = multer({dest: path.join(__dirname, '../temp/')});
 
-/* GET page. */
-/* 获取项目应用 */
+/* 获取应用列表 */
 router.get('/', function (req, res) {
     var app = new Application;
     app.findByPidAndEnv(req.query.id, req.query.env, function (err, apps) {
-        if (err) {
-            res.json({status: false, messages: err});
-            return;
-        }
-        res.json(apps);
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '获取项目应用失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: apps});
     })
 });
 
@@ -31,51 +31,52 @@ router.post('/', function (req, res, next) {
     console.log(req.body);
     var envArr = JSON.parse(req.body.envJson);
     for (var e in envArr) {
-        var app = new Application({
-            projectId: req.body.projectId,
-            name: req.body.name,
-            owner: req.session.user,
-            tag: req.body.tag,
-            env: envArr[e].name,
-            domain: envArr[e].domain
-        });
-        app.save();
+      var app = new Application({
+        projectId: req.body.projectId,
+        name: req.body.name,
+        owner: req.session.user,
+        tag: req.body.tag,
+        env: envArr[e].name,
+        domain: envArr[e].domain
+      });
+      app.save();
     }
-    res.json({status: true, messages: ''});
+    res.json({status: true, messages: null, result: null});
 });
 
 /* 导入api */
 router.post('/importAPI', upload.single('apifile'), function (req, res) {
     console.log(req.file);  // 上传的文件信息
-    var data = fs.readFileSync(req.file.path, "utf-8");
-    var apiDocument = ApiDocument({
+    var fdata = fs.readFileSync(req.file.path, "utf-8");
+    var data = JSON.parse(fdata);
+    var apiDocument = new ApiDocument({
       applicationId: req.body._id,
-      swagger: JSON.parse(data).swagger,
-      info: JSON.parse(data).info,
-      host: JSON.parse(data).host,
-      basePath: JSON.parse(data).basePath
+      swagger: data.swagger,
+      info: data.info,
+      host: data.host,
+      basePath: data.basePath
     });
     apiDocument.save();
 
-    for (var path in JSON.parse(data).paths) {
-        var path_obj = {};
-        path_obj[path] = JSON.parse(data).paths[path];
+    for (var path in data.paths) {
+      var path_obj = {};
+      path_obj[path] = data.paths[path];
 
-        var apiPath = ApiPath({
-          applicationId: req.body._id,
-          path_json: path_obj
-        });
-        apiPath.save();
+      var apiPath = ApiPath({
+        applicationId: req.body._id,
+        path_json: path_obj
+      });
+      apiPath.save();
     }
 
-    for (var def in JSON.parse(data).definitions) {
-        var def_obj = {};
-        def_obj[def] = JSON.parse(data).definitions[def];
-        var apiDefinition = new ApiDefinition({
-          applicationId: req.body._id,
-          definition_json: def_obj
-        });
-        apiDefinition.save();
+    for (var def in data.definitions) {
+      var def_obj = {};
+      def_obj[def] = data.definitions[def];
+      var apiDefinition = new ApiDefinition({
+        applicationId: req.body._id,
+        definition_json: def_obj
+      });
+      apiDefinition.save();
     }
     console.log("##############");
     res.redirect('../applications/id/' + req.body._id);
@@ -87,11 +88,12 @@ router.get('/definition', function (req, res, next) {
     data['definition_json.' + req.query.ref] = {$exists: true};
     data['applicationId'] = req.query.id;
     ApiDefinition.find(data, {}, function (err, def) {
-        if (err) {
-            res.json({status: false, messages: ''});
-            return;
-        }
-        res.json(def);
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '查询定义失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: def});
     });
 });
 
@@ -104,39 +106,45 @@ router.get('/json', function (req, res, next) {
     json.definitions = {};
 
     doc.findByAid(aid, function (err, doc) {
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '查询api文档失败', result: null});
+        return;
+      }
+      json.swagger = doc.swagger;
+      json.info = doc.info;
+      json.host = doc.host;
+      json.basePath = doc.basePath;
+      var path = new ApiPath;
+      path.findByAid(aid, function (err, paths) {
         if (err) {
-            res.json({status: false, messages: err});
-            return;
+          console.log('find paths error:%s', err);
+          res.json({status: false, messages: '查询api接口失败', result: null});
+          return;
         }
-        json.swagger = doc.swagger;
-        json.info = doc.info;
-        json.host = doc.host;
-        json.basePath = doc.basePath;
-        var path = new ApiPath;
-        path.findByAid(aid, function (err, paths) {
-            if (err) {
-                res.json({status: false, messages: err});
-                return;
+        json.paths = {};
+        for (var i in paths) {
+          for (var j in paths[i].path_json) {
+            json.paths[j] = paths[i].path_json[j];
+          }
+        }
+
+        var apiDefinition = new ApiDefinition;
+        apiDefinition.findByAid(aid, function (err, defs) {
+          if (err) {
+            console.log('find definitions error:%s', err);
+            res.json({status: false, messages: '查询api模型失败', result: null});
+            return;
+          }
+          json.definitions = {};
+          for (var i in defs) {
+            for (var j in defs[i].definition_json) {
+                json.definitions[j] = defs[i].definition_json[j];
             }
-            for (var i in paths) {
-                for (var j in paths[i].path_json) {
-                    json.paths[j] = paths[i].path_json[j];
-                }
-            }
+          }
+          res.json({status: true, messages: null, result: json});
         });
-        var def = new ApiDefinition;
-        def.findByAid(aid, function (err, defs) {
-            if (err) {
-                res.json({status: false, messages: err});
-                return;
-            }
-            for (var i in defs) {
-                for (var j in defs[i].definition_json) {
-                    json.definitions[j] = defs[i].definition_json[j];
-                }
-            }
-            res.json(json);
-        });
+      });
     });
 });
 

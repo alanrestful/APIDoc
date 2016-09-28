@@ -96,13 +96,18 @@ var getEnvAppsEvent = function(event){
       type:'GET',
       data: data,
       success:function(data){
-        $('.modal-app-title').html('');
-        var html = '';
-        for(var i in data){
-          html = html + '<li><a href="/applications/id/'+ data[i]._id +'">'+ data[i].name +'</a></li>'
+        if(data.status){
+          var result = data.result;
+          $('.modal-app-title').html('');
+          var html = '';
+          for(var i in result){
+            html = html + '<li><a href="/applications/id/'+ result[i]._id +'">'+ result[i].name +'</a></li>'
+          }
+          $('.modal-app-title').html(html);
+          $('#selectApplicationModal').modal('show');
+        }else{
+          alert(data.messages);
         }
-        $('.modal-app-title').html(html);
-        $('#selectApplicationModal').modal('show')
       }
   })
 
@@ -118,7 +123,11 @@ var delProjectEvent = function(event){
         type:'DELETE',
         data: data,
         success:function(data){
-          location.reload();
+          if(data.status){
+            location.reload();
+          }else{
+            alert(data.messages);
+          }
         }
     })
   }

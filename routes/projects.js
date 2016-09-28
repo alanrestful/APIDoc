@@ -47,7 +47,6 @@ router.delete('/', function(req, res) {
       console.log('delete project success!');
       res.json({status: true, messages: null, result: null});
     }
-    res.json(result);
   });
 });
 

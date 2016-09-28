@@ -13,17 +13,17 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/">首页</a></li>
-        <li class="project-link"><a href="/projects">Program</a></li>
-        <li class="case-link"><a href="/cases">Case</a></li>
-        <li class="users-link"><a href="/users">User</a></li>
+        <li class="project-link"><a href="/projects">项目管理</a></li>
+        <li class="case-link"><a href="/cases">用例管理</a></li>
+        <li class="users-link"><a href="/users">用户管理</a></li>
         {{#if User}}
         <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{User}} <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="/users/center">个人中心</a></li>
-                <li><a href="#" onclick="logoutEvent()">注销</a></li>
-              </ul>
-            </li>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{User}} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/users/center">个人中心</a></li>
+            <li><a href="#" onclick="logoutEvent()">注销</a></li>
+          </ul>
+        </li>
         {{/if}}
       </ul>
     </div>
