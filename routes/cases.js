@@ -27,10 +27,10 @@ router.post('/group', function(req, res) {
   if(data.pid){
     res.json({status: false, messages: '项目ID不能为空',result: null});
   }
-  f(data.tempGroup){
+  if(data.tempGroup){
     res.json({status: false, messages: '组不能为空',result: null});
   }
-  f(data.tempName){
+  if(data.tempName){
     res.json({status: false, messages: '名称不能为空',result: null});
   }
   var conanGroup = new ConanGroup({
