@@ -7,6 +7,7 @@ $(function(){
   $(document).on('click', '.del-group', delGroupEvent);
   $(document).on('click', '.edit-detail', editDetailEvent);
   $(document).on('click', '.del-detail', delDetailEvent);
+  $(document).on('change', '#setting-name', settingNameOnchangeEvent);
 });
 
 /* 编辑设置 */
@@ -17,15 +18,21 @@ var editSettingEvent = function(event){
     type: 'GET',
     success: function(data){
       if(data.status){
-        var html = '';
+        $("#setting-name").html('');
+        var html = '<option>请选择</option>';
         for(var i in data.result){
-          html = html + '<option value="'+ data.result[i]._id +'">'+ data.result[i].name +'</option>'
+          html = html + '<option value="'+ data.result[i]._id +'" data-env="'+ JSON.stringify(data.result[i].env_json) +'">'+ data.result[i].name +'</option>'
         }
         $("#setting-name").append(html);
       }
     }
   });
   $('#editSettingModal').modal('show');
+};
+
+var settingNameOnchangeEvent = function(event){
+  event && event.preventDefault();
+  alert(JSON.stringify($(event.currentTarget)));
 };
 
 var saveSettingEvent = function(event){
