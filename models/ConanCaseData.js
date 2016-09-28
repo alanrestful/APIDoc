@@ -9,4 +9,12 @@ var _ConanCaseData= new Schema({
     updated_at : {type : Date, default: Date.now}
 });
 
+_ConanCaseData.method('findById', function(id ,callback){
+    return this.model('conan_case_data').find({_id: id}, callback);
+});
+
+_ConanCaseData.method('findByMid', function(id ,callback){
+    return this.model('conan_case_data').find({mid: id}, callback);
+});
+
 exports.ConanCaseData = mongoose.model('conan_case_data', _ConanCaseData);
