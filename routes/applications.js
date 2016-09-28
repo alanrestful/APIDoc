@@ -142,7 +142,7 @@ router.get('/json', function (req, res, next) {
                 json.definitions[j] = defs[i].definition_json[j];
             }
           }
-          res.json({status: true, messages: null, result: json});
+          res.json(json);
         });
       });
     });
