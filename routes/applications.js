@@ -105,55 +105,48 @@ router.get('/json', function (req, res, next) {
     json.definitions = {};
 
     doc.findByAid(aid, function (err, doc) {
+      if (err) {
+        console.log('find applications error:%s', err);
+        res.json({status: false, messages: '查询api文档失败', result: null});
+        return;
+      }
+      json.swagger = doc.swagger;
+      json.info = doc.info;
+      json.host = doc.host;
+      json.basePath = doc.basePath;
+      var path = new ApiPath;
+      path.findByAid(aid, function (err, paths) {
         if (err) {
-          console.log('find applications error:%s', err);
-          res.json({status: false, messages: '查询api文档失败', result: null});
+          console.log('find paths error:%s', err);
+          res.json({status: false, messages: '查询api接口失败', result: null});
           return;
         }
-        json.swagger = doc.swagger;
-        json.info = doc.info;
-        json.host = doc.host;
-        json.basePath = doc.basePath;
-        var path = new ApiPath;
-        path.findByAid(aid, function (err, paths) {
+        var apiDefinition = new ApiDefinition;
+        apiDefinition.findByAid(aid, function (err, defs) {
           if (err) {
-            console.log('find paths error:%s', err);
-            res.json({status: false, messages: '查询api接口失败', result: null});
+            console.log('find definitions error:%s', err);
+            res.json({status: false, messages: '查询api模型失败', result: null});
             return;
           }
-          var apiDefinition = new ApiDefinition;
-          apiDefinition.findByAid(aid, function (err, defs) {
-            if (err) {
-              console.log('find definitions error:%s', err);
-              res.json({status: false, messages: '查询api模型失败', result: null});
-              return;
+          var json = {};
+          json.swagger = doc.swagger;
+          json.info = doc.info;
+          json.host = doc.host;
+          json.basePath = doc.basePath;
+          json.paths = {};
+          for (var i in paths) {
+            for (var j in paths[i].path_json) {
+              json.paths[j] = paths[i].path_json[j];
             }
-            var json = {};
-            json.swagger = doc.swagger;
-            json.info = doc.info;
-            json.host = doc.host;
-            json.basePath = doc.basePath;
-            json.paths = {};
-            for (var i in paths) {
-              for (var j in paths[i].path_json) {
-                json.paths[j] = paths[i].path_json[j];
-              }
-            }
-          }
-        });
-        var def = new ApiDefinition;
-        def.findByAid(aid, function (err, defs) {
-          if (err) {
-            res.json({status: false, messages: err});
-            return;
           }
           for (var i in defs) {
             for (var j in defs[i].definition_json) {
                 json.definitions[j] = defs[i].definition_json[j];
             }
-            res.json({status: true, messages: null, result: json});
-          });
+          }
+          res.json({status: true, messages: null, result: json});
         });
+      });
     });
 });
 
