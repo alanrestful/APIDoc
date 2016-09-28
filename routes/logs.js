@@ -15,13 +15,17 @@ router.get("/", function(req, res, next) {
     var params = req.query;
     var appId = params.appId,
         author = params.author,
-        action = params.action;
+        action = params.action,
+        page = params.page,
+        size = params.size;
     var result = [];
     var upLog = new updateLogs;
     upLog.queryLogs({
         appId: appId,
         author: author,
-        action: action
+        action: action,
+        start: (page - 1) * size,
+        size: parseInt(size)
     }, function (err, doc) {
         if (err) {
             errHandler(req, err, "query.logs.error");
