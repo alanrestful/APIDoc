@@ -7,17 +7,14 @@ var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 
 var router = express.Router();
 
-/* 创建用例 */
+/* 创建组 */
 router.post('/group', function(req, res) {
 
-  // 1.创建模版组 2.模版 3.用例组 4.用例
-  // 5.用例 6.数据
+  // 1.group 2.model 3.data
   /*
   pid: 项目id
   tempGroup: 模版组
   tempName: 模版名称
-  caseGroup: 用例组 ~
-  caseName: 用例名称 ~
   fragment:
     [{rela_path:xxxxx, elements:[[{hash:xxxx, tagName: tagName,
     type:type, id: id, className: className, name: name,
@@ -49,6 +46,35 @@ router.post('/group', function(req, res) {
 
   res.json({status: true, messages: null,result: null});
 });
+
+/* 创建用例 */
+router.post('/', function(req, res) {
+
+  var data = req.body;
+  var conanGroup = new ConanGroup({
+    pid: data.pid,
+    name: data.tempGroup
+  });
+  conanGroup.save();
+
+  var conanCaseModel = new ConanCaseModel({
+    pid: conanGroup._id,
+    name: data.tempName,
+    fragment: data.fragment
+  });
+  conanCaseModel.save();
+
+  var conanCaseData = new ConanCaseData({
+    mid: conanCaseModel._id,
+    name: data.name,
+    data: data.data
+  });
+  conanCaseData.save();
+
+  res.json({status: true, messages: null,result: null});
+});
+
+
 
 /* 获取用例组 */
 router.get('/groups', function(req, res) {
