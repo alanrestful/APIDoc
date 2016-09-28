@@ -11,7 +11,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="project-header">
-              <button type="button" class="btn new-project" data-toggle="modal" data-target="#createProjectModal">New project</button>
+              <button type="button" class="btn new-project" data-toggle="modal" data-target="#createProjectModal">新建项目</button>
             </div>
           </div>
         </div>
@@ -24,12 +24,13 @@
                   <div class="project-owner">{{owner}}</div>
                   <div class="project-env">
                     {{#each env_json}}
-                      <a class="btn btn-xs {{name}} env-app" href="javascript:;" data-env="{{name}}" data-domain="{{domain}}" data-id="{{../_id}}">{{name}}</a>
+                      <a class="btn btn-xs {{name}} env-app" href="javascript:;" data-env="{{name}}" data-domain="{{domain}}" data-id="{{../_id}}">
+                        {{#equals name "dev"}}开发{{/equals}}
+                        {{#equals name "test"}}测试{{/equals}}
+                        {{#equals name "pre"}}预发{{/equals}}
+                        {{#equals name "prod"}}生产{{/equals}}
+                      </a>
                     {{/each}}
-                    <!-- <a class="btn btn-xs prod" href="javascript:;" >生产</a>
-                    <a class="btn btn-xs pre" href="javascript:;" >预发</a>
-                    <a class="btn btn-xs test" href="javascript:;" >测试</a>
-                    <a class="btn btn-xs dev" href="javascript:;" >开发</a> -->
                   </div>
                   <div class="project-action"><a href="javascript:;" class="iconfont icon-add add-app" data-id="{{_id}}" data-env="{{json env_json}}"></a><a href="javascript:;" class="iconfont icon-bianji edit-project" data-id="{{_id}}"></a><a href="javascript:;" class="iconfont icon-shanchu del-project" style="color: #f15252;" data-id="{{_id}}"></a></div>
                 </div>
@@ -52,12 +53,12 @@
           &times;
         </button>
         <h4 class="modal-title" style="color: #8895B4;">
-          Add new project
+          新建项目
         </h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label style="width: 60px;">Name：</label>
+          <label style="width: 80px;">项目名称：</label>
           <input type="text" class="form-control" placeholder="Name..." name="name" required>
         </div>
         <!-- <div class="form-group">
@@ -65,33 +66,33 @@
           <input type="text" class="form-control" placeholder="Owner..." name="owner" required>
         </div> -->
         <div class="form-group evniroment">
-          <label style="float: left;margin-top: 15px;">Enviroment：</label>
+          <label style="float: left;margin-top: 15px;width: 80px;">环境：</label>
           <div style="float: left;">
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="dev" value="1" checked/>
-                <span>Development</span>
+                <span>开发环境</span>
                 <input type="text" class="form-control" placeholder="Ddomain..." name="dev_domain">
               </label>
             </div>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="test" value="1" checked/>
-                <span>Test</span>
+                <span>测试环境</span>
                 <input type="text" class="form-control" name="test_domain">
               </label>
             </div>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="pre" value="1" checked/>
-                <span>Pre-publish</span>
+                <span>预发环境</span>
                 <input type="text" class="form-control" name="pre_domain">
               </label>
             </div>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="prod" value="1" checked/>
-                <span>Publish</span>
+                <span>生产环境</span>
                 <input type="text" class="form-control" name="prod_domain">
               </label>
             </div>
@@ -99,8 +100,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
-        <input type="submit" class="btn btn-sm btn-primary" value="Add"/>
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
+        <input type="submit" class="btn btn-sm btn-primary" value="保存"/>
       </div>
     </div>
   </form>
@@ -116,7 +117,7 @@
           &times;
         </button>
         <h4 class="modal-title" style="color: #8895B4;">
-          Applications
+          选择应用
         </h4>
       </div>
       <div class="modal-body">
@@ -139,7 +140,7 @@
           &times;
         </button>
         <h4 class="modal-title">
-          Add new application
+          新建应用
         </h4>
       </div>
       <div class="modal-body">
@@ -168,7 +169,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="/codegen/gen-by-file" method="post" class="code-gen" enctype="multipart/form-data" target="myiframe">
-
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
