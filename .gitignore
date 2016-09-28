@@ -4,3 +4,4 @@ codeGenTmp/*
 config/default.json
 .DS_Store
 .idea/
+.vscode/
