@@ -47,35 +47,6 @@ router.post('/group', function(req, res) {
   res.json({status: true, messages: null,result: null});
 });
 
-/* 创建用例 */
-router.post('/', function(req, res) {
-
-  var data = req.body;
-  var conanGroup = new ConanGroup({
-    pid: data.pid,
-    name: data.tempGroup
-  });
-  conanGroup.save();
-
-  var conanCaseModel = new ConanCaseModel({
-    pid: conanGroup._id,
-    name: data.tempName,
-    fragment: data.fragment
-  });
-  conanCaseModel.save();
-
-  var conanCaseData = new ConanCaseData({
-    mid: conanCaseModel._id,
-    name: data.name,
-    data: data.data
-  });
-  conanCaseData.save();
-
-  res.json({status: true, messages: null,result: null});
-});
-
-
-
 /* 获取用例组 */
 router.get('/groups', function(req, res) {
   var id = req.body.pid;

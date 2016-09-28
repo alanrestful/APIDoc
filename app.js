@@ -64,7 +64,7 @@ app.set('view engine', 'hbs');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser('123'));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -86,7 +86,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects'];
+        var filters = ['/','/users/login','/users/register','/codegen/gen', '/api/projects', '/api/cases/group'];
         if (filters.indexOf(url) < 0 && url.indexOf('/users/code') < 0 && url.indexOf('/logs') < 0 && url.indexOf('/codegen') < 0) {
             res.redirect('/');
         } else {

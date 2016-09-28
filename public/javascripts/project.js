@@ -61,7 +61,22 @@ var addAppEvent = function(event){
 /* 编辑项目 */
 var editProjectEvent = function(event){
   event && event.preventDefault();
-  alert("edit project");
+  var id = $(event.currentTarget).data("id");
+  console.log(id);
+  $.ajax({
+      url: '/api/projects/id/'+ id,
+      type: 'GET',
+      success:function(data){
+        if(data.status){
+          alert(JSON.stringify(data.result));
+          $('#editProjectModal input[name=_id]').val(data.result._id);
+          $('#editProjectModal input[name=name]').val(data.result.name);
+          $('#editProjectModal').modal('show');
+        }else{
+          alert(data.messages);
+        }
+      }
+  })
 };
 
 /* 保存创建应用 */

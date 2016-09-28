@@ -10,10 +10,25 @@ router.get('/', function(req, res) {
   project.find(function(err, projects) {
     if(err){
       console.log('find projects error:%s', err);
-      res.json({status: false, messages: 'find.projects.fail', result: null});
+      res.json({status: false, messages: '查询项目失败', result: null});
       return;
     }
     res.json({status: true, messages: null, result: projects});
+  });
+});
+
+router.get('/id/:id', function(req, res) {
+  var id = req.params.id;
+  if(!id){
+    res.json({status: false, messages: '项目ID为空', result: null});
+  }
+  project.findOne({_id: id}, function(err, project) {
+    if(err){
+      console.log('find projects error:%s', err);
+      res.json({status: false, messages: '查询项目失败', result: null});
+      return;
+    }
+    res.json({status: true, messages: null, result: project});
   });
 });
 
@@ -27,7 +42,7 @@ router.post('/', function(req, res) {
   project.create(params, function(err) {
     if(err) {
       console.log('create project error:%s', err);
-      res.json({status: false, messages: 'create.projects.fail', result: null});
+      res.json({status: false, messages: '创建项目失败', result: null});
       return;
     } else {
       console.log('create project success!');
@@ -41,7 +56,7 @@ router.delete('/', function(req, res) {
   project.remove({_id: req.body.id}, function(err) {
     if(err) {
       console.log('delete project error:%s', err);
-      res.json({status: false, messages: 'create.projects.fail', result: null});
+      res.json({status: false, messages: '删除项目失败', result: null});
       return;
     } else {
       console.log('delete project success!');
