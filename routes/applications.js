@@ -79,7 +79,7 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
       apiDefinition.save();
     }
     console.log("##############");
-    res.redirect('../applications/id/' + req.body._id);
+    res.redirect('../../applications/id/' + req.body._id);
 });
 
 // 查询实体参数定义
