@@ -99,14 +99,14 @@
   outline: none; }
 
 /* 创建项目 */
-#createProjectModal label {
+#createProjectModal label, #editProjectModal label {
   color: #828282; }
 
-#createProjectModal .evniroment {
+#createProjectModal .evniroment, #editProjectModal .evniroment {
   height: 150px; }
-  #createProjectModal .evniroment input[type=checkbox] {
+  #createProjectModal .evniroment input[type=checkbox], #editProjectModal .evniroment input[type=checkbox] {
     margin: 11px -20px 0; }
-  #createProjectModal .evniroment span {
+  #createProjectModal .evniroment span, #editProjectModal .evniroment span {
     width: 100px;
     line-height: 34px;
     display: inherit; }
