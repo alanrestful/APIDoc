@@ -47,19 +47,20 @@ router.post('/', function (req, res, next) {
 /* 导入api */
 router.post('/importAPI', upload.single('apifile'), function (req, res) {
     console.log(req.file);  // 上传的文件信息
-    var data = fs.readFileSync(req.file.path, "utf-8");
+    var fdata = fs.readFileSync(req.file.path, "utf-8");
+    var data = JSON.parse(fdata);
     var apiDocument = new ApiDocument({
       applicationId: req.body._id,
-      swagger: JSON.parse(data).swagger,
-      info: JSON.parse(data).info,
-      host: JSON.parse(data).host,
-      basePath: JSON.parse(data).basePath
+      swagger: data.swagger,
+      info: data.info,
+      host: data.host,
+      basePath: data.basePath
     });
     apiDocument.save();
 
-    for (var path in JSON.parse(data).paths) {
+    for (var path in data.paths) {
       var path_obj = {};
-      path_obj[path] = JSON.parse(data).paths[path];
+      path_obj[path] = data.paths[path];
 
       var apiPath = ApiPath({
         applicationId: req.body._id,
@@ -68,9 +69,9 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
       apiPath.save();
     }
 
-    for (var def in JSON.parse(data).definitions) {
+    for (var def in data.definitions) {
       var def_obj = {};
-      def_obj[def] = JSON.parse(data).definitions[def];
+      def_obj[def] = data.definitions[def];
       var apiDefinition = new ApiDefinition({
         applicationId: req.body._id,
         definition_json: def_obj
@@ -121,6 +122,13 @@ router.get('/json', function (req, res, next) {
           res.json({status: false, messages: '查询api接口失败', result: null});
           return;
         }
+        json.paths = {};
+        for (var i in paths) {
+          for (var j in paths[i].path_json) {
+            json.paths[j] = paths[i].path_json[j];
+          }
+        }
+
         var apiDefinition = new ApiDefinition;
         apiDefinition.findByAid(aid, function (err, defs) {
           if (err) {
@@ -128,17 +136,7 @@ router.get('/json', function (req, res, next) {
             res.json({status: false, messages: '查询api模型失败', result: null});
             return;
           }
-          var json = {};
-          json.swagger = doc.swagger;
-          json.info = doc.info;
-          json.host = doc.host;
-          json.basePath = doc.basePath;
-          json.paths = {};
-          for (var i in paths) {
-            for (var j in paths[i].path_json) {
-              json.paths[j] = paths[i].path_json[j];
-            }
-          }
+          json.definitions = {};
           for (var i in defs) {
             for (var j in defs[i].definition_json) {
                 json.definitions[j] = defs[i].definition_json[j];

@@ -35,7 +35,7 @@ router.post('/group', function(req, res) {
   tempGroup.save();
 
   var tempModel = new ConanCaseModel({
-    pid: data.gid,
+    pid: tempGroup._id,
     name: data.tempName,
     fragment: data.fragment
   });
@@ -50,20 +50,19 @@ router.post('/group', function(req, res) {
     caseGroup.save();
 
     var caseModel = new ConanCaseModel({
-      pid: data.gid,
+      pid: caseGroup._id,
       name: data.caseName,
       fragment: data.fragment
     });
     caseModel.save();
+
+    var conanCaseData = new ConanCaseData({
+      mid: caseModel._id,
+      name: data.name,
+      data: data.data
+    });
+    conanCaseData.save();
   }
-
-  var conanCaseData = new ConanCaseData({
-    mid: data.mid,
-    name: data.name,
-    data: data.data
-  });
-  conanCaseData.save();
-
   res.json({status: true, messages: null,result: null});
 });
 
