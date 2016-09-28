@@ -28,7 +28,7 @@
           该应用未导入API接口，现在<a data-toggle="modal" data-target="#importApiModal" href="#">上传API接口文件</a>
         {{else}}
           {{#each document}}
-            <div class="app-header" data-aid="{{../app._id}}">
+            <div class="app-header" data-aid="{{../app._id}}" data-domain="{{../app.domain}}">
              <h3>{{info.title}}</h3>
              <p>version: {{info.version}}</p>
              <p>{{info.description}}</p>

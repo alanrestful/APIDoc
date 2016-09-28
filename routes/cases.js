@@ -27,34 +27,21 @@ router.post('/group', function(req, res) {
   */
 
   var data = req.body;
-  var tempGroup = new ConanGroup({
+  var conanGroup = new ConanGroup({
     pid: data.pid,
     name: data.tempGroup
   });
-  tempGroup.save();
+  conanGroup.save();
 
-  var tempModel = new ConanCaseModel({
-    pid: tempGroup._id,
+  var conanCaseModel = new ConanCaseModel({
+    pid: conanGroup._id,
     name: data.tempName,
     fragment: data.fragment
   });
-  tempModel.save();
-
-  var caseGroup = new ConanGroup({
-    pid: data.pid,
-    name: data.caseGroup
-  });
-  caseGroup.save();
-
-  var caseModel = new ConanCaseModel({
-    pid: caseGroup._id,
-    name: data.caseName,
-    fragment: data.fragment
-  });
-  caseModel.save();
+  conanCaseModel.save();
 
   var conanCaseData = new ConanCaseData({
-    mid: caseModel._id,
+    mid: conanCaseModel._id,
     name: data.name,
     data: data.data
   });

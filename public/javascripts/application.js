@@ -16,8 +16,9 @@ var endpointEvent = function(e){
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
   }
+  var domain = $('.app-header').data('domain');
   $.ajax({
-    url: "http://" + host + path,
+    url: domain + path,
     type: method,
     data: data,
     success:function(data){
