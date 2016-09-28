@@ -3,8 +3,6 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Paging = require('../helpers/paging').Paging;
-
 var _UpdateLog = new Schema({
     applicationId: {type: String},
     author: {type: String},
