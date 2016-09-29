@@ -9,7 +9,7 @@ var router = express.Router();
 
 /* 创建组 */
 router.post('/group', function(req, res) {
-  
+
   /*
   pid: 项目id
   tempGroup: 模版组
@@ -25,12 +25,15 @@ router.post('/group', function(req, res) {
   var data = req.body;
   if(data.pid){
     res.json({status: false, messages: '项目ID不能为空',result: null});
+    return;
   }
   if(data.tempGroup){
     res.json({status: false, messages: '组不能为空',result: null});
+    return;
   }
   if(data.tempName){
     res.json({status: false, messages: '名称不能为空',result: null});
+    return;
   }
   var conanGroup = new ConanGroup({
     pid: data.pid,
@@ -57,7 +60,11 @@ router.post('/group', function(req, res) {
 
 /* 获取用例组 */
 router.get('/groups', function(req, res) {
-  var id = req.body.pid;
+  var id = req.query.pid;
+  if(id){
+    res.json({status: false, messages: '项目ID不能为空',result: null});
+    return;
+  }
   var conanGroup = new ConanGroup;
   conanGroup.findByPid(id, function(err, groups){
     if(err){
@@ -71,7 +78,11 @@ router.get('/groups', function(req, res) {
 
 /* 获取用例模版 */
 router.get('/models', function(req, res) {
-  var id = req.body.gid;
+  var id = req.query.gid;
+  if(id){
+    res.json({status: false, messages: '组ID不能为空',result: null});
+    return;
+  }
   var conanCaseModel = new ConanCaseModel;
   conanCaseModel.findByGid(id, function(err, models){
     if(err){
@@ -85,7 +96,11 @@ router.get('/models', function(req, res) {
 
 /* 获取模版数据 */
 router.get('/datas', function(req, res) {
-  var id = req.body.mid;
+  var id = req.query.mid;
+  if(id){
+    res.json({status: false, messages: '模版ID不能为空',result: null});
+    return;
+  }
   var conanCaseData = new ConanCaseData;
   conanCaseDatas.findByMid(id, function(err, datas){
     if(err){
