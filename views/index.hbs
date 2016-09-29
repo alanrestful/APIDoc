@@ -42,8 +42,9 @@
     </div>
   </div>
 </div>
-<div class="modal fade login-modal" style="margin-top:150px;" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+
+<div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top:150px;">
     <div class="modal-content" style="width: 320px;margin:0 auto;">
       <form role="form " class="login-form">
         <div class="modal-header">
@@ -64,7 +65,7 @@
             <input type="password" class="form-control" id="passWord" placeholder="Password..." name="password" required/>
           </div>
           <div class="form-group" style="margin: 0 auto;text-align: center;">
-            <!-- <a href="#" class="btn btn-sm register-btn" id="registerBtn">注册</a> -->
+            <a href="#" class="register-btn">注册</a>
             <button type="submit" class="btn btn-sm btn-success " name="login" onclick="loginEvent(event)">Login</button>
           </div>
         </div>
@@ -72,40 +73,51 @@
     </div>
   </div>
 </div>
-<div class="modal fade register-modal" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="width:400px;height:550px;margin-top:50px;opacity: 0.9">
-    <div class="modal-content" style="height:100%;padding:30px 40px;">
-      <form class="register-form" id="register-form">
-        <div class="form-group">
-          <label>用户名</label>
-          <input type="text" class="form-control" placeholder="请填写您的用户名" name="userName" data-bv-notempty-message="用户名不能为空" required/>
-        </div>
-        <div class="form-group">
-          <label>手机号码</label>
-          <input type="text" class="form-control" placeholder="请填写您的手机号码" name="mobile" required/>
-        </div>
-        <div class="form-group">
-          <label>电子邮箱</label>
-          <input type="text" class="form-control" placeholder="电子邮箱" name="email" required/>
-        </div>
-        <div class="form-group">
-          <label>密码</label>
-          <input type="password" class="form-control" placeholder="输入密码" name="password" required/>
-        </div>
-        <div class="form-group">
-          <label>确认密码</label>
-          <input type="password" class="form-control" placeholder="再次输入上面的密码" required/>
-        </div>
-        <div class="form-group">
-          <label>验证码</label>
-          <input type="text" class="form-control" name="code" style="width:120px" placeholder="请输入图片中的字符" required/>
-          <img src="" id="codeImg" style="width:120px;" />
-        </div>
-        <div class="footer pull-right">
-          <a type="button" class="btn" data-dismiss="modal"><span aria-hidden="true">取消</span><span class="sr-only">取消</span></a>
-          <button type="button" class="btn btn-success pull-right" name="register" onclick="">注册</button>
-        </div>
-      </form>
+
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 150px;">
+    <div class="modal-content" style="width:400px;margin: 0 auto;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title">
+          注册
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="register-form">
+          <div class="form-group">
+            <label>用户名</label>
+            <input type="text" class="form-control" placeholder="请填写您的用户名" name="username" required/>
+          </div>
+          <!-- <div class="form-group">
+            <label>手机号码</label>
+            <input type="text" class="form-control" placeholder="请填写您的手机号码" name="mobile" required/>
+          </div>
+          <div class="form-group">
+            <label>电子邮箱</label>
+            <input type="text" class="form-control" placeholder="电子邮箱" name="email" required/>
+          </div> -->
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" class="form-control" placeholder="输入密码" name="password" required/>
+          </div>
+          <div class="form-group">
+            <label>确认密码</label>
+            <input type="password" class="form-control" placeholder="再次输入上面的密码" name="password2" required/>
+          </div>
+          <!-- <div class="form-group">
+            <label>验证码</label>
+            <input type="text" class="form-control" name="code" style="width:120px" placeholder="请输入图片中的字符" required/>
+            <img src="" id="codeImg" style="width:120px;" />
+          </div> -->
+          <div class="form-group" style="margin: 0 auto;text-align: center;">
+            <a type="button" class="btn" data-dismiss="modal"><span aria-hidden="true">取消</span><span class="sr-only">取消</span></a>
+            <button type="submit" class="btn btn-sm btn-success">注册</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

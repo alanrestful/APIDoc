@@ -48,6 +48,10 @@
   outline: none;
 }
 
+#registerModal label{
+  width: 70px;
+}
+
 /* project */
 
 .project-manager{
@@ -110,10 +114,10 @@
   outline: none;
 }
 /* 创建项目 */
-#createProjectModal label{
+#createProjectModal label, #editProjectModal label{
   color: #828282;
 }
-#createProjectModal .evniroment{
+#createProjectModal .evniroment, #editProjectModal .evniroment{
   height: 150px;
   input[type=checkbox] {
     margin: 11px -20px 0;
@@ -124,6 +128,7 @@
     display: inherit;
   }
 }
+
 #addAppModal .modal-content{
   width: 400px;
 }

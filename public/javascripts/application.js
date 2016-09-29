@@ -9,20 +9,19 @@ $(function(){
 // 测试接口
 var endpointEvent = function(e){
   e && e.preventDefault();
-  var host = $(".host").data("host");
+  var domain = $('.app-header').data('domain');
   var path = $(event.currentTarget).data("path");
   var method = $(event.currentTarget).data("method");
   var data = $(event.currentTarget).serializeJSON();
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
   }
-  var domain = $('.app-header').data('domain');
   $.ajax({
     url: domain + path,
     type: method,
     data: data,
     success:function(data){
-      alert(data);
+      console.log(data);
     }
   })
 };
@@ -43,9 +42,9 @@ var showSamplesEvent = function(e){
   var parameters = $target.data("parameters");
   var responses = $target.data("responses");
   var aid = $(".app-header").data("aid");
-  var samples = {}, p;
+  var samples = {};
   for(var i in parameters){
-    p = parameters[i];
+    var p = parameters[i];
     if (typeof(p.schema) !== 'undefined') {
       if (p.schema && p.schema.$ref) {
         p.type = findDefinitionObj(aid, getDefinitionName(p.schema.$ref));
@@ -53,9 +52,9 @@ var showSamplesEvent = function(e){
     }
     samples[p.name] = p.type || p.schema.type;
   }
-  var schemas = {}, r;
+  var schemas = {};
   for(var i in responses){
-    r = responses[i];
+    var r = responses[i];
     if (typeof r.schema !== 'undefined') {
       if (r.schema && r.schema.$ref) {
         schemas[getDefinitionName(r.schema.$ref)] = findDefinitionObj(aid, getDefinitionName(r.schema.$ref));

@@ -7,6 +7,7 @@ $(function(){
   $(document).on('click', '.env-app', getEnvAppsEvent);
   $(document).on('click', '.add-app', addAppEvent);
   $(document).on('submit', '.create-project-form', createProjectEvent);
+  $(document).on('submit', '.edit-project-form', createProjectEvent);
   $(document).on('submit', '.create-app-form', createAppEvent);
 });
 
@@ -28,15 +29,18 @@ var createProjectEvent = function(event){
   if(typeof(data.prod)!=='undefined'){
     env_json.push({name: "prod", domain: data.prod_domain});
   }
-
   var obj = {
     name: data.name,
     owner: data.owner,
     env_json: env_json
   }
+  if(data._id){
+    obj['_id'] = data._id
+  }
+  var type = data._id ? 'PUT': 'POST';
   $.ajax({
       url: '/api/projects',
-      type: 'POST',
+      type: type,
       data: obj,
       success:function(data){
         if(data.status){
@@ -61,7 +65,25 @@ var addAppEvent = function(event){
 /* 编辑项目 */
 var editProjectEvent = function(event){
   event && event.preventDefault();
-  alert("edit project");
+  var id = $(event.currentTarget).data("id");
+  $.ajax({
+      url: '/api/projects/id/'+ id,
+      type: 'GET',
+      success:function(data){
+        if(data.status){
+          var result = data.result;
+          $('#editProjectModal input[name=_id]').val(result._id);
+          $('#editProjectModal input[name=name]').val(result.name);
+          for(var i in result.env_json){
+            $('#editProjectModal input[name='+ result.env_json[i].name +']').attr("checked", true).attr("onclick", 'return false;');
+            $('#editProjectModal input[name='+ result.env_json[i].name +'_domain]').val(result.env_json[i].domain);
+          }
+          $('#editProjectModal').modal('show');
+        }else{
+          alert(data.messages);
+        }
+      }
+  })
 };
 
 /* 保存创建应用 */

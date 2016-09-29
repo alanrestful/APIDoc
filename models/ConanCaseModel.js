@@ -13,4 +13,9 @@ _ConanCaseModel.method('findById', function(id ,callback){
     return this.model('conan_case_model').find({_id: id}, callback);
 });
 
+
+_ConanCaseModel.method('findByGid', function(id ,callback){
+    return this.model('conan_case_model').find({gid: id}, callback);
+});
+
 exports.ConanCaseModel = mongoose.model('conan_case_model', _ConanCaseModel);

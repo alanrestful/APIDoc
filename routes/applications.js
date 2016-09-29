@@ -79,7 +79,7 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
       apiDefinition.save();
     }
     console.log("##############");
-    res.redirect('../applications/id/' + req.body._id);
+    res.redirect('../../applications/id/' + req.body._id);
 });
 
 // 查询实体参数定义
@@ -142,7 +142,7 @@ router.get('/json', function (req, res, next) {
                 json.definitions[j] = defs[i].definition_json[j];
             }
           }
-          res.json({status: true, messages: null, result: json});
+          res.json(json);
         });
       });
     });
@@ -164,7 +164,7 @@ router.post('/save', function (req, res, next) {
         newContents: newContents,
         parseJsonFn: parsePathJson,
         save: function(newPath) {
-            new apiPath({
+            new ApiPath({
                 applicationId: applicationId, path_json: newPath
             }).save()
         },

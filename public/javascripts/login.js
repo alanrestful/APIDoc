@@ -1,6 +1,14 @@
-/**
- * Created by macbook on 16/9/8.
- */
+$(function(){
+  APP.init();
+  $(document).on('click', '.register-btn', registerShowEvent);
+  $(document).on('submit', '.register-form', registerEvent);
+});
+
+var registerShowEvent = function(){
+  $("#loginModal").modal('hide');
+  $("#registerModal").modal('show');
+}
+
 var loginEvent = function(e) {
     e.preventDefault();
     var data = $(".login-form").serialize();
@@ -32,63 +40,36 @@ var logoutEvent = function(e){
     })
 };
 
-var submitRegister = function(){
-    var data = $('form.register-form').serializeJSON();
-    //验证
-    $.ajax({
-        url: '/users/register',
-        type: 'POST',
-        data: JSON.stringify(data),
-        success: function(data){
-            if(data && data.success){
-                alert('注册成功');
-                $('#registerModal').modal('hide');
-                $('#loginModal').modal('show');
-            } else{
-                alert(data.reason);
-            }
-        }
-    })
+var registerEvent = function(e){
+  e && e.preventDefault();
+  var data = $('.register-form').serializeJSON();
+  //验证
+  $.ajax({
+      url: '/users/register',
+      type: 'POST',
+      data: data,
+      success: function(data){
+          if(data && data.status){
+              alert('注册成功');
+              $('#registerModal').modal('hide');
+              $('#loginModal').modal('show');
+          } else{
+              alert(data.reason);
+          }
+      }
+  });
 }
-
-$(function(){
-  APP.init();
-});
 
 var APP = {
     init : function(){
-        this.registerBtn = $('#registerBtn');
         this.codeImg = $('#codeImg');
         this.registerModal = $('#registerModal');
         this.bindEvent();
     },
     bindEvent: function(){
         this.codeImg.on('click',this.genCode);
-        this.registerBtn.on('click',this.openRegisterEvent);
         this.registerModal.on('shown.bs.modal',this.registerFormShown);
 
-    },
-    submitRegister: function(){
-        var data = $('form.register-form').serializeJSON();
-        //验证
-        $.ajax({
-            url:'/users/register',
-            type:'POST',
-            data:data,
-            success:function(data){
-                if(data && data.success){
-                    alert('注册成功');
-                    $('#registerModal').modal('hide');
-                    $('#loginModal').modal('show');
-                } else{
-                    alert(data.reason);
-                }
-            }
-        })
-    },
-    openRegisterEvent: function(){
-        $('#loginModal').modal('hide');
-        $('#registerModal').modal('show');
     },
     registerFormShown: function(){
         APP.genCode();

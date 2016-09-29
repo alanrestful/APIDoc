@@ -12,5 +12,9 @@
   },
   "server": {
     "port": 9010
-  }
+  },
+  "codeGen": {
+    "servers":["nodejs-server","spring","python-flask"]
+  },
+  "host": "http://localhost:9010"
 }

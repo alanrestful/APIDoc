@@ -97,33 +97,28 @@ router.get('/code',function(req,res,next){
 
 router.post('/register',function(req,res,next){
   var obj = req.body;
-  var code = req.session.code;
+  // var code = req.session.code;
   // if (obj.code.toUpperCase() !== code) {
   //   res.send({success: false, reason: 'code.error'});
   //   return;
   // }
-  try {
-    var u = new User;
-    u.findExists(obj,function(err,doc){
-      if(err) next(err);
-      if(doc.length) {
-        if (doc[0].name == obj.userName) {res.send({success:false,reason:'duplicate name'});return; };
-        if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
-        if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
-      }
-      var user = new User({
-        name:obj.userName,
-        mobile:obj.mobile,
-        email:obj.email,
-        password:obj.password
-      });
-      user.save();
-      res.send({success:true});
-    })
-  }catch (exception){
-    console.error(exception);
-    res.end();
-  }
+  console.log(obj);
+  var user = new User({
+    name: obj.username,
+    password: obj.password
+  });
+  user.save();
+  res.send({status: true, messages: null, result: null});
+    // var u = new User;
+    // u.findExists(obj,function(err,doc){
+    //   if(err) next(err);
+    //   if(doc.length) {
+    //     if (doc[0].name == obj.userName) {res.send({success:false,reason:'duplicate name'});return; };
+    //     // if (doc[0].mobile == obj.mobile) {res.send({success:false,reason:'duplicate mobile'});return;};
+    //     // if (doc[0].email == obj.email) {res.send({success:false,reason:'duplicate email'});return;};
+    //   }
+
+    // })
 });
 
 router.get("/center",function(req,res,next){
