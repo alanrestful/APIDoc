@@ -126,7 +126,7 @@ app.use(SWAGGER_EDITOR_SERVE_PATH, serveStatic(SWAGGER_EDITOR_DIR));
 
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api/users', users);
 app.use('/api/projects', projects);
 app.use('/api/cases', cases);
 app.use('/api/applications', applications);

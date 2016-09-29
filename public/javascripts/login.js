@@ -19,7 +19,7 @@ var loginEvent = function(e) {
     e.preventDefault();
     var data = $(".login-form").serialize();
     $.ajax({
-        url:'/users/login',
+        url:'/api/users/login',
         type:'POST',
         data:data,
         success:function (data) {
@@ -38,10 +38,14 @@ var loginEvent = function(e) {
 var logoutEvent = function(e){
     e && e.preventDefault();
     $.ajax({
-        url:'/users/logout',
+        url:'api/users/logout',
         type:'POST',
         success:function(data){
+          if(data.status){
             window.location.reload();
+          }else{
+            alert(data.messages);
+          }
         }
     })
 };
