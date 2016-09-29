@@ -293,6 +293,9 @@
     margin-bottom: -6px;
     border-bottom: 3px #fff solid; }
 
+.time .iconfont {
+  font-size: 12px; }
+
 .case-manager .group .tab-content {
   background-color: #fff; }
   .case-manager .group .tab-content .tab-pane ul {
