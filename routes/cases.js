@@ -61,7 +61,7 @@ router.post('/group', function(req, res) {
 /* 获取用例组 */
 router.get('/groups', function(req, res) {
   var id = req.query.pid;
-  if(id){
+  if(!id){
     res.json({status: false, messages: '项目ID不能为空',result: null});
     return;
   }
@@ -79,7 +79,7 @@ router.get('/groups', function(req, res) {
 /* 获取用例模版 */
 router.get('/models', function(req, res) {
   var id = req.query.gid;
-  if(id){
+  if(!id){
     res.json({status: false, messages: '组ID不能为空',result: null});
     return;
   }
