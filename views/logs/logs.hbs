@@ -85,20 +85,20 @@
             var d = json.add[a];
             body += unit.replace("%path%",d.path)
                     .replace("%desc.base%",'')
-                    .replace("%desc.top%",d.desc.top)
+                    .replace("%desc.top%",JSON.stringify(d.desc.top))
                     .replace("%Action%","Add");
         }
         for (var a in json.update) {
             var d = json.update[a];
             body += unit.replace("%path%",d.path)
-                    .replace("%desc.base%",d.desc.base.constructor == Array ? JSON.stringify(d.desc.base) : d.desc.base)
-                    .replace("%desc.top%",d.desc.top.constructor == Array ? JSON.stringify(d.desc.top) : d.desc.top)
+                    .replace("%desc.base%",JSON.stringify(d.desc.base))
+                    .replace("%desc.top%",JSON.stringify(d.desc.top))
                     .replace("%Action%","Update");
         }
         for (var a in json.del) {
             var d = json.del[a];
             body += unit.replace("%path%",d.path)
-                    .replace("%desc.base%",d.desc.base)
+                    .replace("%desc.base%",JSON.stringify(d.desc.base))
                     .replace("%desc.top%",'')
                     .replace("%Action%","Del");
         }
