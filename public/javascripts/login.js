@@ -1,5 +1,11 @@
 $(function(){
   APP.init();
+  $(".register-form").validator({
+    isErrorOnParent: true
+  });
+  $(".login-form").validator({
+    isErrorOnParent: true
+  });
   $(document).on('click', '.register-btn', registerShowEvent);
   $(document).on('submit', '.register-form', registerEvent);
 });
@@ -13,7 +19,7 @@ var loginEvent = function(e) {
     e.preventDefault();
     var data = $(".login-form").serialize();
     $.ajax({
-        url:'/users/login',
+        url:'/api/users/login',
         type:'POST',
         data:data,
         success:function (data) {
@@ -32,10 +38,14 @@ var loginEvent = function(e) {
 var logoutEvent = function(e){
     e && e.preventDefault();
     $.ajax({
-        url:'/users/logout',
+        url:'api/users/logout',
         type:'POST',
         success:function(data){
+          if(data.status){
             window.location.reload();
+          }else{
+            alert(data.messages);
+          }
         }
     })
 };
@@ -43,7 +53,10 @@ var logoutEvent = function(e){
 var registerEvent = function(e){
   e && e.preventDefault();
   var data = $('.register-form').serializeJSON();
-  //验证
+  if(data.password !== data.password2){
+    alert('两次密码不一致');
+    return false;
+  }
   $.ajax({
       url: '/users/register',
       type: 'POST',

@@ -208,17 +208,17 @@
       color: #fff;
       width: 60px; }
 
-#addUserModal .modal-content {
+#addUserModal .modal-content, #editUserModal .modal-content {
   width: 400px; }
 
-#addUserModal .modal-title {
+#addUserModal .modal-title, #editUserModal .modal-title {
   color: #8895B4;
   font-weight: 200; }
 
-#addUserModal .modal-body {
+#addUserModal .modal-body, #editUserModal .modal-body {
   margin: 0 auto;
   width: 300px; }
-  #addUserModal .modal-body label {
+  #addUserModal .modal-body label, #editUserModal .modal-body label {
     font-weight: 200;
     width: 60px; }
 

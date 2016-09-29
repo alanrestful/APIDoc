@@ -1,61 +1,86 @@
 var express = require('express');
 var User = require('../models/User').User;
 var http = require('http');
-// var ccap = require('ccap');
 var async = require('async');
 
-
 var router = express.Router();
-
-/* GET users listing. */
-router.get('/', function(req, res) {
-  User.find(function(err, users) {
-    res.render('user/user_manager', {title: '用户管理', users: users, total: users.length});
-  });
-});
 
 router.post('/', function (req, res) {
   var obj = req.body;
   User.findOne({name : obj.name},function(err,doc){
-    var result = {};
     if(err){
-      result.status = false;
-      result.messages = 'save.user.fail';
-      res.json(result);
+      console.log('save user error:%s', err);
+      res.json({status: false, messages: err, result: null});
       return;
     }
-    if (!doc){
+    if (doc){
+      console.log('save user error:%s', err);
+      res.json({status: false, messages: '用户名已存在', result: null});
+      return;
+    }else{
       var user = new User({
         name: obj.name,
         mobile: obj.mobile,
         position: obj.position
       });
       user.save();
-      result.status = true;
-      result.messages = '';
-    }else{
-      result.status = false;
-      result.messages = 'user.is.exists';
+      res.json({status: true, messages: null, result: null});
     }
-    res.json(result);
   })
 });
 
-/* 删除项目 */
+router.put('/', function (req, res) {
+  var data = req.body;
+  User.update({_id: data._id},{$set: {mobile: data.mobile, position: data.position}}, function(err) {
+    if(err) {
+      console.log('update user error:%s', err);
+      res.json({status: false, messages: '更新用户失败', result: null});
+      return;
+    } else {
+      console.log('update user success!');
+      res.json({status: true, messages: null, result: null});
+    }
+  });
+});
+
+router.get('/id/:id', function (req, res) {
+  var id = req.params.id;
+  User.findOne({_id : id},function(err, user){
+    if(err){
+      console.log('find user error:%s', err);
+      res.json({status: false, messages: err, result: null});
+      return;
+    }
+    if (!user){
+      res.json({status: false, messages: '用户不存在', result: null});
+      return;
+    }
+    res.json({status: true, messages: null, result: user});
+  })
+});
+
+/* 删除用户 */
 router.delete('/', function(req, res) {
   var result = {};
   User.remove({_id: req.body.id}, function(err) {
     if(err) {
-      result.status = false;
-      result.messages = err;
       console.log('delete user error:%s', err);
+      res.json({status: false, messages: err, result: null});
+      return;
     } else {
-      result.status = true;
-      result.messages = '';
       console.log('delete user success!');
+      res.json({status: true, messages: null, result: null});
     }
-    res.json(result);
   });
+});
+
+router.post('/logout',function(req,res){
+  var obj = req.body;
+  var session = req.session;
+  session.regenerate(function(){
+    session.user = null;
+  });
+  res.json({status: true, messages: null, result: null});
 });
 
 router.post('/login', function (req, res) {
@@ -73,15 +98,6 @@ router.post('/login', function (req, res) {
       res.send(false);
     }
   })
-});
-
-router.post('/logout',function(req,res){
-  var obj = req.body;
-  var session = req.session;
-  session.regenerate(function(){
-    session.user = null;
-  });
-  res.render('index', {title: 'Express'});
 });
 
 router.get('/code',function(req,res,next){
@@ -121,20 +137,6 @@ router.post('/register',function(req,res,next){
     // })
 });
 
-router.get("/center",function(req,res,next){
-  User.findOne({_id:req.session.userId},function(err,doc){
-    if (err){
-      next(err);
-    }
-    console.log(doc);
-    res.render("user/user",{user:doc});
-  })
-});
-
-router.get('/passport',function(req,res){
-  res.render("user/change_password",{});
-});
-
 router.post("/change-password",function(req,res){
   User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
     if (doc.n == 0) {
@@ -151,4 +153,5 @@ router.post("/change-password",function(req,res){
     res.send({success:false})
   });
 });
+
 module.exports = router;
