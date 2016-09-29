@@ -5,7 +5,7 @@ var project = require('../models/Project').Project;
 var application = require('../models/Application').Application;
 
 
-/* 获取项目列表json */
+/* 获取所有项目信息 */
 router.get('/', function(req, res) {
   project.find(function(err, projects) {
     if(err){
@@ -17,6 +17,7 @@ router.get('/', function(req, res) {
   });
 });
 
+/* 根据ID查询指定项目信息 */
 router.get('/id/:id', function(req, res) {
   var id = req.params.id;
   if(!id){
@@ -44,10 +45,8 @@ router.post('/', function(req, res) {
       console.log('create project error:%s', err);
       res.json({status: false, messages: '创建项目失败', result: null});
       return;
-    } else {
-      console.log('create project success!');
-      res.json({status: true, messages: null, result: null});
     }
+    res.json({status: true, messages: null, result: null});
   });
 });
 
@@ -59,24 +58,21 @@ router.put('/', function(req, res) {
       console.log('update project error:%s', err);
       res.json({status: false, messages: '更新项目失败', result: null});
       return;
-    } else {
-      console.log('update project success!');
-      res.json({status: true, messages: null, result: null});
     }
+    res.json({status: true, messages: null, result: null});
   });
 });
 
 /* 删除项目 */
-router.delete('/', function(req, res) {
-  project.remove({_id: req.body.id}, function(err) {
+router.delete('/id/:id', function(req, res) {
+  var id = req.params.id;
+  project.remove({_id: id}, function(err) {
     if(err) {
       console.log('delete project error:%s', err);
       res.json({status: false, messages: '删除项目失败', result: null});
       return;
-    } else {
-      console.log('delete project success!');
-      res.json({status: true, messages: null, result: null});
     }
+    res.json({status: true, messages: null, result: null});
   });
 });
 

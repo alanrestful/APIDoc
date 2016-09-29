@@ -45,20 +45,16 @@ var showSamplesEvent = function(e){
   var samples = {};
   for(var i in parameters){
     var p = parameters[i];
-    if (typeof(p.schema) !== 'undefined') {
-      if (p.schema && p.schema.$ref) {
-        p.type = findDefinitionObj(aid, getDefinitionName(p.schema.$ref));
-      }
+    if (typeof(p.schema) !== 'undefined' && p.schema && p.schema.$ref ) {
+      p.type = findDefinitionObj(aid, getDefinitionName(p.schema.$ref));
     }
     samples[p.name] = p.type || p.schema.type;
   }
   var schemas = {};
   for(var i in responses){
     var r = responses[i];
-    if (typeof r.schema !== 'undefined') {
-      if (r.schema && r.schema.$ref) {
+    if (typeof(r.schema) !== 'undefined' && r.schema && r.schema.$ref) {
         schemas[getDefinitionName(r.schema.$ref)] = findDefinitionObj(aid, getDefinitionName(r.schema.$ref));
-      }
     }
   }
 
@@ -94,7 +90,7 @@ function findDefinitionObj(aid, ref){
           }
         }
       }
-  })
+  });
   return obj;
 }
 

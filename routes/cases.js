@@ -9,8 +9,7 @@ var router = express.Router();
 
 /* 创建组 */
 router.post('/group', function(req, res) {
-
-  // 1.group 2.model 3.data
+  
   /*
   pid: 项目id
   tempGroup: 模版组

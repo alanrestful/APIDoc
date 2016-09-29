@@ -33,9 +33,9 @@ var editSettingEvent = function(event){
     type: 'GET',
     success: function(data){
       if(data.status){
-        $("#setting-name").html('');
+        $("#setting-name").html('<option>请选择</option>');
         $("#setting-env").html('<option>请选择</option>');
-        var html = '<option>请选择</option>';
+        var html = '';
         for(var i in data.result){
           html = html + '<option value="'+ data.result[i]._id + "," + data.result[i].name +'" data-env=\''+ JSON.stringify(data.result[i].env_json) +'\'>'+ data.result[i].name +'</option>'
         }

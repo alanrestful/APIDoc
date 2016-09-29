@@ -34,21 +34,18 @@ var createProjectEvent = function(event){
     owner: data.owner,
     env_json: env_json
   }
-  if(data._id){
-    obj['_id'] = data._id
-  }
-  var type = data._id ? 'PUT': 'POST';
+  if(data._id) obj['_id'] = data._id;
   $.ajax({
-      url: '/api/projects',
-      type: type,
-      data: obj,
-      success:function(data){
-        if(data.status){
-          location.reload();
-        }else{
-          alert(data.messages);
-        }
+    url: '/api/projects',
+    type: data._id ? 'PUT': 'POST',
+    data: obj,
+    success:function(data){
+      if(data.status){
+        location.reload();
+      }else{
+        alert(data.messages);
       }
+    }
   });
 };
 
@@ -67,23 +64,23 @@ var editProjectEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
   $.ajax({
-      url: '/api/projects/id/'+ id,
-      type: 'GET',
-      success:function(data){
-        if(data.status){
-          var result = data.result;
-          $('#editProjectModal input[name=_id]').val(result._id);
-          $('#editProjectModal input[name=name]').val(result.name);
-          for(var i in result.env_json){
-            $('#editProjectModal input[name='+ result.env_json[i].name +']').attr("checked", true).attr("onclick", 'return false;');
-            $('#editProjectModal input[name='+ result.env_json[i].name +'_domain]').val(result.env_json[i].domain);
-          }
-          $('#editProjectModal').modal('show');
-        }else{
-          alert(data.messages);
+    url: '/api/projects/id/'+ id,
+    type: 'GET',
+    success:function(data){
+      if(data.status){
+        var result = data.result;
+        $('#editProjectModal input[name=_id]').val(result._id);
+        $('#editProjectModal input[name=name]').val(result.name);
+        for(var i in result.env_json){
+          $('#editProjectModal input[name='+ result.env_json[i].name +']').attr("checked", true).attr("onclick", 'return false;');
+          $('#editProjectModal input[name='+ result.env_json[i].name +'_domain]').val(result.env_json[i].domain);
         }
+        $('#editProjectModal').modal('show');
+      }else{
+        alert(data.messages);
       }
-  })
+    }
+  });
 };
 
 /* 保存创建应用 */
@@ -109,48 +106,41 @@ var getEnvAppsEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
   var env = $(event.currentTarget).data("env");
-  var data ={
-    id: id,
-    env: env
-  }
+  var data ={id: id,env: env};
   $.ajax({
-      url:'/api/applications',
-      type:'GET',
-      data: data,
-      success:function(data){
-        if(data.status){
-          var result = data.result;
-          $('.modal-app-title').html('');
-          var html = '';
-          for(var i in result){
-            html = html + '<li><a href="/applications/id/'+ result[i]._id +'">'+ result[i].name +'</a></li>'
-          }
-          $('.modal-app-title').html(html);
-          $('#selectApplicationModal').modal('show');
-        }else{
-          alert(data.messages);
+    url:'/api/applications',
+    type:'GET',
+    data: data,
+    success:function(data){
+      if(data.status){
+        var result = data.result;
+        $('.modal-app-title').html('');
+        var html = '';
+        for(var i in result){
+          html = html + '<li><a href="/applications/id/'+ result[i]._id +'">'+ result[i].name +'</a></li>'
         }
+        $('.modal-app-title').html(html);
+        $('#selectApplicationModal').modal('show');
+      }else{
+        alert(data.messages);
       }
-  })
-
+    }
+  });
 };
 
 var delProjectEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
-  if(confirm('确定要删除该项目吗？')){
-    var data ={id: id}
-    $.ajax({
-        url:'/api/projects',
-        type:'DELETE',
-        data: data,
-        success:function(data){
-          if(data.status){
-            location.reload();
-          }else{
-            alert(data.messages);
-          }
-        }
-    })
-  }
+  if(!confirm('确定要删除该项目吗？')) return;
+  $.ajax({
+    url:'/api/projects/id/' + id,
+    type:'DELETE',
+    success:function(data){
+      if(data.status){
+        location.reload();
+      }else{
+        alert(data.messages);
+      }
+    }
+  });
 };

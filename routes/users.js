@@ -5,30 +5,30 @@ var async = require('async');
 
 var router = express.Router();
 
+// 新建用户
 router.post('/', function (req, res) {
   var obj = req.body;
   User.findOne({name : obj.name},function(err,doc){
     if(err){
       console.log('save user error:%s', err);
-      res.json({status: false, messages: err, result: null});
+      res.json({status: false, messages: '新建用户失败', result: null});
       return;
     }
     if (doc){
-      console.log('save user error:%s', err);
       res.json({status: false, messages: '用户名已存在', result: null});
       return;
-    }else{
-      var user = new User({
-        name: obj.name,
-        mobile: obj.mobile,
-        position: obj.position
-      });
-      user.save();
-      res.json({status: true, messages: null, result: null});
     }
+    var user = new User({
+      name: obj.name,
+      mobile: obj.mobile,
+      position: obj.position
+    });
+    user.save();
+    res.json({status: true, messages: null, result: null});
   })
 });
 
+// 修改用户信息
 router.put('/', function (req, res) {
   var data = req.body;
   User.update({_id: data._id},{$set: {mobile: data.mobile, position: data.position}}, function(err) {
@@ -36,19 +36,22 @@ router.put('/', function (req, res) {
       console.log('update user error:%s', err);
       res.json({status: false, messages: '更新用户失败', result: null});
       return;
-    } else {
-      console.log('update user success!');
-      res.json({status: true, messages: null, result: null});
     }
+    res.json({status: true, messages: null, result: null});
   });
 });
 
+// 根据ID获取用户信息
 router.get('/id/:id', function (req, res) {
   var id = req.params.id;
+  if(!id){
+    res.json({status: false, messages: '用户ID不能为空', result: null});
+    return;
+  }
   User.findOne({_id : id},function(err, user){
     if(err){
       console.log('find user error:%s', err);
-      res.json({status: false, messages: err, result: null});
+      res.json({status: false, messages: '查询用户信息失败', result: null});
       return;
     }
     if (!user){
@@ -60,17 +63,20 @@ router.get('/id/:id', function (req, res) {
 });
 
 /* 删除用户 */
-router.delete('/', function(req, res) {
-  var result = {};
-  User.remove({_id: req.body.id}, function(err) {
+router.delete('/id/:id', function(req, res) {
+  var id = req.params.id;
+  if(!id){
+    res.json({status: false, messages: '用户ID不能为空', result: null});
+    return;
+  }
+  User.remove({_id: id}, function(err) {
     if(err) {
       console.log('delete user error:%s', err);
       res.json({status: false, messages: err, result: null});
       return;
-    } else {
-      console.log('delete user success!');
-      res.json({status: true, messages: null, result: null});
     }
+    console.log('delete user success!');
+    res.json({status: true, messages: null, result: null});
   });
 });
 
@@ -83,20 +89,19 @@ router.post('/logout',function(req,res){
   res.json({status: true, messages: null, result: null});
 });
 
+// 用户登录
 router.post('/login', function (req, res) {
   var obj = req.body;
-  User.findOne({name : obj.userName,password: obj.password},function(err,doc){
-    console.log(doc);
-    if (doc){
-      console.log(obj.userName + " login success");
-      req.session.user = obj.userName;
-      req.session.userId= doc._id;
-      req.session.cookie.user = obj.userName;
-      res.send({user: obj.userName});
-    } else {
-      console.log(obj.userName + " login failed");
-      res.send(false);
+  User.findOne({name: obj.userName,password: obj.password},function(err, user){
+    if (!user) {
+      res.json({status: false, messages: '登录失败', result: null});
+      return;
     }
+    console.log(user);
+    req.session.user = obj.userName;
+    req.session.userId= user._id;
+    req.session.cookie.user = obj.userName;
+    res.json({status: true, messages: null, result: user});
   })
 });
 
@@ -124,7 +129,7 @@ router.post('/register',function(req,res,next){
     password: obj.password
   });
   user.save();
-  res.send({status: true, messages: null, result: null});
+  res.json({status: true, messages: null, result: null});
     // var u = new User;
     // u.findExists(obj,function(err,doc){
     //   if(err) next(err);
@@ -137,20 +142,21 @@ router.post('/register',function(req,res,next){
     // })
 });
 
-router.post("/change-password",function(req,res){
+//修改密码
+router.post("/change-pwd",function(req,res){
   User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
-    if (doc.n == 0) {
-      res.send({success:false,reason:"origin.error"});
-      res.end();
+    if(err){
+      console.log('delete user error:%s', err);
+      res.json({success:false, messages: '密码更新失败', result: null});
+      return;
+    }
+    if(doc.n == 0) {
+      res.json({success:false, messages: "密码更新失败", result: null});
       return;
     }
     if (doc.nModified) {
-      res.send({success:true});
-      res.end();
-      return ;
+      res.json({success:true, messages: null, result: null});
     }
-    console.log(err);
-    res.send({success:false})
   });
 });
 

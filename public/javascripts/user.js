@@ -16,14 +16,11 @@ var addUserEvent = function(event){
     name: data.name,
     mobile: data.mobile,
     position: data.position
-  }
-  if(data._id){
-    obj['_id'] = data._id;
-  }
-  var type = data._id ? 'PUT': 'POST';
+  };
+  if(data._id) obj['_id'] = data._id;
   $.ajax({
     url: '/api/users',
-    type: type,
+    type: data._id ? 'PUT': 'POST',
     data: obj,
     success:function(data){
       if(data.status){
@@ -54,22 +51,22 @@ var editUserEvent = function(event){
       }
     }
   });
-
 };
 
 /* 删除用户 */
 var delUserEvent = function(event){
   event && event.preventDefault();
+  if(!confirm('确定要删除该用户吗？')) return;
   var id = $(event.currentTarget).data("id");
-  if(confirm('确定要删除该用户吗？')){
-    var data ={id: id}
-    $.ajax({
-      url:'/api/users',
-      type:'DELETE',
-      data: data,
-      success:function(data){
+  $.ajax({
+    url:'/api/users/id/' + id,
+    type:'DELETE',
+    success:function(data){
+      if(data.status){
         location.reload();
+      }else{
+        alert(data.messages);
       }
-    })
-  }
+    }
+  });
 };

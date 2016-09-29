@@ -19,20 +19,20 @@ var loginEvent = function(e) {
     e.preventDefault();
     var data = $(".login-form").serialize();
     $.ajax({
-        url:'/api/users/login',
-        type:'POST',
-        data:data,
-        success:function (data) {
-            if (data) {
-                $(".login-modal").modal('hide');
-                $(".login-btn").addClass('hide');
-                $(".logout-btn").removeClass('hide');
-                window.location.reload();
-            } else {
-                alert("login failed");
-            }
+      url:'/api/users/login',
+      type:'POST',
+      data:data,
+      success:function (data) {
+        if (data && data.status) {
+          $(".login-modal").modal('hide');
+          $(".login-btn").addClass('hide');
+          $(".logout-btn").removeClass('hide');
+          window.location.reload();
+        } else {
+          alert(data.messages);
         }
-    })
+      }
+    });
 };
 
 var logoutEvent = function(e){
@@ -76,12 +76,10 @@ var registerEvent = function(e){
 var APP = {
     init : function(){
         this.codeImg = $('#codeImg');
-        this.registerModal = $('#registerModal');
         this.bindEvent();
     },
     bindEvent: function(){
         this.codeImg.on('click',this.genCode);
-        this.registerModal.on('shown.bs.modal',this.registerFormShown);
 
     },
     registerFormShown: function(){

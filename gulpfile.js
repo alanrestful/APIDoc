@@ -22,7 +22,7 @@ gulp.task('watchSass', function(){
   gulp.watch('public/stylesheets/app.scss', ['sass']);
 });
 
-
+// 启动express
 gulp.task('run', function (cb) {
   exec('supervisor app.js', function (err, stdout, stderr) {
     console.log(stdout);
@@ -31,6 +31,7 @@ gulp.task('run', function (cb) {
   });
 })
 
+// 启动服务
 gulp.task('serve', function(callback){
   gulpSequence('run', 'sass', 'watchSass', callback);
 })
