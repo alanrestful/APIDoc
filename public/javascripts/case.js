@@ -22,6 +22,17 @@ var load = function(event){
     $('.setting-env').removeClass('hide');
     $('.setting-name').html(name);
     $('.setting-env').html(env);
+    $.ajax({
+      url: '/api/cases/groups?pid='+ id,
+      type: 'GET',
+      success: function(data) {
+        if(data.status){
+          console.log(data.result);
+        }else{
+          console.log(data.messages);
+        }
+      }
+    });
   }
 }
 

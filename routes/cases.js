@@ -23,15 +23,16 @@ router.post('/group', function(req, res) {
   */
 
   var data = req.body;
-  if(data.pid){
+  console.log(data);
+  if(!data.pid){
     res.json({status: false, messages: '项目ID不能为空',result: null});
     return;
   }
-  if(data.tempGroup){
+  if(!data.tempGroup){
     res.json({status: false, messages: '组不能为空',result: null});
     return;
   }
-  if(data.tempName){
+  if(!data.tempName){
     res.json({status: false, messages: '名称不能为空',result: null});
     return;
   }
@@ -39,23 +40,27 @@ router.post('/group', function(req, res) {
     pid: data.pid,
     name: data.tempGroup
   });
-  conanGroup.save();
+  conanGroup.save(function(err, g){
+    var conanCaseModel = new ConanCaseModel({
+      gid: g._id,
+      name: data.tempName,
+      fragment: data.fragment
+    });
+    conanCaseModel.save(function(err, model){
+      var conanCaseData = new ConanCaseData({
+        mid: model._id,
+        name: data.name,
+        data: data.data
+      });
+      conanCaseData.save();
 
-  var conanCaseModel = new ConanCaseModel({
-    pid: conanGroup._id,
-    name: data.tempName,
-    fragment: data.fragment
+      res.json({status: true, messages: null,result: null});
+    });
   });
-  conanCaseModel.save();
 
-  var conanCaseData = new ConanCaseData({
-    mid: conanCaseModel._id,
-    name: data.name,
-    data: data.data
-  });
-  conanCaseData.save();
 
-  res.json({status: true, messages: null,result: null});
+
+
 });
 
 /* 获取用例组 */

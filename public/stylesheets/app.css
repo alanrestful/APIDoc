@@ -174,39 +174,38 @@
   margin: 0 auto;
   min-height: 700px;
   background-color: #fff; }
-
-.user-manager .user-table table {
-  width: 90%;
-  margin: 0 auto; }
-  .user-manager .user-table table th {
-    color: #8895B4;
-    font-size: 14px;
-    font-weight: normal;
-    border: none; }
-  .user-manager .user-table table td {
-    color: #666666;
-    font-size: 14px;
-    font-weight: normal;
-    border-top: none;
-    border-bottom: 1px solid #ddd; }
-    .user-manager .user-table table td img {
-      width: 25px;
-      height: 25px;
-      margin-right: 5px; }
-    .user-manager .user-table table td a {
-      text-decoration: none; }
-    .user-manager .user-table table td .develop {
-      background-color: #F5A623;
-      color: #fff;
-      width: 60px; }
-    .user-manager .user-table table td .PM {
-      background-color: #7ED321;
-      color: #fff;
-      width: 60px; }
-    .user-manager .user-table table td .tester {
-      background-color: #4A90E2;
-      color: #fff;
-      width: 60px; }
+  .user-manager .user-table table {
+    width: 90%;
+    margin: 0 auto; }
+    .user-manager .user-table table th {
+      color: #8895B4;
+      font-size: 14px;
+      font-weight: normal;
+      border: none; }
+    .user-manager .user-table table td {
+      color: #666666;
+      font-size: 14px;
+      font-weight: normal;
+      border-top: none;
+      border-bottom: 1px solid #ddd; }
+      .user-manager .user-table table td img {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px; }
+      .user-manager .user-table table td a {
+        text-decoration: none; }
+      .user-manager .user-table table td .develop {
+        background-color: #F5A623;
+        color: #fff;
+        width: 60px; }
+      .user-manager .user-table table td .PM {
+        background-color: #7ED321;
+        color: #fff;
+        width: 60px; }
+      .user-manager .user-table table td .tester {
+        background-color: #4A90E2;
+        color: #fff;
+        width: 60px; }
 
 #addUserModal .modal-content, #editUserModal .modal-content {
   width: 400px; }
@@ -286,7 +285,9 @@
     .case-manager .group #group-tab li a {
       font-size: 14px;
       text-decoration: none;
-      color: #fff; }
+      color: #fff;
+      height: 50px;
+      display: block; }
   .case-manager .group #group-tab .active {
     height: 50px;
     margin-bottom: -6px;
