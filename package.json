@@ -16,16 +16,17 @@
     "express": "^4.2.0",
     "express-handlebars": "*",
     "express-session": "*",
-    "moment": "^2.15.1",
     "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.3.2",
     "gulp-sequence": "^0.4.6",
     "gulp-uglify": "^2.0.0",
+    "moment": "^2.15.1",
     "mongoose": "*",
     "morgan": "~1.0.0",
     "multer": "^1.2.0",
     "serve-static": "^1.11.1",
-    "static-favicon": "~1.0.0"
+    "static-favicon": "~1.0.0",
+    "supervisor": "^0.11.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

@@ -12,8 +12,9 @@
             <div class="setting-header-right edit-setting cursor"><i class="iconfont icon-bianji" style="font-size: 12px;"></i>edit</div>
           </div>
           <div class="setting-content">
-            <span class="btn btn-sm setting-project" style="cursor: default;">Jidd</span>
-            <span class="btn btn-sm setting-env" style="cursor: default;">测试环境</span>
+            <div class="setting-wait"><i class="iconfont icon-nanguo"></i> 待配置</div>
+            <span class="btn btn-sm setting-name hide"></span>
+            <span class="btn btn-sm setting-env hide"></span>
           </div>
         </div>
         <div class="group">
@@ -112,7 +113,7 @@
 <div class="modal fade" id="editSettingModal" tabindex="-1" role="dialog" aria-labelledby="editSettingModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 320px;margin: 0 auto;">
-    <form action="/api/cases/setting" method="post" class="edit-env-form">
+    <form class="edit-env-form">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
           &times;
@@ -124,7 +125,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>项目：</label>
-          <select class="form-control" name="name" id="setting-name">
+          <select class="form-control" name="id" id="setting-name">
           </select>
         </div>
         <div class="form-group">

@@ -197,44 +197,44 @@
   margin: 0 auto;
   min-height: 700px;
   background-color: #fff;
-}
-.user-manager .user-table table{
-  width: 90%;
-  margin: 0 auto;
-  th{
-    color: #8895B4;
-    font-size: 14px;
-    font-weight: normal;
-    border: none;
-  }
-  td{
-    color: #666666;
-    font-size: 14px;
-    font-weight: normal;
-    border-top: none;
-    border-bottom: 1px solid #ddd;
-    img{
-      width: 25px;
-      height: 25px;
-      margin-right: 5px;
+  table{
+    width: 90%;
+    margin: 0 auto;
+    th{
+      color: #8895B4;
+      font-size: 14px;
+      font-weight: normal;
+      border: none;
     }
-    a{
-     text-decoration: none;
-     }
-     .develop{
-       background-color: #F5A623;
-       color: #fff;
-       width: 60px;
-     }
-     .PM{
-      background-color: #7ED321;
-      color: #fff;
-      width: 60px;
-    }
-    .tester{
-      background-color: #4A90E2;
-      color: #fff;
-      width: 60px;
+    td{
+      color: #666666;
+      font-size: 14px;
+      font-weight: normal;
+      border-top: none;
+      border-bottom: 1px solid #ddd;
+      img{
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+      }
+      a{
+       text-decoration: none;
+       }
+       .develop{
+         background-color: #F5A623;
+         color: #fff;
+         width: 60px;
+       }
+       .PM{
+        background-color: #7ED321;
+        color: #fff;
+        width: 60px;
+      }
+      .tester{
+        background-color: #4A90E2;
+        color: #fff;
+        width: 60px;
+      }
     }
   }
 }
@@ -288,7 +288,8 @@
   .setting-content{
     background-color: #fff;
     margin-bottom:20px;
-    .setting-project{
+    cursor: default;
+    .setting-name{
       background-color: #7ED321;
       color: #fff;
       min-width: 80px;
@@ -301,6 +302,13 @@
       min-width: 80px;
       font-size: 12px;
       margin:10px 0 10px 20px;
+    }
+    .setting-wait{
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      font-size: 14px;
+      color: #A8A8A8;
     }
   }
 }

@@ -251,8 +251,9 @@
 
 .case-manager .setting .setting-content {
   background-color: #fff;
-  margin-bottom: 20px; }
-  .case-manager .setting .setting-content .setting-project {
+  margin-bottom: 20px;
+  cursor: default; }
+  .case-manager .setting .setting-content .setting-name {
     background-color: #7ED321;
     color: #fff;
     min-width: 80px;
@@ -264,6 +265,12 @@
     min-width: 80px;
     font-size: 12px;
     margin: 10px 0 10px 20px; }
+  .case-manager .setting .setting-content .setting-wait {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #A8A8A8; }
 
 .case-manager .group #group-tab {
   margin: 0;
