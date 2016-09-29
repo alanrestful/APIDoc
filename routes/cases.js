@@ -97,7 +97,7 @@ router.get('/models', function(req, res) {
 /* 获取模版数据 */
 router.get('/datas', function(req, res) {
   var id = req.query.mid;
-  if(id){
+  if(!id){
     res.json({status: false, messages: '模版ID不能为空',result: null});
     return;
   }
