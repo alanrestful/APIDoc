@@ -34,7 +34,7 @@ var addUserEvent = function(event){
 var editUserEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
-  alert('edit user');
+  $("#editUserModal").modal("show");
 };
 
 /* 删除用户 */

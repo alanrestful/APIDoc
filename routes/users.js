@@ -1,18 +1,11 @@
 var express = require('express');
 var User = require('../models/User').User;
 var http = require('http');
-// var ccap = require('ccap');
 var async = require('async');
-
 
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res) {
-  User.find(function(err, users) {
-    res.render('user/user_manager', {title: '用户管理', users: users, total: users.length});
-  });
-});
 
 router.post('/', function (req, res) {
   var obj = req.body;
@@ -41,7 +34,7 @@ router.post('/', function (req, res) {
   })
 });
 
-/* 删除项目 */
+/* 删除用户 */
 router.delete('/', function(req, res) {
   var result = {};
   User.remove({_id: req.body.id}, function(err) {
@@ -121,20 +114,6 @@ router.post('/register',function(req,res,next){
     // })
 });
 
-router.get("/center",function(req,res,next){
-  User.findOne({_id:req.session.userId},function(err,doc){
-    if (err){
-      next(err);
-    }
-    console.log(doc);
-    res.render("user/user",{user:doc});
-  })
-});
-
-router.get('/passport',function(req,res){
-  res.render("user/change_password",{});
-});
-
 router.post("/change-password",function(req,res){
   User.update({_id:req.session.userId,password:req.body.origin},{password:req.body.password},function(err,doc){
     if (doc.n == 0) {
@@ -151,4 +130,5 @@ router.post("/change-password",function(req,res){
     res.send({success:false})
   });
 });
+
 module.exports = router;
