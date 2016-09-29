@@ -1,5 +1,11 @@
 $(function(){
   APP.init();
+  $(".register-form").validator({
+    isErrorOnParent: true
+  });
+  $(".login-form").validator({
+    isErrorOnParent: true
+  });
   $(document).on('click', '.register-btn', registerShowEvent);
   $(document).on('submit', '.register-form', registerEvent);
 });
@@ -43,7 +49,10 @@ var logoutEvent = function(e){
 var registerEvent = function(e){
   e && e.preventDefault();
   var data = $('.register-form').serializeJSON();
-  //验证
+  if(data.password !== data.password2){
+    alert('两次密码不一致');
+    return false;
+  }
   $.ajax({
       url: '/users/register',
       type: 'POST',
