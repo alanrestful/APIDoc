@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <form class="form">
+            <form class="form table-bordered" style="padding:5px 10px;margin-top:10px">
                 <fieldset>
                     <span class="span3">
                         <label>Action:</label>
@@ -18,11 +18,11 @@
                         <input name="author"/>
                     </span>
                     <span class="span1">
-                      <button type="submit" class="btn btn-primary">search</button>
+                      <button type="submit" class="btn btn-primary btn-sm">search</button>
                     </span>
                 </fieldset>
             </form>
-            <table class="table">
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
                         <td>AppId</td>
@@ -35,14 +35,14 @@
                 </thead>
                 <tbody>
                 {{#each data}}
-                    <tr>
+                    <tr class="{{#equals action 'del'}}danger{{/equals}}">
                         <td>{{applicationId}}</td>
                         <td>{{path}}</td>
                         <td>{{author}}</td>
                         <td>{{action}}</td>
                         <td>{{formatDate createdAt}}</td>
-                        <td class="detail" data-detail="{{json detail}}">
-                            {{#equals action 'update'}}<button class="btn" >View Detail</button>{{/equals}}
+                        <td class="detail" data-detail="{{json detail}}" data-title="{{json path}}">
+                            {{#equals action 'update'}}<button class="btn btn-sm btn-info" >View Detail</button>{{/equals}}
                         </td>
                     </tr>
                 {{/each}}
@@ -58,9 +58,19 @@
 </div>
 
 <div class="modal fade detail-modal" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:auto;">
+    <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="h4 title text-center" >
 
+                </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
         </div>
     </div>
 </div>
@@ -70,16 +80,18 @@
     $(function(){
         $(".detail").click(function(e){
             var data = $(e.currentTarget).data('detail');
-            $(".detail-modal .modal-dialog .modal-content").html(template(data));
+            $(".detail-modal .modal-dialog .modal-content .modal-body").html(template(data));
+            var title = $(e.currentTarget).data('title');
+            $(".detail-modal .modal-dialog .modal-content .modal-header .title").html(title);
             $("#detail-modal").modal('show');
         })
     });
 
     var template = function(data){
         var json = data;
-        var head = "<table class='table'><thead><tr><td>Path</td><td>Action</td><td>Before</td><td>After</td></tr></thead><tbody>";
+        var head = "<table class='table table-bordered'><thead><tr><td>Path</td><td>Action</td><td>Before</td><td>After</td></tr></thead><tbody>";
         var foot = "</tbody>";
-        var unit = "<tr><td>%path%</td><td>%Action%</td><td>%desc.base%</td><td>%desc.top%</td></tr>";
+        var unit = "<tr class='%class%'><td>%path%</td><td>%Action%</td><td>%desc.base%</td><td>%desc.top%</td></tr>";
         var body = "";
         for (var a in json.add) {
             var d = json.add[a];
@@ -100,7 +112,8 @@
             body += unit.replace("%path%",d.path)
                     .replace("%desc.base%",JSON.stringify(d.desc.base))
                     .replace("%desc.top%",'')
-                    .replace("%Action%","Del");
+                    .replace("%Action%","Del")
+                    .replace("%class%", "warning");
         }
         return head + body + foot;
     }

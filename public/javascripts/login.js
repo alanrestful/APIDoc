@@ -124,7 +124,9 @@ var APP = {
             page = pageNo + 1;
         }
         var origin = location.href;
-        var target = origin.split('page=' + pageNo).join('page=' + page);
+        var target = origin.indexOf("page=") > -1
+            ? origin.split('page=' + pageNo).join('page=' + page)
+            : origin + "&page=" + page;
         location.href = target;
     })
 })();
