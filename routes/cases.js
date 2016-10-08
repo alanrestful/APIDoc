@@ -10,18 +10,6 @@ var router = express.Router();
 /* 创建组 */
 router.post('/group', function(req, res) {
 
-  /*
-  pid: 项目id
-  tempGroup: 模版组
-  tempName: 模版名称
-  fragment:
-    [{rela_path:xxxxx, elements:[[{hash:xxxx, tagName: tagName,
-    type:type, id: id, className: className, name: name,
-    value:value, placeholder:placeholder, baseURI:baseURI,
-    innerText:innerText, href:href, xPath:”xxxx”, isFormEl: true},{一个页面的第二个element},{}]]}, {第二个页面}]
-  data: [[{m_hash:xxx, value:sherry, expect:xx},{一个页面的第二个数据}],[第二个页面里的数据]] ～
-  */
-
   var data = req.body;
   console.log(data);
   if(!data.pid){
@@ -36,11 +24,8 @@ router.post('/group', function(req, res) {
     res.json({status: false, messages: '名称不能为空',result: null});
     return;
   }
-  var conanGroup = new ConanGroup({
-    pid: data.pid,
-    name: data.tempGroup
-  });
-  conanGroup.save(function(err, g){
+  var conanGroup = new ConanGroup;
+  conanGroup.findOrSave(data.pid, data.tempGroup, function(err, g){
     var conanCaseModel = new ConanCaseModel({
       gid: g._id,
       name: data.tempName,
