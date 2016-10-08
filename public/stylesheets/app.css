@@ -300,8 +300,7 @@
   background-color: #fff; }
   .case-manager .group .tab-content .tab-pane ul {
     margin: 0;
-    padding: 0;
-    padding-top: 10px; }
+    padding: 0; }
     .case-manager .group .tab-content .tab-pane ul li {
       list-style-type: none;
       padding-left: 10px;

@@ -34,6 +34,7 @@ Date.prototype.format = function(format) {
   return format;
 }
 
+// 点击模版组事件
 var groupEvent = function(event){
   event && event.preventDefault();
   $('.tab-pane ul li').removeClass('active');
@@ -48,7 +49,7 @@ var groupEvent = function(event){
         $('.detail-left ul').html('');
         for(var i in result){
           var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
-          $('.detail-left ul').append('<li><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
+          $('.detail-left ul').append('<li data-fragment=\''+ result[i].fragment +'\'><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
         }
       }else if(data.status){
           $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
@@ -59,6 +60,7 @@ var groupEvent = function(event){
   });
 }
 
+// 初始化加载模版组
 var load = function(event){
   var id = localStorage.getItem('case-pid');
   var name = localStorage.getItem('case-name');
@@ -115,6 +117,7 @@ var editSettingEvent = function(event){
   $('#editSettingModal').modal('show');
 };
 
+// 设置中的二级联动
 var settingChangeEvent = function(event){
   event && event.preventDefault();
   var env = $("#setting-name").find("option:selected").data('env');
@@ -142,6 +145,7 @@ var settingChangeEvent = function(event){
   $("#setting-env").html(html);
 };
 
+// 保存设置到本地
 var saveSettingEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
