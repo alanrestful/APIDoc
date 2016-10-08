@@ -8,8 +8,56 @@ $(function(){
   $(document).on('click', '.del-group', delGroupEvent);
   $(document).on('click', '.edit-detail', editDetailEvent);
   $(document).on('click', '.del-detail', delDetailEvent);
+  $(document).on('click', '.tab-pane ul li', groupEvent);
   $(document).on('change', '#setting-name', settingChangeEvent);
 });
+
+
+Date.prototype.format = function(format) {
+  var date = {
+    "M+": this.getMonth() + 1,
+    "d+": this.getDate(),
+    "h+": this.getHours(),
+    "m+": this.getMinutes(),
+    "s+": this.getSeconds(),
+    "q+": Math.floor((this.getMonth() + 3) / 3),
+    "S+": this.getMilliseconds()
+  };
+  if (/(y+)/i.test(format)) {
+    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in date) {
+    if (new RegExp("(" + k + ")").test(format)) {
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+    }
+  }
+  return format;
+}
+
+var groupEvent = function(event){
+  event && event.preventDefault();
+  $('.tab-pane ul li').removeClass('active');
+  $(event.currentTarget).addClass('active');
+  var gid = $(event.currentTarget).data('id');
+  $.ajax({
+    url: '/api/cases/models?gid='+ gid,
+    type: 'GET',
+    success: function(data) {
+      if(data.status && data.result.length){
+        var result = data.result;
+        $('.detail-left ul').html('');
+        for(var i in result){
+          var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
+          $('.detail-left ul').append('<li><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
+        }
+      }else if(data.status){
+          $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
+      }else{
+        console.log(data.messages);
+      }
+    }
+  });
+}
 
 var load = function(event){
   var id = localStorage.getItem('case-pid');
@@ -26,8 +74,18 @@ var load = function(event){
       url: '/api/cases/groups?pid='+ id,
       type: 'GET',
       success: function(data) {
-        if(data.status){
-          console.log(data.result);
+        if(data.status && data.result.length){
+          var result = data.result;
+          $('#template ul').html('');
+          for(var i in result){
+            var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
+            $('#template ul').append('<li data-id="'+ result[i]._id +'"><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> 最后修改：'+ time +'</div></div></li>')
+          }
+          $('#case ul').html('');
+          for(var i in result){
+            var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
+            $('#case ul').append('<li data-id="'+ result[i]._id +'"><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> 最后修改：'+ time +'</div></div></li>')
+          }
         }else{
           console.log(data.messages);
         }

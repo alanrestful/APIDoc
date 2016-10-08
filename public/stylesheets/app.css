@@ -306,7 +306,10 @@
       list-style-type: none;
       padding-left: 10px;
       height: 50px;
-      border-bottom: 1px solid #f1f2f6; }
+      border-bottom: 1px solid #f1f2f6;
+      border-left: 3px solid #fff; }
+    .case-manager .group .tab-content .tab-pane ul .active {
+      border-left: 3px solid #8895B4; }
   .case-manager .group .tab-content .template-obj {
     height: 50px;
     padding: 10px auto;
@@ -412,9 +415,6 @@
         font-size: 12px;
         padding: 0px 20px;
         margin-right: 20px; }
-
-.active-obj {
-  border-left: 3px solid #8895B4; }
 
 .group-obj {
   height: 50px;
