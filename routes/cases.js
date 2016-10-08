@@ -58,9 +58,6 @@ router.post('/group', function(req, res) {
     });
   });
 
-
-
-
 });
 
 /* 获取用例组 */
@@ -80,6 +77,24 @@ router.get('/groups', function(req, res) {
     res.json({status: true, messages: null,result: groups});
   });
 });
+
+/* 删除用例组 */
+router.delete('/groups', function(req, res) {
+  var id = req.query.gid;
+  if(!id){
+    res.json({status: false, messages: '组ID不能为空',result: null});
+    return;
+  }
+  ConanGroup.remove({_id: id}, function(err) {
+    if(err) {
+      console.log('delete group error:%s', err);
+      res.json({status: false, messages: '删除失败', result: null});
+      return;
+    }
+    res.json({status: true, messages: null, result: null});
+  });
+});
+
 
 /* 获取用例模版 */
 router.get('/models', function(req, res) {
