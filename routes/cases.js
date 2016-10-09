@@ -34,7 +34,7 @@ router.post('/group', function(req, res) {
     conanCaseModel.save(function(err, model){
       var conanCaseData = new ConanCaseData({
         mid: model._id,
-        name: data.name,
+        name: data.tempName,
         data: data.data
       });
       conanCaseData.save();
@@ -79,7 +79,6 @@ router.delete('/groups', function(req, res) {
     res.json({status: true, messages: null, result: null});
   });
 });
-
 
 /* 获取用例模版 */
 router.get('/models', function(req, res) {
