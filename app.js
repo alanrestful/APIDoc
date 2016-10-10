@@ -86,7 +86,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var allow = ['/','/users/login','/users/register','/codegen/gen', '/api/.*', '/api/cases/group'];
+        var allow = ['/','/users/login','/users/register','/codegen/.*', '/api/.*', '/api/cases/group'];
         var allowTag = false;
         for (var s in allow) {
             if(new RegExp("^" + allow[s] + "$").test(url)) {

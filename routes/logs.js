@@ -51,7 +51,7 @@ router.get("/", function(req, res, next) {
                 }
             })()
         }
-        res.render('logs/logs',{title:'Logs',data:result});
+        res.render('logs/logs',{title:'Logs',data:result, appId:appId});
     });
 });
 
