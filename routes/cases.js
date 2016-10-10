@@ -25,13 +25,15 @@ router.post('/group', function(req, res) {
     return;
   }
   var conanGroup = new ConanGroup;
-  conanGroup.findOrSave(data.pid, data.tempGroup, function(err, g){
+  conanGroup.findOrSave(data.pid, data.tempGroup, function(err, group){
+
     var conanCaseModel = new ConanCaseModel({
-      gid: g._id,
+      gid: group._id,
       name: data.tempName,
       fragment: data.fragment
     });
     conanCaseModel.save(function(err, model){
+
       var conanCaseData = new ConanCaseData({
         mid: model._id,
         name: data.tempName,

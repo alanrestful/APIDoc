@@ -18,13 +18,14 @@ _ConanGroup.method('findByPid', function(id, callback){
 });
 
 _ConanGroup.method('findOrSave', function(id, name, callback){
-
-    this.model('conan_group').find({pid: id ,name: name}, {}, function(err, g){
-      if(!g){
-        return this.model('conan_group').save({pid: id, name: name}, callback);
+    var that = this;
+    this.model('conan_group').findOne({pid: id ,name: name}, {}, function(err, g){
+      if(g == null){
+        that.model('conan_group').create({pid: id, name: name}, function(err, g){
+          callback(err, g);
+        });
       }
     });
-    return this.model('conan_group').find({pid: id ,name: name}, {}, callback);
 });
 
 exports.ConanGroup = mongoose.model('conan_group', _ConanGroup);
