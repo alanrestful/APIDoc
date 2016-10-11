@@ -34,13 +34,6 @@ _APIPath.method("updatePath", function(obj, id, appId, cb) {
     }).save(function(err, doc) {
         console.log(err);
     });
-    // model.create({
-    //     _id: id,
-    //     path_json: obj,
-    //     applicationId: appId
-    // }, function(err,doc ) {
-    //     console.log("create " + err);
-    // })
 });
 
 _APIPath.method("deleteById", function(id, cb) {
