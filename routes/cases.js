@@ -72,14 +72,23 @@ router.delete('/groups', function(req, res) {
     res.json({status: false, messages: '组ID不能为空',result: null});
     return;
   }
+  
   ConanGroup.remove({_id: id}, function(err) {
     if(err) {
       console.log('delete group error:%s', err);
       res.json({status: false, messages: '删除失败', result: null});
       return;
     }
-    res.json({status: true, messages: null, result: null});
+    ConanCaseModel.remove({gid: id}, function(err) {
+      if(err) {
+        console.log('delete model error:%s', err);
+        res.json({status: false, messages: '删除失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: null});
+    });
   });
+
 });
 
 /* 获取用例模版 */
