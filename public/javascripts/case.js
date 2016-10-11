@@ -161,24 +161,37 @@ var saveSettingEvent = function(event){
 
 /* 编辑分组 */
 var editGroupEvent = function(event){
-  event && event.preventDefault();
   alert("edit group");
 };
 
 /* 删除分组 */
 var delGroupEvent = function(event){
-  event && event.preventDefault();
-  alert("del group");
+  var gid = $("#template ul .active").data('id');
+  if(typeof(gid) === 'undefined'){
+    alert('请选择组！');
+  }
+  if(confirm('确定删除组吗')){
+    $.ajax({
+      url: '/api/cases/groups?gid='+ gid,
+      type: 'DELETE',
+      success: function(data) {
+        if(data.status){
+          window.location.reload();
+        }else{
+          console.log(data.messages);
+        }
+      }
+    });
+  }
 };
 
 /* 编辑详情 */
 var editDetailEvent = function(event){
-  event && event.preventDefault();
   alert("edit detail");
 };
 
 /* 删除详细 */
 var delDetailEvent = function(event){
-  event && event.preventDefault();
+
   alert("del detail");
 };
