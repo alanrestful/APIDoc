@@ -58,7 +58,7 @@ var registerEvent = function(e){
     return false;
   }
   $.ajax({
-      url: '/users/register',
+      url: 'api/users/register',
       type: 'POST',
       data: data,
       success: function(data){
