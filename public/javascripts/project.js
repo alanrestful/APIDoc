@@ -32,7 +32,7 @@ var createProjectEvent = function(event){
   var obj = {
     name: data.name,
     owner: data.owner,
-    env_json: env_json
+    env_json: JSON.stringify(env_json)
   }
   if(data._id) obj['_id'] = data._id;
   $.ajax({

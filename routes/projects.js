@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
   var params = {
     name: req.body.name,
     owner: req.session.user,
-    env_json: req.body.env_json
+    env_json: JSON.parse(req.body.env_json)
   };
   project.create(params, function(err) {
     if(err) {
