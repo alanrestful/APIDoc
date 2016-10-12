@@ -9,6 +9,7 @@ $(function(){
   $(document).on('click', '.edit-detail', editDetailEvent);
   $(document).on('click', '.del-detail', delDetailEvent);
   $(document).on('click', '.tab-pane ul li', groupEvent);
+  $(document).on('click', '.detail-left ul li', fragmentEvent);
   $(document).on('change', '#setting-name', settingChangeEvent);
 });
 
@@ -49,7 +50,7 @@ var groupEvent = function(event){
         $('.detail-left ul').html('');
         for(var i in result){
           var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
-          $('.detail-left ul').append('<li data-fragment=\''+ result[i].fragment +'\'><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
+          $('.detail-left ul').append('<li><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
         }
       }else if(data.status){
           $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
@@ -58,6 +59,11 @@ var groupEvent = function(event){
       }
     }
   });
+}
+
+var fragmentEvent = function(event){
+  var fragment = $(event.currentTarget).data('fragment');
+  console.log(fragment);
 }
 
 // 初始化加载模版组
@@ -161,28 +167,40 @@ var saveSettingEvent = function(event){
 
 /* 编辑分组 */
 var editGroupEvent = function(event){
-  alert("edit group");
+  toast("edit group");
 };
 
 /* 删除分组 */
 var delGroupEvent = function(event){
   var gid = $("#template ul .active").data('id');
   if(typeof(gid) === 'undefined'){
-    alert('请选择组！');
+    swal("请选择组！");
+    return;
   }
-  if(confirm('确定删除组吗')){
-    $.ajax({
-      url: '/api/cases/groups?gid='+ gid,
-      type: 'DELETE',
-      success: function(data) {
-        if(data.status){
-          window.location.reload();
-        }else{
-          console.log(data.messages);
+  swal({title: "确认删除组吗？",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "删除",
+    cancelButtonText: "取消",
+    closeOnConfirm: false,
+    closeOnCancel: true },
+    function(isConfirm){
+      if (isConfirm) {
+      $.ajax({
+        url: '/api/cases/groups?gid='+ gid,
+        type: 'DELETE',
+        success: function(data) {
+          if(data.status){
+            window.location.reload();
+          }else{
+            swal(data.messages);
+          }
         }
-      }
-    });
-  }
+      });
+      swal("Deleted!", "Your imaginary file has been deleted.", "success");
+    }
+  });
+
 };
 
 /* 编辑详情 */

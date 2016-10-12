@@ -43,7 +43,7 @@ var createProjectEvent = function(event){
       if(data.status){
         location.reload();
       }else{
-        alert(data.messages);
+        swal(data.messages);
       }
     }
   });
@@ -67,6 +67,7 @@ var editProjectEvent = function(event){
     url: '/api/projects/id/'+ id,
     type: 'GET',
     success:function(data){
+      $('#editProjectModal input').attr('checked', false);
       if(data.status){
         var result = data.result;
         $('#editProjectModal input[name=_id]').val(result._id);
@@ -77,7 +78,7 @@ var editProjectEvent = function(event){
         }
         $('#editProjectModal').modal('show');
       }else{
-        alert(data.messages);
+        swal(data.messages);
       }
     }
   });
@@ -95,7 +96,7 @@ var createAppEvent = function(event){
         if(data.status){
           location.reload();
         }else{
-          alert(data.messages);
+          swal(data.messages);
         }
       }
   })
@@ -122,7 +123,7 @@ var getEnvAppsEvent = function(event){
         $('.modal-app-title').html(html);
         $('#selectApplicationModal').modal('show');
       }else{
-        alert(data.messages);
+        swal(data.messages);
       }
     }
   });
@@ -139,7 +140,7 @@ var delProjectEvent = function(event){
       if(data.status){
         location.reload();
       }else{
-        alert(data.messages);
+        swal(data.messages);
       }
     }
   });

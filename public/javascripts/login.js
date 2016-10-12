@@ -29,7 +29,7 @@ var loginEvent = function(e) {
           $(".logout-btn").removeClass('hide');
           window.location.reload();
         } else {
-          alert(data.messages);
+          swal(data.messages);
         }
       }
     });
@@ -44,7 +44,7 @@ var logoutEvent = function(e){
           if(data.status){
             window.location.reload();
           }else{
-            alert(data.messages);
+            swal(data.messages);
           }
         }
     })
@@ -54,7 +54,7 @@ var registerEvent = function(e){
   e && e.preventDefault();
   var data = $('.register-form').serializeJSON();
   if(data.password !== data.password2){
-    alert('两次密码不一致');
+    swal("两次密码不一致");
     return false;
   }
   $.ajax({
@@ -63,11 +63,10 @@ var registerEvent = function(e){
       data: data,
       success: function(data){
           if(data && data.status){
-              alert('注册成功');
               $('#registerModal').modal('hide');
               $('#loginModal').modal('show');
           } else{
-              alert(data.reason);
+            swal(data.reason);
           }
       }
   });
