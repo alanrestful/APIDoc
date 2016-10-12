@@ -24,6 +24,8 @@ _ConanGroup.method('findOrSave', function(id, name, callback){
         that.model('conan_group').create({pid: id, name: name}, function(err, g){
           callback(err, g);
         });
+      }else{
+        callback(err, g);
       }
     });
 });
