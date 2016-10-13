@@ -7,7 +7,10 @@ var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 
 var router = express.Router();
 
-/* 创建组 */
+/**
+ * 创建用例组
+ * @type {[type]}
+ */
 router.post('/group', function(req, res) {
   var data = req.body;
   if(!data.pid){
@@ -104,14 +107,11 @@ router.post('/', function(req, res) {
 
 });
 
-/*
-[{rela_path:xxxxx, expect:xx, [{expect:"xxxx", href:"ss", xPath:"xxxx", isFormEl: true},{同一页面其他元素}]},{其他页面}]
- */
-
 /**
- [{m_hash:xxx,value:sherry,expect:xx},{}]
+ * 对模版数据进行hash处理
+ * @param  {[type]} fragment [description]
+ * @return {[type]}          [description]
  */
-
 function fragmentHandle(fragment){
   var frags = JSON.parse(fragment);
   var datas = {};
@@ -119,15 +119,13 @@ function fragmentHandle(fragment){
   for(var f in frags){
     var hash = parseInt(Math.random()*10000) + new Date().getTime();
     frags[f].hash = hash;
-    console.log(typeof(frags[f].expect));
     if(typeof(frags[f].expect) != "undefined"){
-      console.log(1);
       datas[hash] = {expect: frags[f].expect};
       delete frags[f].expect;
     }else{
-        console.log(2);
       datas[hash] = {expect: ''};
     }
+    delete frags[f].expectEditing;
     // 循环多个元素
     for(var e in frags[f].tArray){
       var hash = parseInt(Math.random()*10000) + new Date().getTime();
@@ -141,12 +139,16 @@ function fragmentHandle(fragment){
       }else if(typeof(frags[f].tArray[e].value) != "undefined"){
         datas[hash] = {expect: '', value: frags[f].tArray[e].value};
       }
+      delete frags[f].tArray[e].expectEditing;
     }
   }
   return {"fragment": frags, "data": datas};
 }
 
-/* 获取用例组 */
+/**
+ * 获取用例组
+ * @type {[type]}
+ */
 router.get('/groups', function(req, res) {
   var id = req.query.pid;
   if(!id){
@@ -164,7 +166,10 @@ router.get('/groups', function(req, res) {
   });
 });
 
-/* 删除用例组 */
+/**
+ * 删除用例组
+ * @type {[type]}
+ */
 router.delete('/groups', function(req, res) {
   var id = req.query.gid;
   if(!id){
@@ -189,7 +194,10 @@ router.delete('/groups', function(req, res) {
   });
 });
 
-/* 获取用例模版 */
+/**
+ * 获取用例模版
+ * @type {[type]}
+ */
 router.get('/models', function(req, res) {
   var id = req.query.gid;
   if(!id){
@@ -207,7 +215,10 @@ router.get('/models', function(req, res) {
   });
 });
 
-/* 获取用例模版 */
+/**
+ * 获取用例模版
+ * @type {[type]}
+ */
 router.get('/model', function(req, res) {
   var id = req.query.mid;
   if(!id){
@@ -224,7 +235,10 @@ router.get('/model', function(req, res) {
   });
 });
 
-/* 获取用例数据列表 */
+/**
+ * 获取用例数据列表
+ * @type {[type]}
+ */
 router.get('/datas', function(req, res) {
   var id = req.query.mid;
   if(!id){
@@ -242,7 +256,10 @@ router.get('/datas', function(req, res) {
   });
 });
 
-/* 获取用例模版 + 用例数据 */
+/**
+ * 获取用例模版 + 用例数据
+ * @type {[type]}
+ */
 router.get('/datas', function(req, res) {
   var id = req.query.did;
   if(!id){
@@ -267,6 +284,5 @@ router.get('/datas', function(req, res) {
     });
   });
 });
-
 
 module.exports = router;

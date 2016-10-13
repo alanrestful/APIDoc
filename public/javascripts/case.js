@@ -80,7 +80,7 @@ var fragmentEvent = function(event){
         $('.detail-right').html('<div class="model">'+ name +'</div>');
         var obj = JSON.parse(data.result.fragment)
         for(var i in obj){
-          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：以下报错均出现 <span class="del-detail cursor"><i class="iconfont icon-shanchu" style="font-size: 12px;"></i>delete</span><span class="edit-detail cursor"><i class="iconfont icon-bianji" style="font-size: 12px;"></i>edit</span></div></header><ul>';
+          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：以下报错均出现</div></header><ul>';
           for(var a in obj[i].tArray){
             var frag = obj[i].tArray[a];
             html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
@@ -201,7 +201,7 @@ var saveSettingEvent = function(event){
 
 /* 编辑分组 */
 var editGroupEvent = function(event){
-  toast("edit group");
+  alert("edit group");
 };
 
 /* 删除分组 */
