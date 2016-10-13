@@ -139,7 +139,7 @@ function fragmentHandle(fragment){
         datas[hash] =  {expect: frags[f].tArray[e].expect, value: ''};
         delete frags[f].tArray[e].expect;
       }else if(typeof(frags[f].tArray[e].value) != "undefined"){
-        ddatas[hash] = {expect: '', value: frags[f].tArray[e].value};
+        datas[hash] = {expect: '', value: frags[f].tArray[e].value};
       }
     }
   }

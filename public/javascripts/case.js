@@ -57,7 +57,7 @@ var groupEvent = function(event){
       }else{
         console.log(data.messages);
       }
-      $(".detail-right").html('<div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 50px;"><i class="iconfont icon-nanguo"></i>  您还没有选择组，或者所选组暂无数据~</div>');
+      $(".detail-right").html('<div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 50px;"><i class="iconfont icon-nanguo"></i>  您还没有选择用例，或者所选用例暂无数据~</div>');
     }
   });
 }
