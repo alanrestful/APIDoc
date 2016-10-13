@@ -50,7 +50,7 @@ var groupEvent = function(event){
         $('.detail-left ul').html('');
         for(var i in result){
           var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
-          $('.detail-left ul').append('<li><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
+          $('.detail-left ul').append('<li data-id=\"'+ result[i]._id +'\"><input type="radio" name="radio-obj" /><div class="group-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
         }
       }else if(data.status){
           $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
@@ -61,9 +61,48 @@ var groupEvent = function(event){
   });
 }
 
+/**
+ * 点击用例模版显示详情
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var fragmentEvent = function(event){
-  var fragment = $(event.currentTarget).data('fragment');
-  console.log(fragment);
+  var id = $(event.currentTarget).data('id');
+  $.ajax({
+    url: '/api/cases/model?mid='+id,
+    type: 'GET',
+    success: function(data){
+      if(data.status){
+        $('.detail-right ul').html('');
+        var o = JSON.parse(data.result.fragment)
+        console.log(JSON.parse(data.result.fragment));
+        console.log(o[0].path);
+        var html = '';
+        for(var a in o[0].tArray){
+          var frag = o[0].tArray[a];
+          html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.className +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.id +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.name +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
+          html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
+          html +='</div><div class="info">请输入至少6位且含字母的密码</div></li>'
+          $('.detail-right ul').append(html);
+        }
+        // "[{"domain":"http://jidd.com","path":"/login?target=http://jidd.com/seller/req-orders",
+        // "tArray":[{"baseURI":"http://jidd.com/login?target=http://jidd.com/seller/req-orders",
+        // "className":"form-control","id":"loginId","inDate":{},"isFormEl":true,"name":"loginBy",
+        // "placeholder":"请输入昵称、手机或者邮箱","tagName":"INPUT","type":"text","value":"admin",
+        // "xPath":"//*[@id='loginId']","hash":1476323264136},
+        // {"baseURI":"http://jidd.com/login?target=http://jidd.com/seller/req-orders",
+        // "className":"form-control","id":"password","inDate":{},"isFormEl":true,
+        // "name":"password","placeholder":"请输入密码","tagName":"INPUT","type":"password",
+        // "value":"123456","xPath":"//*[@id='password']"}],"url":"http://jidd.com/login?target=http://jidd.com/seller/req-orders",
+        // "hash":1476323262017}]"
+      }
+    }
+  });
 }
 
 // 初始化加载模版组
