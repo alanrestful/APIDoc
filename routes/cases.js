@@ -114,7 +114,7 @@ router.post('/', function(req, res) {
 
 function fragmentHandle(fragment){
   var frags = JSON.parse(fragment);
-  var datas = [];
+  var datas = {};
   // 循环多个页面
   for(var f in frags){
     var hash = parseInt(Math.random()*10000) + new Date().getTime();
@@ -122,24 +122,24 @@ function fragmentHandle(fragment){
     console.log(typeof(frags[f].expect));
     if(typeof(frags[f].expect) != "undefined"){
       console.log(1);
-      datas.push({hash: {expect: frags[f].expect}});
+      datas[hash] = {expect: frags[f].expect};
       delete frags[f].expect;
     }else{
         console.log(2);
-      datas.push({hash: {expect: ''}});
+      datas[hash] = {expect: ''};
     }
     // 循环多个元素
     for(var e in frags[f].tArray){
       var hash = parseInt(Math.random()*10000) + new Date().getTime();
       frags[f].tArray[e].hash = hash;
       if(typeof(frags[f].tArray[e].expect) != "undefined" && typeof(frags[f].tArray[e].value) != "undefined"){
-        datas.push({hash: {expect: frags[f].tArray[e].expect, value: frags[f].tArray[e].value}});
+        datas[hash] = {expect: frags[f].tArray[e].expect, value: frags[f].tArray[e].value};
         delete frags[f].tArray[e].expect;
       }else if(typeof(frags[f].tArray[e].expect) != "undefined"){
-        datas.push({hash: {expect: frags[f].tArray[e].expect, value: ''}});
+        datas[hash] =  {expect: frags[f].tArray[e].expect, value: ''};
         delete frags[f].tArray[e].expect;
       }else if(typeof(frags[f].tArray[e].value) != "undefined"){
-        datas.push({hash: {expect: '', value: frags[f].tArray[e].value}});
+        ddatas[hash] = {expect: '', value: frags[f].tArray[e].value};
       }
     }
   }
