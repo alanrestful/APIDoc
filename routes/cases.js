@@ -119,22 +119,27 @@ function fragmentHandle(fragment){
   for(var f in frags){
     var hash = parseInt(Math.random()*10000) + new Date().getTime();
     frags[f].hash = hash;
-    if(typeof(frags[f].expect) != undefined){
+    console.log(typeof(frags[f].expect));
+    if(typeof(frags[f].expect) != "undefined"){
+      console.log(1);
       datas.push({hash: hash, expect: frags[f].expect});
       delete frags[f].expect;
+    }else{
+        console.log(2);
+      datas.push({hash: hash, expect: ''});
     }
     // 循环多个元素
     for(var e in frags[f].tArray){
       var hash = parseInt(Math.random()*10000) + new Date().getTime();
       frags[f].tArray[e].hash = hash;
-      if(typeof(frags[f].tArray[e].expect) != undefined && typeof(frags[f].tArray[e].value) != undefined){
+      if(typeof(frags[f].tArray[e].expect) != "undefined" && typeof(frags[f].tArray[e].value) != "undefined"){
         datas.push({hash: hash, expect: frags[f].tArray[e].expect, value: frags[f].tArray[e].value});
         delete frags[f].tArray[e].expect;
-      }else if(typeof(frags[f].tArray[e].expect) != undefined){
-        datas.push({hash: hash, expect: frags[f].tArray[e].expect});
+      }else if(typeof(frags[f].tArray[e].expect) != "undefined"){
+        datas.push({hash: hash, expect: frags[f].tArray[e].expect, value: ''});
         delete frags[f].tArray[e].expect;
-      }else if(typeof(frags[f].tArray[e].value) != undefined){
-        datas.push({hash: hash, value: frags[f].tArray[e].value});
+      }else if(typeof(frags[f].tArray[e].value) != "undefined"){
+        datas.push({hash: hash, expect: '', value: frags[f].tArray[e].value});
       }
     }
   }
