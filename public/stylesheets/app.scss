@@ -350,7 +350,7 @@
     li{
       list-style-type: none;
       padding-left: 10px;
-      height: 50px;
+      height: 70px;
       border-bottom: 1px solid #f1f2f6;
       border-left: 3px solid #fff;
       cursor: pointer;
@@ -393,16 +393,16 @@
   }
 }
 
-
 .case-manager .detail-content{
-  padding-top: 20px;
+  padding-top: 10px;
   background-color: #fff;
-  min-height: 600px;
+  overflow: hidden;
   .detail-left{
     width: 50%;
     display: inline-block;
     height: 100%;
     padding-top: 10px;
+    border-right: 1px solid #dfdfdf;
     .detail-search{
       padding-left: 30px;
       input[name="template"]{
@@ -427,14 +427,18 @@
       padding-top: 10px;
       list-style-type: none;
       li{
-        height: 50px;
+        height: 70px;
         padding-left: 20px;
+        cursor: pointer;
+        border-bottom: #dfdfdf solid 1px;
         input{
           display: inline-block;
           height: 42px;
         }
-        .group-obj{
+        .model-obj{
           display: inline-block;
+          height: 50px;
+          padding: 5px 10px;
         }
       }
     }
@@ -442,15 +446,29 @@
 }
 
 .case-manager .detail-content .detail-right{
-  width: 48%;
+  width: 50%;
   display: inline-block;
-  border-left: 1px solid #f1f2f6;
   height: 100%;
   float: right;
+  position: relative;
+  left: -1px;
+  border-left: 1px solid #dfdfdf;
+  .model{
+    color: #818388;
+    margin: 5px 10px;
+    font-weight: bold;
+    margin: 5px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   header {
     .title{
       color: #8895B4;
       margin: 5px 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .result{
       margin: 5px 10px;
@@ -498,9 +516,9 @@
   }
 }
 
-.group-obj{
+.group-obj, .model-obj{
   height: 50px;
-  padding: 5px 10px;
+  padding: 16px 20px;
   .name{
     font-size: 14px;
     color: #8895B4;
