@@ -207,6 +207,23 @@ router.get('/models', function(req, res) {
   });
 });
 
+/* 获取用例模版 */
+router.get('/model', function(req, res) {
+  var id = req.query.mid;
+  if(!id){
+    res.json({status: false, messages: '模版ID不能为空',result: null});
+    return;
+  }
+  ConanCaseModel.findOne({_id: id}, function(err, model){
+    if(err){
+      console.log('find models error:%s', err);
+      res.json({status: false, messages: '获取用例模版失败',result: null});
+      return;
+    }
+    res.json({status: true, messages: null,result: model});
+  });
+});
+
 /* 获取用例数据列表 */
 router.get('/datas', function(req, res) {
   var id = req.query.mid;
@@ -215,7 +232,7 @@ router.get('/datas', function(req, res) {
     return;
   }
   var conanCaseData = new ConanCaseData;
-  conanCaseDatas.findByMid(id, function(err, datas){
+  conanCaseData.findByMid(id, function(err, datas){
     if(err){
       console.log('find datas error:%s', err);
       res.json({status: false, messages: '获取模版数据失败',result: null});
@@ -240,7 +257,7 @@ router.get('/datas', function(req, res) {
       return;
     }
     var conanCaseData = new ConanCaseData;
-    conanCaseDatas.findByMid(id, function(err, datas){
+    conanCaseData.findByMid(id, function(err, datas){
       if(err){
         console.log('find datas error:%s', err);
         res.json({status: false, messages: '获取模版数据失败',result: null});

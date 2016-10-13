@@ -471,10 +471,17 @@
     li{
       list-style-type: none;
       list-style-type: decimal;
+      margin-top: 10px;
       .path{
         color: #8895B4;
-        height: 40px;
-        line-height: 40px;
+        line-height: 20px;
+        font-size: 12px;
+        margin-bottom: 10px;
+        span{
+          i{
+            font-size: 12px;
+          }
+        }
       }
       .info{
         background-color: #FD8181;

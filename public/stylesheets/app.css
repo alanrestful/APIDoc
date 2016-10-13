@@ -400,11 +400,15 @@
     list-style-type: decimal; }
     .case-manager .detail-content .detail-right ul li {
       list-style-type: none;
-      list-style-type: decimal; }
+      list-style-type: decimal;
+      margin-top: 10px; }
       .case-manager .detail-content .detail-right ul li .path {
         color: #8895B4;
-        height: 40px;
-        line-height: 40px; }
+        line-height: 20px;
+        font-size: 12px;
+        margin-bottom: 10px; }
+        .case-manager .detail-content .detail-right ul li .path span i {
+          font-size: 12px; }
       .case-manager .detail-content .detail-right ul li .info {
         background-color: #FD8181;
         border-radius: 3px;

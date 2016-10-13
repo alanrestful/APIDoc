@@ -16,7 +16,6 @@
     "express": "^4.2.0",
     "express-handlebars": "*",
     "express-session": "*",
-    "gulp-sass": "^2.3.2",
     "moment": "^2.15.1",
     "mongoose": "*",
     "morgan": "~1.0.0",
@@ -27,6 +26,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
     "webpack": "^1.13.2",
     "webpack-dashboard": "^0.1.8"
   }
