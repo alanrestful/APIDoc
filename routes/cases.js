@@ -285,4 +285,26 @@ router.get('/datas', function(req, res) {
   });
 });
 
+
+router.put('/model', function(req, res) {
+  var id = req.body.mid;
+  var name = req.body.name;
+  if(!id){
+    res.json({status: false, messages: '模版ID不能为空',result: null});
+    return;
+  }
+  if(!name){
+    res.json({status: false, messages: '名称不能为空',result: null});
+    return;
+  }
+  ConanCaseModel.update({_id: id},{$set: {name: name}}, function(err) {
+    if(err) {
+      console.log('update project error:%s', err);
+      res.json({status: false, messages: '更新项目失败', result: null});
+      return;
+    }
+    res.json({status: true, messages: null, result: null});
+  });
+});
+
 module.exports = router;
