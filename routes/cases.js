@@ -242,6 +242,34 @@ router.get('/model', function(req, res) {
 });
 
 /**
+ * 删除单个用例模版
+ * @type {[type]}
+ */
+router.delete('/model', function(req, res) {
+  var id = req.query.mid;
+  if(!id){
+    res.json({status: false, messages: '组ID不能为空',result: null});
+    return;
+  }
+
+  ConanCaseModel.remove({_id: id}, function(err) {
+    if(err) {
+      console.log('delete model error:%s', err);
+      res.json({status: false, messages: '删除失败', result: null});
+      return;
+    }
+    ConanCaseData.remove({mid: id}, function(err) {
+      if(err) {
+        console.log('delete data error:%s', err);
+        res.json({status: false, messages: '删除失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: null});
+    });
+  });
+});
+
+/**
  * 获取用例数据列表
  * @type {[type]}
  */

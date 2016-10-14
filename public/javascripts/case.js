@@ -218,7 +218,7 @@ var popoverAction = function(event){
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
-            html +='</div><div class="info">请输入至少6位且含字母的密码</div></li>';
+            html +='</div><div class="info">'+ frag.hash +'</div></li>';
           }
           html += '</ul>';
           $('.detail-right').append(html);
