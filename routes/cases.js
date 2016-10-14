@@ -28,6 +28,7 @@ router.post('/group', function(req, res) {
 
   var cases = fragmentHandle(data.fragment);
 
+  var result = {};
   var conanGroup = new ConanGroup;
   conanGroup.findOrSave(data.pid, data.tempGroup, function(err, group){
     if(err){
@@ -35,6 +36,7 @@ router.post('/group', function(req, res) {
       res.json({status: false, messages: '获取失败',result: null});
       return;
     }
+    result.group = group;
     var conanCaseModel = new ConanCaseModel({
       gid: group._id,
       name: data.tempName,
@@ -46,13 +48,14 @@ router.post('/group', function(req, res) {
         res.json({status: false, messages: '保存失败',result: null});
         return;
       }
+      result.model = model;
       var conanCaseData = new ConanCaseData({
         mid: model._id,
         name: data.tempName,
         data: JSON.stringify(cases.data)
       });
       conanCaseData.save();
-      res.json({status: true, messages: null,result: model});
+      res.json({status: true, messages: null,result: result});
     });
   });
 

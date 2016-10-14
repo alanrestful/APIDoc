@@ -82,7 +82,6 @@ var caseDetailAction = function(event){
       if(data.status){
         var html = '';
         for(var d in data.result){
-          console.log(data.result[d]._id);
           html += '<p data-id="'+ data.result[d]._id +'">'+ data.result[d].name +'</p>';
         }
       }
@@ -193,33 +192,38 @@ var editSettingEvent = function(event){
   $('#editSettingModal').modal('show');
 };
 
+/**
+ * 点击用例显示 用例模版+用例数据
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var popoverAction = function(event){
   var did = $(event.currentTarget).data('id');
   $.ajax({
     url: '/api/cases/data?did='+did,
     type: 'GET',
     success: function(data){
-      console.log(data);
-      // if(data.status){
-      //   $('.detail-right').html('<div class="model">'+ name +'</div>');
-      //   var obj = JSON.parse(data.result.fragment)
-      //   for(var i in obj){
-      //     var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：以下报错均出现</div></header><ul>';
-      //     for(var a in obj[i].tArray){
-      //       var frag = obj[i].tArray[a];
-      //       html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.className +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.id +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.name +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
-      //       html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
-      //       html +='</div><div class="info">请输入至少6位且含字母的密码</div></li>';
-      //     }
-      //     html += '</ul>';
-      //     $('.detail-right').append(html);
-      //   }
-      // }
+      console.log(data.result.data);
+      if(data.status){
+        $('.detail-right').html('<div class="model">'+ name +'</div>');
+        var obj = JSON.parse(data.result.model.fragment)
+        for(var i in obj){
+          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：'+obj[i].hash+'</div></header><ul>';
+          for(var a in obj[i].tArray){
+            var frag = obj[i].tArray[a];
+            html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.className +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.id +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.name +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
+            html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
+            html +='</div><div class="info">请输入至少6位且含字母的密码</div></li>';
+          }
+          html += '</ul>';
+          $('.detail-right').append(html);
+        }
+      }
     }
   });
 }
