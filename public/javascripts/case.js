@@ -35,7 +35,9 @@ Date.prototype.format = function(format) {
   return format;
 }
 
-// 点击模版组事件
+/**
+ * 点击模版组事件
+ */
 var groupEvent = function(event){
   event && event.preventDefault();
   $('.tab-pane ul li').removeClass('active');
@@ -50,16 +52,16 @@ var groupEvent = function(event){
         $('.detail-left ul').html('');
         for(var i in result){
           var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
-          $('.detail-left ul').append('<li data-name=\"'+ result[i].name +'\" data-id=\"'+ result[i]._id +'\"><div class="model-obj"><input type="radio" name="radio-obj" /></div><div class="model-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></li>')
+          $('.detail-left ul').append('<li data-name=\"'+ result[i].name +'\" data-id=\"'+ result[i]._id +'\"><div class="model-obj"><input type="radio" name="radio-obj" /></div><div class="model-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div><div class="model-obj"><a tabindex="0" class="btn btn-sm btn-default" role="button" data-toggle="popover" data-trigger="focus" title="用例列表" data-placement="bottom" data-html="true" data-content="<p>s</p><p>ss</p>">用例</a></div></li>')
         }
-      }else if(data.status){
+      }else
           $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
-      }else{
-        console.log(data.messages);
       }
       $(".detail-right").html('<div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 50px;"><i class="iconfont icon-nanguo"></i>  您还没有选择用例，或者所选用例暂无数据~</div>');
+      $("[data-toggle='popover']").popover();
     }
   });
+
 }
 
 /**
@@ -98,9 +100,14 @@ var fragmentEvent = function(event){
       }
     }
   });
+
 }
 
-// 初始化加载模版组
+/**
+ * 初始化加载模版组
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var load = function(event){
   var id = localStorage.getItem('case-pid');
   var name = localStorage.getItem('case-name');
@@ -136,7 +143,11 @@ var load = function(event){
   }
 }
 
-/* 编辑设置 */
+/**
+ * 编辑设置
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var editSettingEvent = function(event){
   event && event.preventDefault();
   $.ajax({
@@ -157,7 +168,11 @@ var editSettingEvent = function(event){
   $('#editSettingModal').modal('show');
 };
 
-// 设置中的二级联动
+/**
+ * 设置中的二级联动
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var settingChangeEvent = function(event){
   event && event.preventDefault();
   var env = $("#setting-name").find("option:selected").data('env');
@@ -185,7 +200,11 @@ var settingChangeEvent = function(event){
   $("#setting-env").html(html);
 };
 
-// 保存设置到本地
+/**
+ * 保存设置到本地
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var saveSettingEvent = function(event){
   event && event.preventDefault();
   var data = $(event.currentTarget).serializeJSON();
@@ -199,12 +218,20 @@ var saveSettingEvent = function(event){
   window.location.reload();
 };
 
-/* 编辑分组 */
+/**
+ * 编辑分组
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var editGroupEvent = function(event){
   alert("edit group");
 };
 
-/* 删除分组 */
+/**
+ * 删除分组
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var delGroupEvent = function(event){
   var gid = $("#template ul .active").data('id');
   if(typeof(gid) === 'undefined'){
@@ -237,12 +264,20 @@ var delGroupEvent = function(event){
 
 };
 
-/* 编辑详情 */
+/**
+ * 编辑详情
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var editDetailEvent = function(event){
   alert("edit detail");
 };
 
-/* 删除详细 */
+/**
+ * 删除详细
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 var delDetailEvent = function(event){
 
   alert("del detail");
