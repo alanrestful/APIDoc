@@ -80,6 +80,7 @@ router.post('/', function(req, res) {
     return;
   }
 
+  var result = {};
   var conanGroup = new ConanGroup;
   conanGroup.findOrSave(data.pid, data.tempGroup, function(err, group){
     if(err){
@@ -87,6 +88,7 @@ router.post('/', function(req, res) {
       res.json({status: false, messages: '获取失败',result: null});
       return;
     }
+    result.group = group ;
     var conanCaseModel = new ConanCaseModel({
       gid: group._id,
       name: data.tempName,
@@ -98,13 +100,14 @@ router.post('/', function(req, res) {
         res.json({status: false, messages: '保存失败',result: null});
         return;
       }
+      result.model = model;
       var conanCaseData = new ConanCaseData({
         mid: model._id,
         name: data.tempName,
         data: data.data
       });
       conanCaseData.save();
-      res.json({status: true, messages: null,result: null});
+      res.json({status: true, messages: null,result: result});
     });
   });
 
