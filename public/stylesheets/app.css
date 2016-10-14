@@ -373,6 +373,8 @@
         padding-left: 20px;
         cursor: pointer;
         border-bottom: #dfdfdf solid 1px; }
+        .case-manager .detail-content .detail-left ul li .radio-click {
+          display: inline-block; }
         .case-manager .detail-content .detail-left ul li input {
           display: inline-block;
           height: 42px; }

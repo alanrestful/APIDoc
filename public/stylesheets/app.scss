@@ -431,6 +431,9 @@
         padding-left: 20px;
         cursor: pointer;
         border-bottom: #dfdfdf solid 1px;
+        .radio-click{
+          display: inline-block;
+        }
         input{
           display: inline-block;
           height: 42px;

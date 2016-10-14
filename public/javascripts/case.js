@@ -9,7 +9,7 @@ $(function(){
   $(document).on('click', '.edit-detail', editDetailEvent);
   $(document).on('click', '.del-detail', delDetailEvent);
   $(document).on('click', '.tab-pane ul li', groupEvent);
-  $(document).on('click', '.detail-left ul li', fragmentEvent);
+  $(document).on('click', '.detail-left ul li .radio-click', fragmentEvent);
   $(document).on('change', '#setting-name', settingChangeEvent);
   $(document).on('click', '.case-detail-btn', caseDetailAction);
   $(document).on('click', '.popover-content p', popoverAction);
@@ -55,7 +55,7 @@ var groupEvent = function(event){
         $('.detail-left ul').html('');
         for(var i in result){
           var time =new Date(Date.parse(result[i].updated_at)).format('yyyy-MM-dd hh:mm:ss');
-          $('.detail-left ul').append('<li data-name="'+ result[i].name +'" data-id="'+ result[i]._id +'"><div class="model-obj"><input type="radio" name="radio-obj" /></div><div class="model-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div><div class="model-obj"><a tabindex="0" class="btn btn-sm btn-default case-detail-btn" role="button" data-toggle="popover" data-trigger="focus" title="用例列表" data-placement="bottom" data-html="true" data-id="'+ result[i]._id +'">用例</a></div></li>')
+          $('.detail-left ul').append('<li data-name="'+ result[i].name +'" data-id="'+ result[i]._id +'"><div class="radio-click"><div class="model-obj"><input type="radio" name="radio-obj" /></div><div class="model-obj"><div class="name">'+ result[i].name +'</div><div class="time"><i class="iconfont icon-shijian"></i> '+ time +' <i class="iconfont icon-ren"></i> Leo</div></div></div><div class="model-obj"><a tabindex="0" class="case-detail-btn" role="button" data-toggle="popover" data-trigger="focus" title="用例列表" data-placement="bottom" data-html="true" data-id="'+ result[i]._id +'"><i class="iconfont icon-gengduo"></i></a></div></li>')
         }
       }else{
           $('.detail-left ul').html('<li><div style="line-height: 50px;padding: 0;margin: 0 auto;color: #A8A8A8;padding-left: 70px;"><i class="iconfont icon-nanguo"></i> 暂无数据</div></li>');
@@ -97,10 +97,10 @@ var caseDetailAction = function(event){
  * @return {[type]}       [description]
  */
 var fragmentEvent = function(event){
-  var id = $(event.currentTarget).data('id');
-  var name = $(event.currentTarget).data('name');
-  $(".detail-left ul li").find('input[type=radio]').attr('checked', false);
-  $(event.currentTarget).find('input[type=radio]').attr('checked', 'checked');
+  var id = $(event.currentTarget).parent().data('id');
+  var name = $(event.currentTarget).parent().data('name');
+  $(".detail-left ul li .radio-click").find('input[type=radio]').attr('checked', false);
+  $(event.currentTarget).find('.model-obj input[type=radio]').attr('checked', 'checked');
   $.ajax({
     url: '/api/cases/model?mid='+id,
     type: 'GET',
@@ -109,7 +109,7 @@ var fragmentEvent = function(event){
         $('.detail-right').html('<div class="model">'+ name +'</div>');
         var obj = JSON.parse(data.result.fragment)
         for(var i in obj){
-          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：以下报错均出现</div></header><ul>';
+          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：...</div></header><ul>';
           for(var a in obj[i].tArray){
             var frag = obj[i].tArray[a];
             html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
@@ -119,7 +119,7 @@ var fragmentEvent = function(event){
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
-            html +='</div><div class="info">请输入至少6位且含字母的密码</div></li>';
+            html +='</div><div class="info">预期：...</div></li>';
           }
           html += '</ul>';
           $('.detail-right').append(html);
@@ -199,16 +199,20 @@ var editSettingEvent = function(event){
  */
 var popoverAction = function(event){
   var did = $(event.currentTarget).data('id');
+  $(".detail-left ul li .radio-click").find('.model-obj input[type=radio]').attr('checked', false);
+  $(event.currentTarget).closest('.model-obj').prev().find('.model-obj input[type=radio]').attr('checked', 'checked');
+  var name = $(event.currentTarget).closest('.model-obj').parent().data('name');
   $.ajax({
     url: '/api/cases/data?did='+did,
     type: 'GET',
     success: function(data){
-      console.log(data.result.data);
       if(data.status){
         $('.detail-right').html('<div class="model">'+ name +'</div>');
+        $('.detail-right').html('<div class="model">'+ name +'</div>');
         var obj = JSON.parse(data.result.model.fragment)
+        var hashArr = JSON.parse(data.result.data.data);
         for(var i in obj){
-          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：'+obj[i].hash+'</div></header><ul>';
+          var html = '<header><div class="title">'+ obj[i].path +'<span>json</span></div><div class="result">预期结果：'+ hashArr[obj[i].hash].expect +'</div></header><ul>';
           for(var a in obj[i].tArray){
             var frag = obj[i].tArray[a];
             html += '<li><div class="path"><span><i class="iconfont icon-dingwei"></i> '+ frag.xPath +'</span>';
@@ -218,7 +222,7 @@ var popoverAction = function(event){
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.tagName +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.value +'</span>';
             html +='<span style="color: #90B36A;"><i class="iconfont icon-pinpai"></i> '+ frag.type +'</span>';
-            html +='</div><div class="info">'+ frag.hash +'</div></li>';
+            html +='</div><div class="info">'+ hashArr[frag.hash].expect +'</div></li>';
           }
           html += '</ul>';
           $('.detail-right').append(html);
