@@ -8,6 +8,7 @@ $(function(){
   });
   $(document).on('click', '.register-btn', registerShowEvent);
   $(document).on('submit', '.register-form', registerEvent);
+  $(document).on('click', '.logout', logoutEvent);
 });
 
 var registerShowEvent = function(){
