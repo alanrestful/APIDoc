@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 });
 
 /* 根据ID查询指定项目信息 */
-router.get('/id/:id', function(req, res) {
+router.get('/:id', function(req, res) {
   var id = req.params.id;
   if(!id){
     res.json({status: false, messages: '项目ID为空', result: null});
@@ -65,7 +65,7 @@ router.put('/', function(req, res) {
 });
 
 /* 删除项目 */
-router.delete('/id/:id', function(req, res) {
+router.delete('/:id', function(req, res) {
   var id = req.params.id;
   project.remove({_id: id}, function(err) {
     if(err) {
