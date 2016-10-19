@@ -1,7 +1,5 @@
 {{> header}}
-<style type="text/css">
 
-</style>
 <div class="container-fluid">
   <div class="row">
     <div class="application-manager">
@@ -132,5 +130,27 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
   </div>
+</div>
+<!-- 创建项目 -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="importApiModalLabel">
+          请求结果
+        </h4>
+      </div>
+      <div class="modal-body">
+        <pre id="api-result"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
 </div>
 <script type="text/javascript" src="/javascripts/application.js"></script>

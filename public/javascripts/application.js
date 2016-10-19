@@ -6,7 +6,11 @@ $(function(){
   $(".show-samples").click(showSamplesEvent);
 });
 
-// 测试接口
+/**
+ * 调用api
+ * @param  {[type]} e [description]
+ * @return {[type]}   [description]
+ */
 var endpointEvent = function(e){
   e && e.preventDefault();
   var domain = $('.app-header').data('domain');
@@ -21,12 +25,20 @@ var endpointEvent = function(e){
     type: method,
     data: data,
     success:function(data){
-      console.log(data);
+      $("#api-result").html('');
+      $("#api-result").append(JSON.stringify(data, null, 2));
+      $("#resultModal").modal('show');
+    },
+    error: function(xhr, status, e){
+      $("#api-result").html(xhr.responseText || "未知故障");
+      $("#resultModal").modal('show');
     }
-  })
+  });
 };
 
-// 显示参数json
+/**
+ * 显示参数json
+ */
 var showSamplesEvent = function(e){
   e && e.preventDefault();
   var $target = $(event.currentTarget);
@@ -65,7 +77,11 @@ var showSamplesEvent = function(e){
   $schemas.find("pre").append(JSON.stringify(schemas, null, 2));
 };
 
-// 获取定义名称
+/**
+ * 获取定义名称
+ * @param  {[type]} ref [description]
+ * @return {[type]}     [description]
+ */
 function getDefinitionName(ref){
   if (ref.indexOf('#/definitions/') === 0) {
     return ref.substring('#/definitions/'.length);
@@ -74,7 +90,12 @@ function getDefinitionName(ref){
   }
 }
 
-// 获取定义obj
+/**
+ * 获取定义obj
+ * @param  {[type]} aid [description]
+ * @param  {[type]} ref [description]
+ * @return {[type]}     [description]
+ */
 function findDefinitionObj(aid, ref){
   var obj;
   $.ajax({

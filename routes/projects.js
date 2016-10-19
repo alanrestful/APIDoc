@@ -52,8 +52,9 @@ router.post('/', function(req, res) {
 
 /* 更新项目 */
 router.put('/', function(req, res) {
-  console.log(req.body);
-  project.update({_id: req.body._id},{$set: {env_json: req.body.env_json}}, function(err) {
+  var id = req.body._id;
+  var env_json = JSON.parse(req.body.env_json);
+  project.update({_id: id},{$set: {env_json: env_json}}, function(err) {
     if(err) {
       console.log('update project error:%s', err);
       res.json({status: false, messages: '更新项目失败', result: null});

@@ -60,9 +60,10 @@
   margin-top: 20px; }
 
 .project {
-  border-radius: 6px;
+  border: 1px solid #e8ebf5;
+  box-shadow: 1px 1px 2px 0 #e8ebf5;
+  border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #ddd;
   padding: 50px 20px;
   margin: 10px 0;
   text-align: center; }
