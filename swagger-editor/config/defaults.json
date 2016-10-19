@@ -1,8 +1,8 @@
 {
   "codegen": {
-    "servers": "http://localhost:9010/codegen/servers",
+    "servers": "http://54.223.103.201:9010/codegen/servers",
     "clients": "http://generator.swagger.io/api/gen/clients",
-    "server": "http://localhost:9010/codegen/servers/{language}",
+    "server": "http://54.223.103.201:9010/codegen/servers/{language}",
     "client": "http://generator.swagger.io/api/gen/clients/{language}"
   },
   "disableCodeGen": false,
