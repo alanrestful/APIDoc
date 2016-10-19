@@ -6,12 +6,17 @@ $(function(){
   $(".show-samples").click(showSamplesEvent);
 });
 
-// 测试接口
+/**
+ * 调用api
+ * @param  {[type]} e [description]
+ * @return {[type]}   [description]
+ */
 var endpointEvent = function(e){
   e && e.preventDefault();
   var domain = $('.app-header').data('domain');
   var path = $(event.currentTarget).data("path");
   var method = $(event.currentTarget).data("method");
+  var summary = $(event.currentTarget).data("summary");
   var data = $(event.currentTarget).serializeJSON();
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
@@ -20,13 +25,28 @@ var endpointEvent = function(e){
     url: domain + path,
     type: method,
     data: data,
-    success:function(data){
-      console.log(data);
+    success:function(data, textStatus, request){
+      $("#response-headers").html(request.getAllResponseHeaders());
+      $("#response-code").html(request.status);
+      $("#response-body").html(JSON.stringify(data, null, 2));
+    },
+    error: function(xhr, status, e){
+      $("#response-body").html(xhr.responseText || "未知故障");
+      $("#response-code").html(xhr.status);
+      $("#response-headers").html(xhr.getAllResponseHeaders());
+    },
+    complete: function(){
+      $("#result-summary").html(summary);
+      $("#result-method").html(method);
+      $("#request-url").html(domain + path);
+      $("#resultModal").modal('show');
     }
-  })
+  });
 };
 
-// 显示参数json
+/**
+ * 显示参数json
+ */
 var showSamplesEvent = function(e){
   e && e.preventDefault();
   var $target = $(event.currentTarget);
@@ -65,7 +85,11 @@ var showSamplesEvent = function(e){
   $schemas.find("pre").append(JSON.stringify(schemas, null, 2));
 };
 
-// 获取定义名称
+/**
+ * 获取定义名称
+ * @param  {[type]} ref [description]
+ * @return {[type]}     [description]
+ */
 function getDefinitionName(ref){
   if (ref.indexOf('#/definitions/') === 0) {
     return ref.substring('#/definitions/'.length);
@@ -74,7 +98,12 @@ function getDefinitionName(ref){
   }
 }
 
-// 获取定义obj
+/**
+ * 获取定义obj
+ * @param  {[type]} aid [description]
+ * @param  {[type]} ref [description]
+ * @return {[type]}     [description]
+ */
 function findDefinitionObj(aid, ref){
   var obj;
   $.ajax({

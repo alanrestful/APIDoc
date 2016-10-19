@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 });
 
 /* 根据ID查询指定项目信息 */
-router.get('/id/:id', function(req, res) {
+router.get('/:id', function(req, res) {
   var id = req.params.id;
   if(!id){
     res.json({status: false, messages: '项目ID为空', result: null});
@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
   var params = {
     name: req.body.name,
     owner: req.session.user,
-    env_json: req.body.env_json
+    env_json: JSON.parse(req.body.env_json)
   };
   project.create(params, function(err) {
     if(err) {
@@ -52,8 +52,9 @@ router.post('/', function(req, res) {
 
 /* 更新项目 */
 router.put('/', function(req, res) {
-  console.log(req.body);
-  project.update({_id: req.body._id},{$set: {env_json: req.body.env_json}}, function(err) {
+  var id = req.body._id;
+  var env_json = JSON.parse(req.body.env_json);
+  project.update({_id: id},{$set: {env_json: env_json}}, function(err) {
     if(err) {
       console.log('update project error:%s', err);
       res.json({status: false, messages: '更新项目失败', result: null});
@@ -64,7 +65,7 @@ router.put('/', function(req, res) {
 });
 
 /* 删除项目 */
-router.delete('/id/:id', function(req, res) {
+router.delete('/:id', function(req, res) {
   var id = req.params.id;
   project.remove({_id: id}, function(err) {
     if(err) {

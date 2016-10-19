@@ -1,7 +1,5 @@
 {{> header}}
-<style type="text/css">
 
-</style>
 <div class="container-fluid">
   <div class="row">
     <div class="application-manager">
@@ -52,7 +50,7 @@
                       <div class="row">
                         <div class="col-sm-6 col-md-6 paths">
                           <h2 id="{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
-                          <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
+                          <form class="path-form" data-path="{{@../key}}" data-summary="{{summary}}" data-method="{{@key}}">
                           <h3 class="{{@key}}">
                             <span class="http_method">
                                 <a href="#{{summary}}">{{@key}}</a>
@@ -70,7 +68,7 @@
                               {{#if schema.$ref}}
                                 <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
                               {{else}}
-                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
+                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" autocomplete="off" {{#if this.required}}required{{/if}}>
                               {{/if}}
                               </div>
                             {{/each}}
@@ -132,5 +130,44 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
   </div>
+</div>
+<!-- 创建项目 -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="importApiModalLabel">
+          <span id="result-summary" style="font-weight: bold;"></span>
+          <span class="http_method"><a href="#" id="result-method"></a></span>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label style="width: 150px;">REQUEST URL</label>
+          <pre id="request-url"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE BODY</label>
+          <pre id="response-body"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE CODE</label>
+          <pre id="response-code"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE HEADERS</label>
+          <pre id="response-headers"></pre>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
 </div>
 <script type="text/javascript" src="/javascripts/application.js"></script>

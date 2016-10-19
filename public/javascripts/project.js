@@ -32,7 +32,7 @@ var createProjectEvent = function(event){
   var obj = {
     name: data.name,
     owner: data.owner,
-    env_json: env_json
+    env_json: JSON.stringify(env_json)
   }
   if(data._id) obj['_id'] = data._id;
   $.ajax({
@@ -64,7 +64,7 @@ var editProjectEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
   $.ajax({
-    url: '/api/projects/id/'+ id,
+    url: '/api/projects/'+ id,
     type: 'GET',
     success:function(data){
       $('#editProjectModal input').attr('checked', false);
@@ -134,7 +134,7 @@ var delProjectEvent = function(event){
   var id = $(event.currentTarget).data("id");
   if(!confirm('确定要删除该项目吗？')) return;
   $.ajax({
-    url:'/api/projects/id/' + id,
+    url:'/api/projects/' + id,
     type:'DELETE',
     success:function(data){
       if(data.status){

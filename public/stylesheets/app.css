@@ -60,9 +60,10 @@
   margin-top: 20px; }
 
 .project {
-  border-radius: 6px;
+  border: 1px solid #e8ebf5;
+  box-shadow: 1px 1px 2px 0 #e8ebf5;
+  border-radius: 5px;
   background-color: #fff;
-  border: 1px solid #ddd;
   padding: 50px 20px;
   margin: 10px 0;
   text-align: center; }
@@ -304,7 +305,7 @@
     .case-manager .group .tab-content .tab-pane ul li {
       list-style-type: none;
       padding-left: 10px;
-      height: 50px;
+      height: 70px;
       border-bottom: 1px solid #f1f2f6;
       border-left: 3px solid #fff;
       cursor: pointer; }
@@ -339,14 +340,15 @@
     display: inline-block; }
 
 .case-manager .detail-content {
-  padding-top: 20px;
+  padding-top: 10px;
   background-color: #fff;
-  min-height: 600px; }
+  overflow: hidden; }
   .case-manager .detail-content .detail-left {
     width: 50%;
     display: inline-block;
     height: 100%;
-    padding-top: 10px; }
+    padding-top: 10px;
+    border-right: 1px solid #dfdfdf; }
     .case-manager .detail-content .detail-left .detail-search {
       padding-left: 30px; }
       .case-manager .detail-content .detail-left .detail-search input[name="template"] {
@@ -368,23 +370,42 @@
       padding-top: 10px;
       list-style-type: none; }
       .case-manager .detail-content .detail-left ul li {
-        height: 50px;
-        padding-left: 20px; }
+        height: 70px;
+        padding-left: 20px;
+        cursor: pointer;
+        border-bottom: #dfdfdf solid 1px; }
+        .case-manager .detail-content .detail-left ul li .radio-click {
+          display: inline-block; }
         .case-manager .detail-content .detail-left ul li input {
           display: inline-block;
           height: 42px; }
-        .case-manager .detail-content .detail-left ul li .group-obj {
-          display: inline-block; }
+        .case-manager .detail-content .detail-left ul li .model-obj {
+          display: inline-block;
+          height: 50px;
+          padding: 5px 10px; }
 
 .case-manager .detail-content .detail-right {
-  width: 48%;
+  width: 50%;
   display: inline-block;
-  border-left: 1px solid #f1f2f6;
   height: 100%;
-  float: right; }
+  float: right;
+  position: relative;
+  left: -1px;
+  border-left: 1px solid #dfdfdf; }
+  .case-manager .detail-content .detail-right .model {
+    color: #818388;
+    margin: 5px 10px;
+    font-weight: bold;
+    margin: 5px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
   .case-manager .detail-content .detail-right header .title {
     color: #8895B4;
-    margin: 5px 10px; }
+    margin: 5px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
   .case-manager .detail-content .detail-right header .result {
     margin: 5px 10px;
     padding: 0 10px;
@@ -400,11 +421,15 @@
     list-style-type: decimal; }
     .case-manager .detail-content .detail-right ul li {
       list-style-type: none;
-      list-style-type: decimal; }
+      list-style-type: decimal;
+      margin-top: 10px; }
       .case-manager .detail-content .detail-right ul li .path {
         color: #8895B4;
-        height: 40px;
-        line-height: 40px; }
+        line-height: 20px;
+        font-size: 12px;
+        margin-bottom: 10px; }
+        .case-manager .detail-content .detail-right ul li .path span i {
+          font-size: 12px; }
       .case-manager .detail-content .detail-right ul li .info {
         background-color: #FD8181;
         border-radius: 3px;
@@ -416,13 +441,13 @@
         padding: 0px 20px;
         margin-right: 20px; }
 
-.group-obj {
+.group-obj, .model-obj {
   height: 50px;
-  padding: 5px 10px; }
-  .group-obj .name {
+  padding: 16px 20px; }
+  .group-obj .name, .model-obj .name {
     font-size: 14px;
     color: #8895B4; }
-  .group-obj .time {
+  .group-obj .time, .model-obj .time {
     font-size: 12px;
     color: #A8A8A8; }
 
