@@ -32,7 +32,8 @@ var endpointEvent = function(e){
     },
     error: function(xhr, status, e){
       $("#response-body").html(xhr.responseText || "未知故障");
-      $("#response-headers").html(request.getAllResponseHeaders());
+      $("#response-code").html(xhr.status);
+      $("#response-headers").html(xhr.getAllResponseHeaders());
     },
     complete: function(){
       $("#result-summary").html(summary);
