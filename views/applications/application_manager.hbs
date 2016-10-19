@@ -50,7 +50,7 @@
                       <div class="row">
                         <div class="col-sm-6 col-md-6 paths">
                           <h2 id="{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
-                          <form class="path-form" data-path="{{@../key}}" data-method="{{@key}}">
+                          <form class="path-form" data-path="{{@../key}}" data-summary="{{summary}}" data-method="{{@key}}">
                           <h3 class="{{@key}}">
                             <span class="http_method">
                                 <a href="#{{summary}}">{{@key}}</a>
@@ -68,7 +68,7 @@
                               {{#if schema.$ref}}
                                 <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
                               {{else}}
-                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}>
+                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" autocomplete="off" {{#if this.required}}required{{/if}}>
                               {{/if}}
                               </div>
                             {{/each}}
@@ -140,11 +140,28 @@
           &times;
         </button>
         <h4 class="modal-title" id="importApiModalLabel">
-          请求结果
+          <span id="result-summary" style="font-weight: bold;"></span>
+          <span class="http_method"><a href="#" id="result-method"></a></span>
         </h4>
       </div>
       <div class="modal-body">
-        <pre id="api-result"></pre>
+        <div class="form-group">
+          <label style="width: 150px;">REQUEST URL</label>
+          <pre id="request-url"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE BODY</label>
+          <pre id="response-body"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE CODE</label>
+          <pre id="response-code"></pre>
+        </div>
+        <div class="form-group">
+          <label style="width: 150px;">RESPONSE HEADERS</label>
+          <pre id="response-headers"></pre>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭

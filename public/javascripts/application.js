@@ -16,6 +16,7 @@ var endpointEvent = function(e){
   var domain = $('.app-header').data('domain');
   var path = $(event.currentTarget).data("path");
   var method = $(event.currentTarget).data("method");
+  var summary = $(event.currentTarget).data("summary");
   var data = $(event.currentTarget).serializeJSON();
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
@@ -24,13 +25,19 @@ var endpointEvent = function(e){
     url: domain + path,
     type: method,
     data: data,
-    success:function(data){
-      $("#api-result").html('');
-      $("#api-result").append(JSON.stringify(data, null, 2));
-      $("#resultModal").modal('show');
+    success:function(data, textStatus, request){
+      $("#response-headers").html(request.getAllResponseHeaders());
+      $("#response-code").html(request.status);
+      $("#response-body").html(JSON.stringify(data, null, 2));
     },
     error: function(xhr, status, e){
-      $("#api-result").html(xhr.responseText || "未知故障");
+      $("#response-body").html(xhr.responseText || "未知故障");
+      $("#response-headers").html(request.getAllResponseHeaders());
+    },
+    complete: function(){
+      $("#result-summary").html(summary);
+      $("#result-method").html(method);
+      $("#request-url").html(domain + path);
       $("#resultModal").modal('show');
     }
   });
