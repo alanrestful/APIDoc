@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var fs = require("fs");
 
 var ConanGroup = require('../models/ConanGroup').ConanGroup;
 var ConanCaseModel = require('../models/ConanCaseModel').ConanCaseModel;
@@ -345,6 +346,38 @@ router.put('/model', function(req, res) {
       return;
     }
     res.json({status: true, messages: null, result: null});
+  });
+});
+
+router.get('/json/:id',function(req,res,next){
+  var id = req.params.id;
+  if(!id){
+    console.log('find models error:%s', err);
+    res.json({status: false, messages: '查询用例模版失败',result: null});
+    return;
+  }
+  ConanCaseModel.findOne({_id: id}, {}, function(err, model){
+    if(err){
+      console.log('find models error:%s', err);
+      res.json({status: false, messages: '获取用例模版失败',result: null});
+      return;
+    }
+    var fragment = JSON.parse(model.fragment);
+    var data = {};
+    data[fragment[0].hash] = {expect:""};
+    for(var i in fragment[0].tArray){
+      if(typeof(fragment[0].tArray[i].value) != "undefined"){
+        data[fragment[0].tArray[i].hash] = {expect: "", value: fragment[0].tArray[i].value};
+      }else{
+        data[fragment[0].tArray[i].hash] = {expect: "", value: ""};
+      }
+    }
+    var filename = model.name;
+    var fragment = JSON.parse(model.fragment);
+    fs.writeFileSync('./temp/output.json',JSON.stringify(data, null, 2));
+    // // var JsonObj=JSON.parse(fs.readFileSync('./output.json'));
+    // // console.log(JsonObj);
+    res.download('./temp/output.json', filename+'.json');
   });
 });
 

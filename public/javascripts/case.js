@@ -1,5 +1,4 @@
 "use strict";
-
 $(function(){
   load();
   $(document).on('click', '.edit-setting', editSettingEvent);
@@ -207,7 +206,6 @@ var popoverAction = function(event){
     type: 'GET',
     success: function(data){
       if(data.status){
-        $('.detail-right').html('<div class="model">'+ name +'</div>');
         $('.detail-right').html('<div class="model">'+ name +'</div>');
         var obj = JSON.parse(data.result.model.fragment)
         var hashArr = JSON.parse(data.result.data.data);

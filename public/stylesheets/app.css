@@ -165,6 +165,7 @@
     .user-manager .user-header .user-add {
       line-height: 50px;
       color: #fff;
+      font-size: 12px;
       outline: none;
       float: right;
       margin: 0;
@@ -578,3 +579,11 @@ body {
 
 .main .page-header {
   margin-top: 0; }
+
+.export-template {
+  text-decoration: none;
+  float: right;
+  font-size: 12px; }
+
+.export-template:hover {
+  text-decoration: none; }
