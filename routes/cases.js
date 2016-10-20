@@ -7,7 +7,7 @@ var ConanCaseModel = require('../models/ConanCaseModel').ConanCaseModel;
 var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 
 var router = express.Router();
-
+var path = require('path');
 var multer = require('multer');
 var upload = multer({dest: path.join(__dirname, '../temp/')});
 

@@ -12,7 +12,7 @@
           <a href="#{{name}}" class="nav-header collapsed" data-toggle="collapse">{{name}}<span class="pull-right iconfont icon-xiangxia" style="font-size: 12px;"></span></a>
           <ul id="{{name}}" class="nav nav-list collapse">
             {{#each key}}
-              <li><a href="#{{this}}" title="{{this}}" style="margin-left: 20px;">{{this}}</a></li>
+              <li><a href="#{{../name}}-{{this}}" title="{{this}}" style="margin-left: 20px;">{{this}}</a></li>
             {{/each}}
           </ul>
         </li>
@@ -48,7 +48,7 @@
                     <li id="{{tags}}" style="list-style: none;">
                       <div class="row">
                         <div class="col-sm-6 col-md-6 paths">
-                          <h2 id="{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
+                          <h2 id="{{tags}}-{{summary}}" class="operation-title" style="padding-top: 70px;margin-top: -60px;">{{summary}}</h2>
                           <form class="path-form" data-path="{{@../key}}" data-summary="{{summary}}" data-method="{{@key}}">
                           <h3 class="{{@key}}">
                             <span class="http_method">
