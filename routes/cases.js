@@ -1,11 +1,15 @@
 var express = require('express');
 var http = require('http');
+var fs = require("fs");
 
 var ConanGroup = require('../models/ConanGroup').ConanGroup;
 var ConanCaseModel = require('../models/ConanCaseModel').ConanCaseModel;
 var ConanCaseData = require('../models/ConanCaseData').ConanCaseData;
 
 var router = express.Router();
+var path = require('path');
+var multer = require('multer');
+var upload = multer({dest: path.join(__dirname, '../temp/')});
 
 /**
  * 创建用例组
@@ -347,5 +351,62 @@ router.put('/model', function(req, res) {
     res.json({status: true, messages: null, result: null});
   });
 });
+
+router.get('/json/:id',function(req,res,next){
+  var id = req.params.id;
+  if(!id){
+    console.log('find models error:%s', err);
+    res.json({status: false, messages: '查询用例模版失败',result: null});
+    return;
+  }
+  ConanCaseModel.findOne({_id: id}, {}, function(err, model){
+    if(err){
+      console.log('find models error:%s', err);
+      res.json({status: false, messages: '获取用例模版失败',result: null});
+      return;
+    }
+    var fragment = JSON.parse(model.fragment);
+    var data = {};
+    data[fragment[0].hash] = {expect:""};
+    for(var i in fragment[0].tArray){
+      if(typeof(fragment[0].tArray[i].value) != "undefined"){
+        data[fragment[0].tArray[i].hash] = {expect: "", value: fragment[0].tArray[i].value};
+      }else{
+        data[fragment[0].tArray[i].hash] = {expect: "", value: ""};
+      }
+    }
+    var filename = model.name;
+    fs.writeFileSync('./temp/output.json',JSON.stringify(data, null, 2));
+    // // var JsonObj=JSON.parse(fs.readFileSync('./output.json'));
+    // // console.log(JsonObj);
+    res.download('./temp/output.json', filename+'.json');
+  });
+});
+
+/**
+ * 导入用例数据
+ * @type {[type]}
+ */
+router.post('/import-data', upload.single('file'), function (req, res) {
+    console.log(req.file);  // 上传的文件信息
+    var fdata = fs.readFileSync(req.file.path, "utf-8");
+    var data = JSON.parse(fdata);
+    var mid = req.body.mid;
+    ConanCaseModel.findOne({_id: mid}, function(err, model){
+      if(err || model == null){
+        console.log('find models error:%s', err);
+        res.json({status: false, messages: '获取用例模版失败',result: null});
+        return;
+      }
+      var conanCaseData = new ConanCaseData({
+        mid: model._id,
+        name: model.name,
+        data: data
+      });
+      conanCaseData.save();
+      res.json({status: true, messages: null, result: null});
+    });
+});
+
 
 module.exports = router;
