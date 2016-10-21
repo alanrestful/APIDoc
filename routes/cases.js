@@ -12,7 +12,7 @@ var multer = require('multer');
 var upload = multer({dest: path.join(__dirname, '../temp/')});
 
 /**
- * 创建用例组
+ * 创建模版组
  * @type {[type]}
  */
 router.post('/group', function(req, res) {
@@ -66,7 +66,57 @@ router.post('/group', function(req, res) {
 });
 
 /**
- * 创建用例case
+ * 获取用例组
+ * @type {[type]}
+ */
+router.get('/groups', function(req, res) {
+  var id = req.query.pid;
+  if(!id){
+    res.json({status: false, messages: '项目ID不能为空',result: null});
+    return;
+  }
+  var conanGroup = new ConanGroup;
+  conanGroup.findByPid(id, function(err, groups){
+    if(err){
+      console.log('find groups error:%s', err);
+      res.json({status: false, messages: '获取用例组失败',result: null});
+      return;
+    }
+    res.json({status: true, messages: null,result: groups});
+  });
+});
+
+/**
+ * 删除用例组
+ * @type {[type]}
+ */
+router.delete('/groups', function(req, res) {
+  var id = req.query.gid;
+  if(!id){
+    res.json({status: false, messages: '组ID不能为空',result: null});
+    return;
+  }
+
+  ConanGroup.remove({_id: id}, function(err) {
+    if(err) {
+      console.log('delete group error:%s', err);
+      res.json({status: false, messages: '删除失败', result: null});
+      return;
+    }
+    ConanCaseModel.remove({gid: id}, function(err) {
+      if(err) {
+        console.log('delete model error:%s', err);
+        res.json({status: false, messages: '删除失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: null});
+    });
+  });
+});
+
+
+/**
+ * 创建用例模版和用例数据
  * @type {[type]}
  */
 router.post('/', function(req, res) {
@@ -156,55 +206,6 @@ function fragmentHandle(fragment){
 }
 
 /**
- * 获取用例组
- * @type {[type]}
- */
-router.get('/groups', function(req, res) {
-  var id = req.query.pid;
-  if(!id){
-    res.json({status: false, messages: '项目ID不能为空',result: null});
-    return;
-  }
-  var conanGroup = new ConanGroup;
-  conanGroup.findByPid(id, function(err, groups){
-    if(err){
-      console.log('find groups error:%s', err);
-      res.json({status: false, messages: '获取用例组失败',result: null});
-      return;
-    }
-    res.json({status: true, messages: null,result: groups});
-  });
-});
-
-/**
- * 删除用例组
- * @type {[type]}
- */
-router.delete('/groups', function(req, res) {
-  var id = req.query.gid;
-  if(!id){
-    res.json({status: false, messages: '组ID不能为空',result: null});
-    return;
-  }
-
-  ConanGroup.remove({_id: id}, function(err) {
-    if(err) {
-      console.log('delete group error:%s', err);
-      res.json({status: false, messages: '删除失败', result: null});
-      return;
-    }
-    ConanCaseModel.remove({gid: id}, function(err) {
-      if(err) {
-        console.log('delete model error:%s', err);
-        res.json({status: false, messages: '删除失败', result: null});
-        return;
-      }
-      res.json({status: true, messages: null, result: null});
-    });
-  });
-});
-
-/**
  * 获取用例模版
  * @type {[type]}
  */
@@ -244,6 +245,33 @@ router.get('/model', function(req, res) {
     res.json({status: true, messages: null,result: model});
   });
 });
+
+
+/**
+ * 更新用例模版名称
+ * @type {[type]}
+ */
+router.put('/model', function(req, res) {
+  var id = req.body.mid;
+  var name = req.body.name;
+  if(!id){
+    res.json({status: false, messages: '模版ID不能为空',result: null});
+    return;
+  }
+  if(!name){
+    res.json({status: false, messages: '名称不能为空',result: null});
+    return;
+  }
+  ConanCaseModel.update({_id: id},{$set: {name: name}}, function(err) {
+    if(err) {
+      console.log('update project error:%s', err);
+      res.json({status: false, messages: '更新项目失败', result: null});
+      return;
+    }
+    res.json({status: true, messages: null, result: null});
+  });
+});
+
 
 /**
  * 删除单个用例模版
@@ -326,32 +354,102 @@ router.get('/data', function(req, res) {
     });
 });
 
-
 /**
- * 更新用例模版名称
+ * 新增用例数据
  * @type {[type]}
  */
-router.put('/model', function(req, res) {
-  var id = req.body.mid;
-  var name = req.body.name;
-  if(!id){
-    res.json({status: false, messages: '模版ID不能为空',result: null});
-    return;
-  }
-  if(!name){
-    res.json({status: false, messages: '名称不能为空',result: null});
-    return;
-  }
-  ConanCaseModel.update({_id: id},{$set: {name: name}}, function(err) {
-    if(err) {
-      console.log('update project error:%s', err);
-      res.json({status: false, messages: '更新项目失败', result: null});
-      return;
-    }
-    res.json({status: true, messages: null, result: null});
-  });
+router.post('/data', function (req, res) {
+    var mid = req.body.mid;
+    var name = req.body.name;
+    var data = JSON.parse(req.body.data);
+    ConanCaseModel.findOne({_id: mid}, function(err, model){
+      if(err || model == null){
+        console.log('find models error:%s', err);
+        res.json({status: false, messages: '获取用例模版失败',result: null});
+        return;
+      }
+      var conanCaseData = new ConanCaseData({
+        mid: model._id,
+        name: name,
+        data: data
+      });
+      conanCaseData.save();
+      res.json({status: true, messages: null, result: null});
+    });
 });
 
+/**
+ * 修改单个用例数据
+ * @type {[type]}
+ */
+router.put('/data', function (req, res) {
+    var did = req.body.did;
+    var name = req.body.name;
+    var data = JSON.parse(req.body.data);
+    ConanCaseData.update({_id: did},{$set: {name: name, data: data}}).exec()
+      .catch(function(err) {
+        console.log('update data error:%s', err);
+        res.json({status: false, messages: '修改失败', result: null});
+        return;
+      })
+      .then(function(data) {
+        res.json({status: true, messages: null, result: null});
+      });
+});
+
+/**
+ * 删除单个用例数据
+ * @type {[type]}
+ */
+router.delete('/data', function (req, res) {
+    var did = req.body.did;
+    ConanCaseData.remove({did: did}, function(err) {
+      if(err) {
+        console.log('delete data error:%s', err);
+        res.json({status: false, messages: '删除失败', result: null});
+        return;
+      }
+      res.json({status: true, messages: null, result: null});
+    });
+});
+
+/**
+ * 修改单个hash用例数据
+ * @type {[type]}
+ */
+router.put('/hdata', function (req, res) {
+    var did = req.body.did;
+    var hash = req.body.hash;
+    var data = req.body.data;
+
+    ConanCaseData.findOne({_id: did})
+      .exec()
+      .catch(function(err) {
+        console.log('find data error:%s', err);
+        res.json({status: false, messages: '查询失败',result: null});
+        return;
+      })
+      .then(function(data) {
+        var obj = JSON.parse(data.data);
+        if(obj[hash]){
+          obj[hash] = JSON.stringify(data);
+        }
+        return ConanCaseData.update({_id: did},{$set: {data: data}}).exec()
+      })
+      .catch(function(val) {
+        console.log('update hash data error:%s', err);
+        res.json({status: false, messages: '修改失败',result: null});
+        return;
+      })
+      .then(function(data) {
+        res.json({status: true, messages: null,result: result});
+      });
+});
+
+/**
+ * 下载用例json文件
+ * @type {[type]}
+ */
 router.get('/json/:id',function(req,res,next){
   var id = req.params.id;
   if(!id){
@@ -407,6 +505,5 @@ router.post('/import-data', upload.single('file'), function (req, res) {
       res.json({status: true, messages: null, result: null});
     });
 });
-
 
 module.exports = router;
