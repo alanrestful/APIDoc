@@ -62,7 +62,7 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
       var path_obj = {};
       path_obj[path] = data.paths[path];
 
-      var apiPath = ApiPath({
+      var apiPath = new ApiPath({
         applicationId: req.body._id,
         path_json: path_obj
       });
@@ -80,6 +80,56 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
     }
     console.log("##############");
     res.redirect('../../applications/id/' + req.body._id);
+});
+
+/**
+ * 重新导入数据
+ * @type {[type]}
+ */
+router.post('/update-import-api', upload.single('apifile'), function (req, res) {
+    console.log(req.file);  // 上传的文件信息
+    var fdata = fs.readFileSync(req.file.path, "utf-8");
+    var jsondata = JSON.parse(fdata);
+    var aid = req.body._id;
+    console.log("===="+aid);
+
+    // 更新document
+    ApiDocument.remove({applicationId: aid}, function(err, d){
+      ApiPath.remove({applicationId: aid}, function(err, d){
+        ApiDefinition.remove({applicationId: aid}, function(err, d){
+          var apiDocument = new ApiDocument({
+            applicationId: aid,
+            swagger: jsondata.swagger,
+            info: jsondata.info,
+            host: jsondata.host,
+            basePath: jsondata.basePath
+          });
+          apiDocument.save();
+
+          for (var path in jsondata.paths) {
+            var path_obj = {};
+            path_obj[path] = jsondata.paths[path];
+
+            var apiPath = new ApiPath({
+              applicationId: aid,
+              path_json: path_obj
+            });
+            apiPath.save();
+          }
+
+          for (var def in jsondata.definitions) {
+            var def_obj = {};
+            def_obj[def] = jsondata.definitions[def];
+            var apiDefinition = new ApiDefinition({
+              applicationId: aid,
+              definition_json: def_obj
+            });
+            apiDefinition.save();
+          }
+          res.redirect('../../applications/id/' + aid);
+        });
+      });
+    });
 });
 
 // 查询实体参数定义

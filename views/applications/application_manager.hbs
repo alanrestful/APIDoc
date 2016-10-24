@@ -35,8 +35,9 @@
              <p>{{info.license.url}}</p>
              <p>{{basePath}}</p>
              <p>{{host}}</p>
-             <a href="/edit/#/?appId={{../app._id}}" target="_blank">Editor</a>
-             <a href="/logs?appId={{../app._id}}" target="_blank">Update Logs</a>
+             <a href="/edit/#/?appId={{../app._id}}" target="_blank">编辑API接口</a>
+             <a href="/logs?appId={{../app._id}}" target="_blank">API修改日志</a>
+             <a data-toggle="modal" data-target="#updateImportApiModal" href="#">重新上传</a>
             </div>
           {{/each}}
           <div class="row">
@@ -96,41 +97,69 @@
               {{/each}}
             </div>
           </div>
-        {{/unless}}
+          {{/unless}}
+        </div>
       </div>
     </div>
   </div>
 </div>
-  <!-- 创建项目 -->
-  <div class="modal fade" id="importApiModal" tabindex="-1" role="dialog" aria-labelledby="importApiModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      <form action="/api/applications/importAPI" method="post" enctype="multipart/form-data">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-            &times;
-          </button>
-          <h4 class="modal-title" id="importApiModalLabel">
-            上传API接口文件
-          </h4>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="_id" value="{{app._id}}">
-           接口文件：<input type="file" name="apifile" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
-          </button>
-          <button type="submit" class="btn btn-sm btn-primary">
-            上传
-          </button>
-        </div>
-      </form>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+<!-- 导入api文件 -->
+<div class="modal fade" id="importApiModal" tabindex="-1" role="dialog" aria-labelledby="importApiModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form action="/api/applications/importAPI" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="importApiModalLabel">
+          导入API文件
+        </h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="_id" value="{{app._id}}">
+         接口文件：<input type="file" name="apifile" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          导入
+        </button>
+      </div>
+    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+<!-- 更新api -->
+<div class="modal fade" id="updateImportApiModal" tabindex="-1" role="dialog" aria-labelledby="updateImportApiModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form action="/api/applications/update-import-api" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="importApiModalLabel">
+          重新导入API文件
+        </h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="_id" value="{{app._id}}">
+         接口文件：<input type="file" name="apifile" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">
+          重新上传
+        </button>
+      </div>
+    </form>
+    </div>
   </div>
 </div>
-<!-- 创建项目 -->
+<!-- api调用结果 -->
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
