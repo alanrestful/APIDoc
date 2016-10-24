@@ -373,8 +373,15 @@ router.post('/data', function (req, res) {
         name: name,
         data: data
       });
-      conanCaseData.save();
-      res.json({status: true, messages: null, result: null});
+      conanCaseData.save(function(err, dd){
+        if(err){
+          console.log('save data error:%s', err);
+          res.json({status: false, messages: '新增失败',result: null});
+          return;
+        }
+        res.json({status: true, messages: null, result: dd});
+      });
+
     });
 });
 
