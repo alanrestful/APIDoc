@@ -403,7 +403,7 @@ router.put('/data', function (req, res) {
  */
 router.delete('/data', function (req, res) {
     var did = req.body.did;
-    ConanCaseData.remove({_id: did}, function(err) {
+    ConanCaseData.remove({_id: ObjectId(did)}, function(err, d) {
       if(err) {
         console.log('delete data error:%s', err);
         res.json({status: false, messages: '删除失败', result: null});
