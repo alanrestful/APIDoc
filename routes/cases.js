@@ -418,32 +418,31 @@ router.delete('/data', function (req, res) {
  * @type {[type]}
  */
 router.put('/hdata', function (req, res) {
-    var did = req.body.did;
-    var hash = req.body.hash;
-    var data = req.body.data;
+  var did = req.body.did;
+  var hash = req.body.hash;
+  var hdata = req.body.data;
 
-    ConanCaseData.findOne({_id: did})
-      .exec()
-      .catch(function(err) {
-        console.log('find data error:%s', err);
-        res.json({status: false, messages: '查询失败',result: null});
-        return;
-      })
-      .then(function(data) {
-        var obj = JSON.parse(data.data);
-        if(obj[hash]){
-          obj[hash] = JSON.stringify(data);
-        }
-        return ConanCaseData.update({_id: did},{$set: {data: data}}).exec()
-      })
-      .catch(function(val) {
+  ConanCaseData.findOne({_id: did}, function(err, data){
+    if(err){
+      console.log('find data error:%s', err);
+      res.json({status: false, messages: '查询失败',result: null});
+      return;
+    }
+    var obj = JSON.parse(data.data);
+    if(obj[hash]){
+      obj[hash] = JSON.stringify(hdata);
+    }
+    var o = JSON.stringify(obj);
+    ConanCaseData.update({_id: did},{$set: {data: o}}, function(err, data){
+      if(err){
         console.log('update hash data error:%s', err);
         res.json({status: false, messages: '修改失败',result: null});
         return;
-      })
-      .then(function(data) {
-        res.json({status: true, messages: null,result: result});
-      });
+      }
+      res.json({status: true, messages: null,result: result});
+    });
+  });
+
 });
 
 /**
