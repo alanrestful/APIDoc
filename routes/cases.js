@@ -361,7 +361,7 @@ router.get('/data', function(req, res) {
 router.post('/data', function (req, res) {
     var mid = req.body.mid;
     var name = req.body.name;
-    var data = JSON.parse(req.body.data);
+    var data = req.body.data;
     ConanCaseModel.findOne({_id: mid}, function(err, model){
       if(err || model == null){
         console.log('find models error:%s', err);
@@ -369,7 +369,7 @@ router.post('/data', function (req, res) {
         return;
       }
       var conanCaseData = new ConanCaseData({
-        mid: model._id,
+        mid: mid,
         name: name,
         data: data
       });
