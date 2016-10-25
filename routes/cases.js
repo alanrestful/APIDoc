@@ -446,7 +446,7 @@ router.put('/hdata', function (req, res) {
         res.json({status: false, messages: '修改失败',result: null});
         return;
       }
-      res.json({status: true, messages: null,result: result});
+      res.json({status: true, messages: null,result: null});
     });
   });
 
