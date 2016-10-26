@@ -437,7 +437,7 @@ router.put('/hdata', function (req, res) {
     }
     var obj = JSON.parse(data.data);
     if(obj[hash]){
-      obj[hash][expect] = hdata;
+      obj[hash].expect = hdata;
     }
     var o = JSON.stringify(obj);
     ConanCaseData.update({_id: did},{$set: {data: o}}, function(err, data){
