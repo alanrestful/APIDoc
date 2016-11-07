@@ -480,7 +480,7 @@ router.get('/json/:id',function(req,res,next){
       }
     }
     var filename = model.name;
-    fs.writeFileSync('./temp/output.json',JSON.stringify(data, null, 2));
+    fs.writeFileSync('./temp/output.json',JSON.stringify([data], null, 2));
     // // var JsonObj=JSON.parse(fs.readFileSync('./output.json'));
     // // console.log(JsonObj);
     res.download('./temp/output.json', filename+'.json');
@@ -502,13 +502,17 @@ router.post('/import-data', upload.single('file'), function (req, res) {
         res.json({status: false, messages: '获取用例模版失败',result: null});
         return;
       }
-      var conanCaseData = new ConanCaseData({
-        mid: model._id,
-        name: model.name,
-        data: data
-      });
-      conanCaseData.save();
-      res.json({status: true, messages: null, result: null});
+      console.log(1);
+      for(var i=0; i<data.length;i++){
+        var t = data[i];
+        var conanCaseData = new ConanCaseData({
+          mid: mid,
+          name: model.name,
+          data: JSON.stringify(data[i])
+        });
+        conanCaseData.save();
+      }
+      res.redirect('../../cases');
     });
 });
 

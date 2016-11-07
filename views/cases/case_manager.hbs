@@ -44,7 +44,7 @@
         <div class="detail-header">
           <div class="detail-header-left"><span class="detail-group-name"></span></div>
           <div class="detail-header-right">
-            <!-- <span class="edit-group cursor"><i class="iconfont icon-bianji" style="font-size: 12px;"></i>edit</span> -->
+            <span class="cursor import-case"><i class="iconfont icon-add" style="font-size: 12px;"></i>导入用例</span>
             <span class="del-group cursor"><i class="iconfont icon-shanchu" style="font-size: 12px;"></i>删除</span>
           </div>
         </div>
@@ -103,4 +103,31 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal -->
 </div>
+
+<!-- 导入api文件 -->
+<div class="modal fade" id="importCaseModal" tabindex="-1" role="dialog" aria-labelledby="importCaseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 360px; margin: 0 auto;">
+    <form action="/api/cases/import-data" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="importCaseModalLabel">
+          导入用例数据
+        </h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="importCaseDataId" name="mid" />
+         JSON文件：<input type="file" name="file" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-sm btn-primary">导入</button>
+      </div>
+    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+
 <script type="text/javascript" src="/javascripts/case.js"></script>

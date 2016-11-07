@@ -3,17 +3,27 @@ $(function(){
   load();
   $(document).on('click', '.edit-setting', editSettingEvent);
   $(document).on('submit', '.edit-env-form', saveSettingEvent);
-  $(document).on('click', '.edit-group', editGroupEvent);
   $(document).on('click', '.del-group', delGroupEvent);
-  $(document).on('click', '.edit-detail', editDetailEvent);
-  $(document).on('click', '.del-detail', delDetailEvent);
+
   $(document).on('click', '.tab-pane ul li', groupEvent);
   $(document).on('click', '.detail-left ul li .radio-click', fragmentEvent);
   $(document).on('change', '#setting-name', settingChangeEvent);
   $(document).on('click', '.case-detail-btn', caseDetailAction);
   $(document).on('click', '.popover-content p', popoverAction);
+
+  $(document).on('click', '.import-case', importCaseEvent);
 });
 
+/* 创建应用弹框 */
+var importCaseEvent = function(event){
+  var id = $(".detail-left ul li .radio-click").find('input[type=radio]:checked').closest("li").data("id");
+  if(!id){
+    alert("请选择用例");
+    return;
+  }
+  $("#importCaseDataId").val(id);
+  $('#importCaseModal').modal('show');
+};
 
 Date.prototype.format = function(format) {
   var date = {
@@ -281,15 +291,6 @@ var saveSettingEvent = function(event){
 };
 
 /**
- * 编辑分组
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
- */
-var editGroupEvent = function(event){
-  alert("edit group");
-};
-
-/**
  * 删除分组
  * @param  {[type]} event [description]
  * @return {[type]}       [description]
@@ -324,23 +325,4 @@ var delGroupEvent = function(event){
     }
   });
 
-};
-
-/**
- * 编辑详情
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
- */
-var editDetailEvent = function(event){
-  alert("edit detail");
-};
-
-/**
- * 删除详细
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
- */
-var delDetailEvent = function(event){
-
-  alert("del detail");
 };
