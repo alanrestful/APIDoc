@@ -28,20 +28,15 @@ router.get('/', function (req, res) {
 
 /* 创建应用 */
 router.post('/', function (req, res, next) {
-    console.log(req.body);
-    var envArr = JSON.parse(req.body.envJson);
-    for (var e in envArr) {
-      var app = new Application({
-        projectId: req.body.projectId,
-        name: req.body.name,
-        owner: req.session.user,
-        tag: req.body.tag,
-        env: envArr[e].name,
-        domain: envArr[e].domain
-      });
-      app.save();
-    }
-    res.json({status: true, messages: null, result: null});
+  var app = new Application({
+    projectId: req.body.projectId,
+    name: req.body.name,
+    owner: req.session.user,
+    tag: req.body.tag,
+    env: req.body.env
+  });
+  app.save();
+  res.json({status: true, messages: null, result: null});
 });
 
 /* 导入api */
