@@ -7,7 +7,6 @@ $(function(){
   $(document).on('click', '.env-app', getEnvAppsEvent);
   $(document).on('click', '.add-app', addAppEvent);
 
-
   $(document).on('click', '.del-project', delProjectEvent);
 
   $(document).on('submit', '.create-app-form', createAppEvent);
@@ -110,10 +109,6 @@ var getEnvAppsEvent = function(event){
     success:function(data){
       if(data.status){
         var result = data.result;
-        if(result.length<=0){
-            swal("该环境未创建应用");
-            return;
-        }
         selectAppModal = new $.Modal({
           content: Handlebars.templates.projects.selectApp({"data": result, "id": id, "env": env})
         });

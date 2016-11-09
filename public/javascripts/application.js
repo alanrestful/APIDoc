@@ -21,25 +21,26 @@ var endpointEvent = function(e){
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
   }
+  var url = domain + path;
   $.ajax({
-    url: domain + path,
+    url: url,
     type: method,
     data: data,
     success:function(data, textStatus, request){
-      $("#response-headers").html(request.getAllResponseHeaders());
-      $("#response-code").html(request.status);
-      $("#response-body").html(JSON.stringify(data, null, 2));
+      var headers = request.getAllResponseHeaders();
+      var code = request.status;
+      var body = JSON.stringify(data, null, 2);
+      new $.Modal({
+        content: Handlebars.templates.applications.result({"url": url, "method": method, "summary": summary,"headers": headers, "code": code, "body": body})
+      }).show();
     },
     error: function(xhr, status, e){
-      $("#response-body").html(xhr.responseText || "未知故障");
-      $("#response-code").html(xhr.status);
-      $("#response-headers").html(xhr.getAllResponseHeaders());
-    },
-    complete: function(){
-      $("#result-summary").html(summary);
-      $("#result-method").html(method);
-      $("#request-url").html(domain + path);
-      $("#resultModal").modal('show');
+      var body = xhr.responseText || "未知故障";
+      var headers = xhr.getAllResponseHeaders();
+      var code =  xhr.status;
+      new $.Modal({
+        content: Handlebars.templates.applications.result({"url": url, "method": method, "summary": summary,"headers": headers, "code":code, "body": body})
+      }).show();
     }
   });
 };
