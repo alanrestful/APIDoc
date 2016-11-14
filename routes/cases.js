@@ -502,7 +502,6 @@ router.post('/import-data', upload.single('file'), function (req, res) {
         res.json({status: false, messages: '获取用例模版失败',result: null});
         return;
       }
-      console.log(1);
       for(var i=0; i<data.length;i++){
         var name = model.name + new Date().getTime();
         var conanCaseData = new ConanCaseData({
