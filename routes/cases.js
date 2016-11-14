@@ -504,10 +504,10 @@ router.post('/import-data', upload.single('file'), function (req, res) {
       }
       console.log(1);
       for(var i=0; i<data.length;i++){
-        var t = data[i];
+        var name = model.name + new Date().getTime();
         var conanCaseData = new ConanCaseData({
           mid: mid,
-          name: model.name,
+          name: name,
           data: JSON.stringify(data[i])
         });
         conanCaseData.save();
