@@ -22,6 +22,7 @@ var endpointEvent = function(e){
     path = path.replace("{"+d+"}",data[d]);
   }
   var url = domain + path;
+  var $modal;
   $.ajax({
     url: url,
     type: method,
@@ -30,17 +31,23 @@ var endpointEvent = function(e){
       var headers = request.getAllResponseHeaders();
       var code = request.status;
       var body = JSON.stringify(data, null, 2);
-      new $.Modal({
+      $modal = new $.Modal({
         content: Handlebars.templates.applications.result({"url": url, "method": method, "summary": summary,"headers": headers, "code": code, "body": body})
-      }).show();
+      });
+      $modal.show();
     },
     error: function(xhr, status, e){
       var body = xhr.responseText || "未知故障";
       var headers = xhr.getAllResponseHeaders();
       var code =  xhr.status;
-      new $.Modal({
+      console.log(11);
+      $modal = new $.Modal({
         content: Handlebars.templates.applications.result({"url": url, "method": method, "summary": summary,"headers": headers, "code":code, "body": body})
-      }).show();
+      });
+      $modal.show();
+    },
+    complate: function(){
+      $modal.show();
     }
   });
 };

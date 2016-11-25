@@ -33,7 +33,8 @@ router.post('/', function (req, res, next) {
     name: req.body.name,
     owner: req.session.user,
     tag: req.body.tag,
-    env: req.body.env
+    env: req.body.env,
+    domain: req.body.domain
   });
   app.save();
   res.json({status: true, messages: null, result: null});

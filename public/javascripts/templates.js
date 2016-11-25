@@ -1295,7 +1295,7 @@ this["Handlebars"]["templates"]["applications"] = this["Handlebars"]["templates"
 this["Handlebars"]["templates"]["applications"]["result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<div class=\"modal-header\">\n  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\n    &times;\n  </button>\n  <h4 class=\"modal-title\" id=\"importApiModalLabel\">\n    <span id=\"result-summary\" style=\"font-weight: bold;\">"
+  return "<div class=\"modal-header\">\n  <button type=\"button\" class=\"modal-box-close\">\n    &times;\n  </button>\n  <h4 class=\"modal-title\" id=\"importApiModalLabel\">\n    <span id=\"result-summary\" style=\"font-weight: bold;\">"
     + alias4(((helper = (helper = helpers.summary || (depth0 != null ? depth0.summary : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"summary","hash":{},"data":data}) : helper)))
     + "</span>\n    <span class=\"http_method\"><a href=\"#\" id=\"result-method\">"
     + alias4(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"method","hash":{},"data":data}) : helper)))
@@ -1307,7 +1307,7 @@ this["Handlebars"]["templates"]["applications"]["result"] = Handlebars.template(
     + alias4(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"code","hash":{},"data":data}) : helper)))
     + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE HEADERS</label>\n    <pre id=\"response-headers\">"
     + alias4(((helper = (helper = helpers.headers || (depth0 != null ? depth0.headers : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"headers","hash":{},"data":data}) : helper)))
-    + "</pre>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-sm btn-default\" data-dismiss=\"modal\">关闭\n  </button>\n</div>\n";
+    + "</pre>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-sm btn-default modal-box-close-btn\">取消</button>\n</div>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["projects"] = this["Handlebars"]["templates"]["projects"] || {};
 this["Handlebars"]["templates"]["projects"]["createApp"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1317,6 +1317,8 @@ this["Handlebars"]["templates"]["projects"]["createApp"] = Handlebars.template({
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\"/>\n        <input type=\"hidden\" name=\"env\" value=\""
     + alias4(((helper = (helper = helpers.env || (depth0 != null ? depth0.env : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"env","hash":{},"data":data}) : helper)))
+    + "\"/>\n        <input type=\"hidden\" name=\"domain\" value=\""
+    + alias4(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"domain","hash":{},"data":data}) : helper)))
     + "\"/>\n        <input type=\"text\" class=\"form-control\" placeholder=\"请填写应用名称\" name=\"name\" required>\n      </div>\n      <div class=\"form-group\">\n        <label>应用备注：</label>\n        <input type=\"text\" class=\"form-control\" placeholder=\"请填写应用备注\" name=\"tag\">\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-sm btn-default modal-box-close-btn\">取消</button>\n    <input type=\"submit\" class=\"btn btn-sm btn-primary\" value=\"保存\"/>\n  </div>\n</form>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["projects"]["createProject"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1354,6 +1356,8 @@ this["Handlebars"]["templates"]["projects"]["selectApp"] = Handlebars.template({
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-env=\""
     + alias4(((helper = (helper = helpers.env || (depth0 != null ? depth0.env : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"env","hash":{},"data":data}) : helper)))
+    + "\" data-domain=\""
+    + alias4(((helper = (helper = helpers.domain || (depth0 != null ? depth0.domain : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"domain","hash":{},"data":data}) : helper)))
     + "\"><a href=\"javascript:;\"><i class=\"iconfont icon-add\"></i></a></li>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.data : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "  </ul>\n</div>\n";

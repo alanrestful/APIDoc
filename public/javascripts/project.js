@@ -101,6 +101,7 @@ var getEnvAppsEvent = function(event){
   event && event.preventDefault();
   var id = $(event.currentTarget).data("id");
   var env = $(event.currentTarget).data("env");
+  var domain = $(event.currentTarget).data("domain");
   var data ={id: id,env: env};
   $.ajax({
     url:'/api/applications',
@@ -110,7 +111,7 @@ var getEnvAppsEvent = function(event){
       if(data.status){
         var result = data.result;
         selectAppModal = new $.Modal({
-          content: Handlebars.templates.projects.selectApp({"data": result, "id": id, "env": env})
+          content: Handlebars.templates.projects.selectApp({"data": result, "id": id, "env": env, "domain": domain})
         });
         selectAppModal.show();
       }else{
@@ -128,8 +129,9 @@ var addAppEvent = function(event){
   selectAppModal.hide();
   var id = $(event.currentTarget).data("id");
   var env = $(event.currentTarget).data("env");
+  var domain = $(event.currentTarget).data("domain");
   new $.Modal({
-    content: Handlebars.templates.projects.createApp({"id": id, "env": env})
+    content: Handlebars.templates.projects.createApp({"id": id, "env": env, "domain": domain})
   }).show();
 };
 
