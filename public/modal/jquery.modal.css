@@ -1,0 +1,230 @@
+
+.modal-box{
+	font: normal 12px '\5FAE\8F6F\96C5\9ED1';
+	height: auto;
+	position: fixed;
+	top: 20%;
+	left: 35%;
+	z-index: 99999;
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
+.modal-box-container{
+	position: relative;
+	margin: 0 auto;
+	overflow: auto;
+	border-radius: 5px;
+	background: #fff;
+	box-shadow: 0 0 10px #bbb;
+}
+.modal-box-title{
+	height: 36px;
+	line-height: 36px;
+	padding: 0 15px;
+}
+.modal-box-title h3{
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0;
+	float: left;
+}
+.modal-box-close{
+	font-size: 16px;
+  margin-left: 20px;
+  border-radius: 5px;
+  border: 1px #f1f2f6 solid;
+  background-color: #fff;
+  font-weight: 400;
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+}
+.modal-box-close:hover{
+	color: #f5694b;
+}
+.modal-box-content{
+	font-family: 'Microsoft YaHei';
+	padding: 5px;
+	line-height: 24px;
+	margin: 0;
+}
+
+.modal-box-content .modal-header{
+	min-height: 16.43px;
+  padding: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.modal-box-content .modal-header .modal-title{
+	color: #8895B4;
+}
+.modal-box-content .modal-body{
+  position: relative;
+  padding: 10px;
+	overflow: auto;
+}
+.modal-box-content .modal-footer{
+	padding: 10px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-box-mask{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99998;
+	opacity: .3;
+	filter: alpha(opacity=30);
+	background: #000;
+	display: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+/* effect */
+
+/* effect-fade */
+.effect-fade .modal-box-container{
+	-webkit-transform: scale(0.6);
+	-ms-transform: scale(0.6);
+	transform: scale(0.6);
+	opacity: 0;
+	transition: all .3s;
+}
+.show.effect-fade .modal-box-container{
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+/* effect-newspaper */
+.effect-newspaper .modal-box-container{
+	-webkit-transform: scale(0) rotate(720deg);
+	-ms-transform: scale(0) rotate(720deg);
+	transform: scale(0) rotate(720deg);
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.show.effect-newspaper .modal-box-container{
+	-webkit-transform: scale(1) rotate(0deg);
+	-ms-transform: scale(1) rotate(0deg);
+	transform: scale(1) rotate(0deg);
+	opacity: 1;
+}
+
+/* effect-fall */
+.effect-fall{
+	-webkit-perspective: 1300px;
+	perspective: 1300px;
+}
+.effect-fall .modal-box-container{
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: translateZ(600px) rotateX(20deg);
+	-ms-transform: translateZ(600px) rotateX(20deg);
+	transform: translateZ(600px) rotateX(20deg);
+	opacity: 0;
+}
+.show.effect-fall .modal-box-container{
+	-webkit-transition: all 0.3s ease-in;
+	transition: all 0.3s ease-in;
+	-webkit-transform: translateZ(0px) rotateX(0deg);
+	-ms-transform: translateZ(0px) rotateX(0deg);
+	transform: translateZ(0px) rotateX(0deg);
+	opacity: 1;
+}
+
+/* effect-scaled */
+.effect-scaled .modal-box-container{
+	-webkit-transform: scale(2);
+	-ms-transform: scale(2);
+	transform: scale(2);
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.show.effect-scaled .modal-box-container{
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+/* effect-flip-horizontal */
+.effect-flip-horizontal{
+	-webkit-perspective: 1300px;
+	-moz-perspective: 1300px;
+	perspective: 1300px;
+}
+.effect-flip-horizontal .modal-box-container{
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateY(-70deg);
+	-ms-transform: rotateY(-70deg);
+	transform: rotateY(-70deg);
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+	opacity: 0;
+}
+.show.effect-flip-horizontal .modal-box-container{
+	-webkit-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+	opacity: 1;
+}
+
+/* effect-flip-vertical */
+.effect-flip-vertical{
+	-webkit-perspective: 1300px;
+	-moz-perspective: 1300px;
+	perspective: 1300px;
+}
+.effect-flip-vertical .modal-box-container{
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateX(-70deg);
+	-ms-transform: rotateX(-70deg);
+	transform: rotateX(-70deg);
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+	opacity: 0;
+}
+.show.effect-flip-vertical .modal-box-container{
+	-webkit-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+	opacity: 1;
+}
+
+/* effect-sign */
+.effect-sign{
+	-webkit-perspective: 1300px;
+	perspective: 1300px;
+}
+.effect-sign .modal-box-container{
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateX(-60deg);
+	-ms-transform: rotateX(-60deg);
+	transform: rotateX(-60deg);
+	-webkit-transform-origin: 50% 0;
+	transform-origin: 50% 0;
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.show.effect-sign .modal-box-container{
+	-webkit-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+	opacity: 1;
+}

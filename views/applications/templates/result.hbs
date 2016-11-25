@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    &times;
+  </button>
+  <h4 class="modal-title" id="importApiModalLabel">
+    <span id="result-summary" style="font-weight: bold;">{{summary}}</span>
+    <span class="http_method"><a href="#" id="result-method">{{method}}</a></span>
+  </h4>
+</div>
+<div class="modal-body" style="width:500px;height:420px">
+  <div class="form-group">
+    <label style="width: 150px;">REQUEST URL</label>
+    <pre id="request-url">{{url}}</pre>
+  </div>
+  <div class="form-group">
+    <label style="width: 150px;">RESPONSE BODY</label>
+    <pre id="response-body">{{body}}</pre>
+  </div>
+  <div class="form-group">
+    <label style="width: 150px;">RESPONSE CODE</label>
+    <pre id="response-code">{{code}}</pre>
+  </div>
+  <div class="form-group">
+    <label style="width: 150px;">RESPONSE HEADERS</label>
+    <pre id="response-headers">{{headers}}</pre>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭
+  </button>
+</div>
