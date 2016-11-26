@@ -515,4 +515,74 @@ router.post('/import-data', upload.single('file'), function (req, res) {
     });
 });
 
+
+/**
+ * 获取cases数据
+ * @type {[type]}
+ */
+router.get('/super', function (req, res) {
+
+  ConanGroup.find({}, {},function(err, groups) {
+
+    ConanCaseModel.find({}, {}, function(err, models) {
+
+      ConanCaseData.find({}, {}, function(err, datas) {
+        // console.log(groups);
+        // console.log(models);
+        // console.log(datas);
+
+        var dataMap = {};
+        for(var i=0; i<datas.length; i++){
+          var dataObj = datas[i];
+          var dataObjMid = dataObj.mid;
+
+          if(dataMap[dataObjMid]){
+            dataMap[dataObjMid].push(dataObj);
+          }else{
+            dataMap[dataObjMid] = [];
+            dataMap[dataObjMid].push(dataObj);
+          }
+        }
+        // console.log(dataMap);
+
+        var modelMap = {};
+        for(var i=0; i<models.length; i++){
+          var modelObj = {};
+          modelObj = models[i];
+          var modelObjGid = modelObj.gid;
+          var modelObjId = modelObj._id;
+
+          modelObj["datas"] = 1;
+
+          // console.log(modelObj);
+          // console.log(modelObj.datas);
+          if(modelMap[modelObjGid]){
+            modelMap[modelObjGid].push(modelObj);
+          }else{
+            modelMap[modelObjGid] = [];
+            modelMap[modelObjGid].push(modelObj);
+          }
+        }
+        // console.log(modelMap);
+
+        var superData = [];
+        for(var i=0;i<groups.length;i++){
+          var groupObj = groups[i];
+          var groupObjId = groupObj._id;
+
+          if(modelMap[groupObjId]){
+            groupObj["models"] = modelMap[groupObjId];
+          }
+          superData.push(groupObj);
+        }
+        // console.log(superData);
+
+        res.json({status: true, messages: null, result: superData});
+      });
+    });
+  });
+
+
+});
+
 module.exports = router;
