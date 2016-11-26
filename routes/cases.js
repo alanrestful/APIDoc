@@ -526,11 +526,12 @@ router.get('/super', function (req, res) {
     res.json({status: false, messages: "pid is null", result: null});
     return;
   }
-  ConanGroup.find({_id: pid}, {},function(err, groups) {
+  ConanGroup.find({pid: pid}, {},function(err, groups) {
     if(err || groups ==null ){
       res.json({status: false, messages: 'find.groups.fail',result: null});
       return;
     }
+    console.log(groups);
     ConanCaseModel.find({}, {}, function(err, models) {
       if(err || models ==null){
         res.json({status: false, messages: 'find.models.fail',result: null});
