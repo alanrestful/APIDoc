@@ -43,7 +43,7 @@ router.get('/projects', function(req, res) {
 });
 
 /* 应用api接口管理页 */
-router.get('/applications/id/:id', function (req, res, next) {
+router.get('/applications/:id', function (req, res, next) {
   var aid = req.params.id;
   if (!aid) {
     res.redirect('../projects');
@@ -81,7 +81,17 @@ router.get('/applications/id/:id', function (req, res, next) {
           arr.sort(function (a, b) {
             return a.name < b.name ? -1 : 1;
           });
-          res.render('applications/application_manager', {nav: arr, app: app, paths: paths, document: doc});
+
+          // console.log(app);
+          var pid = app.projectId;
+
+          project.findOne({"_id": pid}, {}, function (err, project) {
+            if (err) {
+              res.json({status: false, messages: err});
+              return;
+            }
+            res.render('applications/application_manager', {nav: arr, app: app, paths: paths, document: doc, project: project});
+          });
         });
       });
     });

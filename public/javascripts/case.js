@@ -16,7 +16,7 @@ $(function(){
 
 /* 创建应用弹框 */
 var importCaseEvent = function(event){
-  var id = $(".detail-left ul li .radio-click").find('input[type=radio]:checked').closest("li").data("id");
+  var id = $(".detail-left ul li .radio-click").find('input[type=radio][checked=checked]').closest("li").data("id");
   if(!id){
     alert("请选择用例");
     return;

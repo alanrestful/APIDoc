@@ -279,10 +279,10 @@
   .case-manager .group #group-tab li {
     list-style-type: none;
     float: left;
-    width: 50%;
     margin: 0 auto;
     line-height: 50px;
     height: 50px;
+    padding-left: 20px;
     text-align: center; }
     .case-manager .group #group-tab li a {
       font-size: 14px;
@@ -348,7 +348,6 @@
     width: 50%;
     display: inline-block;
     height: 100%;
-    padding-top: 10px;
     border-right: 1px solid #dfdfdf; }
     .case-manager .detail-content .detail-left .detail-search {
       padding-left: 30px; }
@@ -368,7 +367,6 @@
         outline: none; }
     .case-manager .detail-content .detail-left ul {
       padding: 0;
-      padding-top: 10px;
       list-style-type: none; }
       .case-manager .detail-content .detail-left ul li {
         height: 70px;
@@ -444,7 +442,7 @@
 
 .group-obj, .model-obj {
   height: 50px;
-  padding: 16px 20px; }
+  padding: 16px 0; }
   .group-obj .name, .model-obj .name {
     font-size: 14px;
     color: #8895B4; }

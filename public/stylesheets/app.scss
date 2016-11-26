@@ -321,10 +321,10 @@
   li{
     list-style-type: none;
     float: left;
-    width: 50%;
     margin: 0 auto;
     line-height: 50px;
     height: 50px;
+    padding-left: 20px;
     text-align: center;
     a{
       font-size: 14px;
@@ -403,7 +403,6 @@
     width: 50%;
     display: inline-block;
     height: 100%;
-    padding-top: 10px;
     border-right: 1px solid #dfdfdf;
     .detail-search{
       padding-left: 30px;
@@ -426,7 +425,6 @@
     }
     ul{
       padding: 0;
-      padding-top: 10px;
       list-style-type: none;
       li{
         height: 70px;
@@ -523,7 +521,7 @@
 
 .group-obj, .model-obj{
   height: 50px;
-  padding: 16px 20px;
+  padding: 16px 0;
   .name{
     font-size: 14px;
     color: #8895B4;

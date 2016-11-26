@@ -503,7 +503,8 @@ router.post('/import-data', upload.single('file'), function (req, res) {
         return;
       }
       for(var i=0; i<data.length;i++){
-        var name = model.name + new Date().getTime();
+        var name = data[i].name==null?"ERROR":data[i].name;
+        delete data[i].name;
         var conanCaseData = new ConanCaseData({
           mid: mid,
           name: name,
