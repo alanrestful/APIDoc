@@ -471,6 +471,7 @@ router.get('/json/:id',function(req,res,next){
     }
     var fragment = JSON.parse(model.fragment);
     var data = {};
+    data["name"] = "用例名称";
     data[fragment[0].hash] = {expect:""};
     for(var i in fragment[0].tArray){
       if(typeof(fragment[0].tArray[i].value) != "undefined"){
