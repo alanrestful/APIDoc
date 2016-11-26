@@ -526,14 +526,21 @@ router.get('/super', function (req, res) {
     res.json({status: false, messages: "pid is null", result: null});
   }
   ConanGroup.find({_id: pid}, {},function(err, groups) {
-
+    if(err || groups ==null ){
+      res.json({status: false, messages: 'find.groups.fail',result: null});
+      return;
+    }
     ConanCaseModel.find({}, {}, function(err, models) {
+      if(err || models ==null){
+        res.json({status: false, messages: 'find.models.fail',result: null});
+        return;
+      }
 
       ConanCaseData.find({}, {}, function(err, datas) {
-        // console.log(groups);
-        // console.log(models);
-        // console.log(datas);
-
+        if(err || datas ==null){
+          res.json({status: false, messages: 'find.datas.fail',result: null});
+          return;
+        }
         var dataMap = {};
         for(var i=0; i<datas.length; i++){
           var dataObj = datas[i];
