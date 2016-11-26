@@ -556,18 +556,15 @@ router.get('/super', function (req, res) {
         var modelMap = {};
         var modelObj = {};
         for(var i=0; i<models.length; i++){
-          modelObj["model"] = models[i];
           var modelObjGid = models[i].gid;
           var modelObjId = models[i]._id;
 
+          modelObj["model"] = models[i];
           modelObj["datas"] = dataMap[modelObjId];
 
           if(modelMap[modelObjGid]==null){
             modelMap[modelObjGid] = [];
           }
-
-          // console.log("modelObj->",modelObj);
-
           modelMap[modelObjGid].push(modelObj);
         }
 
@@ -576,12 +573,8 @@ router.get('/super', function (req, res) {
         var superData = [];
         var groupObj = {};
         for(var i=0;i<groups.length;i++){
-          groupObj["group"] = groups[i];
           var groupObjId = groups[i]._id;
-
-          if(modelMap[groupObjId]!=null){
-
-          }
+          groupObj["group"] = groups[i];
           groupObj["models"] = modelMap[groupObjId];
           superData.push(groupObj);
         }
