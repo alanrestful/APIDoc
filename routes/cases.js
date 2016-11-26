@@ -555,11 +555,11 @@ router.get('/super', function (req, res) {
         // console.log(dataMap);
 
         var modelMap = {};
-        var modelObj = {};
+
         for(var i=0; i<models.length; i++){
           var modelObjGid = models[i].gid;
           var modelObjId = models[i]._id;
-
+          var modelObj = {};
           modelObj["model"] = models[i];
           modelObj["datas"] = dataMap[modelObjId];
 
@@ -568,13 +568,12 @@ router.get('/super', function (req, res) {
           }
           modelMap[modelObjGid].push(modelObj);
         }
-
         // console.log(modelMap);
 
         var superData = [];
-        var groupObj = {};
         for(var i=0;i<groups.length;i++){
           var groupObjId = groups[i]._id;
+          var groupObj = {};
           groupObj["group"] = groups[i];
           groupObj["models"] = modelMap[groupObjId];
           superData.push(groupObj);
