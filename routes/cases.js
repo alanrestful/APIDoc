@@ -522,8 +522,9 @@ router.post('/import-data', upload.single('file'), function (req, res) {
  */
 router.get('/super', function (req, res) {
   var pid = req.query.pid;
-  if(!pid){
+  if(pid==null){
     res.json({status: false, messages: "pid is null", result: null});
+    return;
   }
   ConanGroup.find({_id: pid}, {},function(err, groups) {
     if(err || groups ==null ){
