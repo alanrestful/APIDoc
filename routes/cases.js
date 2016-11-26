@@ -538,44 +538,43 @@ router.get('/super', function (req, res) {
         for(var i=0; i<datas.length; i++){
           var dataObj = datas[i];
           var dataObjMid = dataObj.mid;
-
-          if(dataMap[dataObjMid]){
-            dataMap[dataObjMid].push(dataObj);
-          }else{
+          if(dataMap[dataObjMid]==null){
             dataMap[dataObjMid] = [];
-            dataMap[dataObjMid].push(dataObj);
           }
+          dataMap[dataObjMid].push(dataObj);
         }
         // console.log(dataMap);
 
         var modelMap = {};
+        var modelObj = {};
         for(var i=0; i<models.length; i++){
-          var modelObj = {};
-          modelObj = models[i];
-          var modelObjGid = modelObj.gid;
-          var modelObjId = modelObj._id;
+          modelObj["model"] = models[i];
+          var modelObjGid = models[i].gid;
+          var modelObjId = models[i]._id;
 
-          modelObj["datas"] = 1;
+          modelObj["datas"] = dataMap[modelObjId];
 
-          // console.log(modelObj);
-          // console.log(modelObj.datas);
-          if(modelMap[modelObjGid]){
-            modelMap[modelObjGid].push(modelObj);
-          }else{
+          if(modelMap[modelObjGid]==null){
             modelMap[modelObjGid] = [];
-            modelMap[modelObjGid].push(modelObj);
           }
+
+          // console.log("modelObj->",modelObj);
+
+          modelMap[modelObjGid].push(modelObj);
         }
+
         // console.log(modelMap);
 
         var superData = [];
+        var groupObj = {};
         for(var i=0;i<groups.length;i++){
-          var groupObj = groups[i];
-          var groupObjId = groupObj._id;
+          groupObj["group"] = groups[i];
+          var groupObjId = groups[i]._id;
 
-          if(modelMap[groupObjId]){
-            groupObj["models"] = modelMap[groupObjId];
+          if(modelMap[groupObjId]!=null){
+
           }
+          groupObj["models"] = modelMap[groupObjId];
           superData.push(groupObj);
         }
         // console.log(superData);
@@ -587,5 +586,14 @@ router.get('/super', function (req, res) {
 
 
 });
+
+function cloneObject(src) {
+  var dest = {};
+  for(var key in src) {
+    if(typeof src === "object") dest[key] = cloneObject(src[key]);
+    else dest[key] = src[key];
+  }
+  return dest;
+}
 
 module.exports = router;
