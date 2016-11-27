@@ -528,7 +528,7 @@ router.get('/super', function (req, res) {
     res.json({status: false, messages: "pid is null", result: null});
     return;
   }
-  ConanGroup.find({pid: pid}, {},function(err, groups) {
+  ConanGroup.find({pid: pid}, {}, function(err, groups) {
     if(err || groups ==null ){
       res.json({status: false, messages: 'find.groups.fail',result: null});
       return;
@@ -545,6 +545,7 @@ router.get('/super', function (req, res) {
           res.json({status: false, messages: 'find.datas.fail',result: null});
           return;
         }
+
         var dataMap = {};
         for(var i=0; i<datas.length; i++){
           var dataObj = datas[i];
@@ -559,11 +560,11 @@ router.get('/super', function (req, res) {
         var modelMap = {};
 
         for(var i=0; i<models.length; i++){
+          var modelObj = {};
           var modelObjGid = models[i].gid;
           var modelObjId = models[i]._id;
-          var modelObj = {};
-          modelObj["model"] = models[i];
-          modelObj["datas"] = dataMap[modelObjId];
+          modelObj["current"] = models[i];
+          modelObj["children"] = dataMap[modelObjId];
 
           if(modelMap[modelObjGid]==null){
             modelMap[modelObjGid] = [];
@@ -574,13 +575,12 @@ router.get('/super', function (req, res) {
 
         var superData = [];
         for(var i=0;i<groups.length;i++){
-          var groupObjId = groups[i]._id;
           var groupObj = {};
-          groupObj["group"] = groups[i];
-          groupObj["models"] = modelMap[groupObjId];
+          var groupObjId = groups[i]._id;
+          groupObj["current"] = groups[i];
+          groupObj["children"] = modelMap[groupObjId];
           superData.push(groupObj);
         }
-        // console.log(superData);
 
         res.json({status: true, messages: null, result: superData});
       });
