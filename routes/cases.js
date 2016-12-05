@@ -114,7 +114,6 @@ router.delete('/groups', function(req, res) {
   });
 });
 
-
 /**
  * 创建用例模版和用例数据
  * @type {[type]}
@@ -161,7 +160,19 @@ router.post('/', function(req, res) {
         data: data.data
       });
       conanCaseData.save();
-      res.json({status: true, messages: null,result: result});
+
+      ConanCaseData.find({mid: model._id}, {}, function(err, datas) {
+        if(err || datas ==null){
+          res.json({status: false, messages: 'find.datas.fail',result: null});
+          return;
+        }
+        result.datas = datas;
+
+        res.json({status: true, messages: null,result: result});
+      });
+
+
+
     });
   });
 
