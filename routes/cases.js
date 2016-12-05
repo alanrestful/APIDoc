@@ -133,6 +133,7 @@ router.post('/', function(req, res) {
     return;
   }
 
+
   var conanGroup = new ConanGroup;
   conanGroup.findOrSave(data.pid, data.tempGroup, function(err, group){
     if(err){
@@ -163,7 +164,6 @@ router.post('/', function(req, res) {
             res.json({status: false, messages: 'find.datas.fail',result: null});
             return;
           }
-          result.datas = datas;
 
           var dataMap = {};
           for(var i=0; i<datas.length; i++){
