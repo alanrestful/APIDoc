@@ -399,7 +399,8 @@ router.post('/data', function (req, res) {
 router.put('/data', function (req, res) {
     var did = req.body.did;
     var name = req.body.name;
-    var data = JSON.parse(req.body.data);
+    var data = req.body.data;
+    console.log(data);
     ConanCaseData.update({_id: did},{$set: {name: name, data: data}}).exec()
       .catch(function(err) {
         console.log('update data error:%s', err);
@@ -407,6 +408,7 @@ router.put('/data', function (req, res) {
         return;
       })
       .then(function(data) {
+        console.log(data);
         res.json({status: true, messages: null, result: null});
       });
 });
