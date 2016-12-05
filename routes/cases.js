@@ -164,15 +164,10 @@ router.post('/', function(req, res) {
           res.json({status: false, messages: 'save.data.fail',result: null});
           return;
         }
-        ConanCaseData.find({mid: model._id}, {}, function(err, datas) {
-          if(err || datas ==null){
-            res.json({status: false, messages: 'find.datas.fail',result: null});
-            return;
-          }
-          result.datas = datas;
+        result.data = data;
 
-          res.json({status: true, messages: null,result: result});
-        });
+        res.json({status: true, messages: null,result: result});
+
       });
     });
   });
