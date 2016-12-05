@@ -133,7 +133,7 @@ router.post('/', function(req, res) {
     return;
   }
 
-
+  var result = {};
   var conanGroup = new ConanGroup;
   conanGroup.findOrSave(data.pid, data.tempGroup, function(err, group){
     if(err){
@@ -141,7 +141,7 @@ router.post('/', function(req, res) {
       res.json({status: false, messages: '获取失败',result: null});
       return;
     }
-
+    result.group = group ;
     var conanCaseModel = new ConanCaseModel({
       gid: group._id,
       name: data.tempName,
@@ -153,48 +153,25 @@ router.post('/', function(req, res) {
         res.json({status: false, messages: '保存失败',result: null});
         return;
       }
+      result.model = model;
       var conanCaseData = new ConanCaseData({
         mid: model._id,
         name: data.tempName,
         data: data.data
       });
       conanCaseData.save(function(err, data){
+        if(err){
+          res.json({status: false, messages: 'save.data.fail',result: null});
+          return;
+        }
         ConanCaseData.find({mid: model._id}, {}, function(err, datas) {
           if(err || datas ==null){
             res.json({status: false, messages: 'find.datas.fail',result: null});
             return;
           }
+          result.datas = datas;
 
-          var dataMap = {};
-          for(var i=0; i<datas.length; i++){
-            var dataObj = datas[i];
-            var dataObjMid = dataObj.mid;
-            if(dataMap[dataObjMid]==null){
-              dataMap[dataObjMid] = [];
-            }
-            dataMap[dataObjMid].push(dataObj);
-          }
-
-          var modelMap = {};
-          var modelObj = {};
-          var modelObjGid = model.gid;
-          var modelObjId = model._id;
-          modelObj["current"] = model;
-          modelObj["children"] = dataMap[modelObjId];
-
-          if(modelMap[modelObjGid]==null){
-            modelMap[modelObjGid] = [];
-          }
-          modelMap[modelObjGid].push(modelObj);
-
-          var superData = [];
-          var groupObj = {};
-          var groupObjId = group._id;
-          groupObj["current"] = group;
-          groupObj["children"] = modelMap[groupObjId];
-          superData.push(groupObj);
-
-          res.json({status: true, messages: null,result: superData});
+          res.json({status: true, messages: null,result: result});
         });
       });
     });
