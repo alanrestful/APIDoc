@@ -139,8 +139,13 @@ function TraversalObject(aid,obj){
       if(typeof (f.$ref) !== "undefined"){
         obj[a] = findDefinitionObj(aid, getDefinitionName(f.$ref));
       }else if(typeof (f.type) !== 'undefined' && f.type === 'array'){
-        obj[a] = [];
-        obj[a].push(findDefinitionObj(aid, getDefinitionName(f.items.$ref)));
+          obj[a] = [];
+        if(typeof (f.items.$ref) !== 'undefined'){
+          obj[a].push(findDefinitionObj(aid, getDefinitionName(f.items.$ref)));
+        }else{
+          obj[a].push(findDefinitionObj(aid, getDefinitionName(f.items.type)));
+        }
+
       }else if(typeof (f.type) !== 'undefined' && f.type === 'object'){
         if(typeof (f.additionalProperties) === 'undefined' || typeof (f.additionalProperties.$ref) === 'undefined' ){
           obj[a] = f.type;
