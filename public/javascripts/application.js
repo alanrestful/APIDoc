@@ -4,8 +4,16 @@ $(function(){
   });
   $(".path-form").submit(endpointEvent);
   $(".show-samples").click(showSamplesEvent);
+  $("#save-cookie").click(saveCookie);
+  $("input[name=cookie]").val(window.localStorage.getItem("cookies"));
 });
 
+
+var saveCookie = function (e) {
+  e && e.preventDefault();
+  var v = $("input[name=cookie]").val();
+  window.localStorage.setItem("cookies", v);
+}
 /**
  * 调用api
  * @param  {[type]} e [description]
@@ -17,24 +25,51 @@ var endpointEvent = function(e){
   var path = $(event.currentTarget).data("path");
   var method = $(event.currentTarget).data("method");
   var summary = $(event.currentTarget).data("summary");
+  var cookies = window.localStorage.getItem("cookies");
+  var isMap = $(e.currentTarget).find('input[name=isMap]').is(':checked');
+
   var data = $(event.currentTarget).serializeJSON();
+  for (var k in data) {
+    if (!data[k]) {
+      delete data[k];
+    }
+  }
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
   }
   var url = domain + path;
   var $modal;
-  $.ajax({
+
+  var ajaxData = {
     url: url,
-    type: method,
-    data: data,
+    method: method,
+    data: JSON.stringify(data),
+    cookies: cookies,
+    isMap: isMap ,
+    headers: {
+      contentType: $(e.currentTarget).find('select[name=contentType]').val()
+    }
+  };
+
+  $.ajax({
+    url: '/api/mock-request',
+    type: 'POST',
+    data: ajaxData,
     success:function(data, textStatus, request){
       var headers = request.getAllResponseHeaders();
-      var code = request.status;
-      var body = JSON.stringify(data, null, 2);
-      $modal = new $.Modal({
-        content: Handlebars.templates.applications.result({"url": url, "method": method, "summary": summary,"headers": headers, "code": code, "body": body})
-      });
-      $modal.show();
+      if (data && data.success) {
+        $modal = new $.Modal({
+          content: Handlebars.templates.applications.result({
+            "url": data.url,
+            "method": method,
+            "summary": summary,
+            "headers": headers,
+            "code": data.result.status,
+            "body": data.resultText
+          })
+        });
+        $modal.show();
+      }
     },
     error: function(xhr, status, e){
       var body = xhr.responseText || "未知故障";

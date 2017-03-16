@@ -21,6 +21,7 @@ var cases = require('./routes/cases');
 var applications = require('./routes/applications');
 var codeGen = require('./routes/codeGen');
 var logs = require('./routes/logs');
+var mockRequest = require('./routes/mockRequest');
 
 
 var util = require('util'),
@@ -132,6 +133,7 @@ app.use('/api/cases', cases);
 app.use('/api/applications', applications);
 app.use('/codegen', codeGen);
 app.use('/logs', logs);
+app.use('/api/mock-request', mockRequest);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
