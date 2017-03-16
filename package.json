@@ -16,10 +16,13 @@
     "express": "^4.2.0",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.1",
+    "form-data": "^2.1.2",
+    "lodash": "^4.17.4",
     "moment": "^2.15.1",
     "mongoose": "^4.6.0",
     "morgan": "~1.0.0",
     "multer": "^1.2.0",
+    "node-fetch": "^1.6.3",
     "serve-static": "^1.11.1",
     "static-favicon": "~1.0.0"
   },

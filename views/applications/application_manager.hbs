@@ -38,10 +38,11 @@
              <a href="/edit/#/?appId={{../app._id}}" target="_blank">编辑API接口</a>
              <a href="/logs?appId={{../app._id}}" target="_blank">API修改日志</a>
              <a data-toggle="modal" data-target="#updateImportApiModal" href="#">重新上传</a>
+             <span>填写Cookie:<textarea name="cookie" ></textarea></span><button id="save-cookie">保存</button>
             </div>
           {{/each}}
           <div class="row">
-            <div class="col-sm-12 col-md-12 paths">
+            <div class="col-sm-12 col-md-12 paths">{{json this}}
               {{#each paths}}
                 {{#each path_json}}
                 <ul>
@@ -62,13 +63,15 @@
                           <h6 id="{{description}}">{{description}}</h6>
                           {{#if parameters}}
                             <h5>Parameters</h5>
+
                             {{#each parameters}}
                               <div class="form-group" data-schema="{{json schema}}">
-                              <label>{{name}}:</label>
+                              <label>{{name}}:{{json schema}}</label>
                               {{#if schema.$ref}}
                                 <textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>
                               {{else}}
                                 <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" autocomplete="off" {{#if this.required}}required{{/if}}>
+                                    <input type="checkbox" name="isMap"/><span>isMap</span>
                               {{/if}}
                               </div>
                             {{/each}}

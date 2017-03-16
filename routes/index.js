@@ -48,55 +48,37 @@ router.get('/applications/:id', function (req, res, next) {
   if (!aid) {
     res.redirect('../projects');
   }else{
-    Application.findOne({"_id": aid}, {'__v':0}, function (err, app) {
-      if (err) next(err);
-      var apiPath = new ApiPath;
-      apiPath.findByAid(aid, function (err, paths) {
-        if (err) {
-          res.json({status: false, messages: err});
-          return;
-        }
-        ApiDocument.find({"applicationId": aid}, function (err, doc) {
-          if (err) next(err);
-          var nav = {};
-          for (var path in paths) {
-            for (var p in paths[path]["path_json"]) {
-              for (var m in paths[path]["path_json"][p]) {
-                if (!nav[paths[path]["path_json"][p][m].tags[0]]) {
-                  nav[paths[path]["path_json"][p][m].tags[0]] = [];
-                }
-                if (nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary) == -1) {
-                  nav[paths[path]["path_json"][p][m].tags[0]].push(paths[path]["path_json"][p][m].summary);
-                }
-              }
-            }
-          }
-          var arr = [];
-          for (var n in nav) {
-            nav[n].sort(function (a, b) {
-              return a < b ? -1 : 1;
-            });
-            arr.push({name: n, key: nav[n]})
-          }
-          arr.sort(function (a, b) {
-            return a.name < b.name ? -1 : 1;
-          });
+    var resJson = {};
 
-          // console.log(app);
+    Application.findOne({"_id": aid}, {'__v':0})
+        .then(function(app) {
           var pid = app.projectId;
-
-          project.findOne({"_id": pid}, {}, function (err, project) {
-            if (err) {
-              res.json({status: false, messages: err});
-              return;
-            }
-            res.render('applications/application_manager', {nav: arr, app: app, paths: paths, document: doc, project: project});
-          });
-        });
-      });
-    });
+          resJson.app = app;
+          return project.findOne({"_id": pid}, {});
+        })
+        .then(function(project) {
+          resJson.project = project;
+          var apiPath = new ApiPath;
+          return apiPath.findByAid(aid);
+        })
+        .then(function(paths) {
+          resJson.paths = paths;
+          return ApiDocument.find({"applicationId": aid});
+        })
+        .then(function(doc) {
+          resJson.document = doc;
+          return navGenerator(resJson.paths);
+        })
+        .then(function(navArr) {
+          resJson.nav = navArr;
+          res.render('applications/application_manager', resJson);
+        })
+        .catch(function(err) {
+          res.json({status: false, messages: err});
+        })
   }
 });
+
 
 /* case管理页 */
 router.get('/cases', function(req, res) {
@@ -104,3 +86,32 @@ router.get('/cases', function(req, res) {
 });
 
 module.exports = router;
+
+var navGenerator = function(paths) {
+  return new Promise(function(resolve, reject) {
+    var nav = {};
+    for (var path in paths) {
+      for (var p in paths[path]["path_json"]) {
+        for (var m in paths[path]["path_json"][p]) {
+          if (!nav[paths[path]["path_json"][p][m].tags[0]]) {
+            nav[paths[path]["path_json"][p][m].tags[0]] = [];
+          }
+          if (nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary) == -1) {
+            nav[paths[path]["path_json"][p][m].tags[0]].push(paths[path]["path_json"][p][m].summary);
+          }
+        }
+      }
+    }
+    var arr = [];
+    for (var n in nav) {
+      nav[n].sort(function (a, b) {
+        return a < b ? -1 : 1;
+      });
+      arr.push({name: n, key: nav[n]})
+    }
+    arr.sort(function (a, b) {
+      return a.name < b.name ? -1 : 1;
+    });
+    resolve(arr);
+  })
+};

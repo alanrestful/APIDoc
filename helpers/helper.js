@@ -35,5 +35,9 @@ module.exports = {
 
   add: function(a, b, opts) {
     return a + b;
+  },
+
+  size: function(a, opts) {
+    return a?a.length:0;
   }
-}
+};
