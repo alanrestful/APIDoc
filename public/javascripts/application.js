@@ -5,15 +5,14 @@ $(function(){
   $(".path-form").submit(endpointEvent);
   $(".show-samples").click(showSamplesEvent);
   $("#save-cookie").click(saveCookie);
-  $("textarea[name=cookie]").val(window.localStorage.getItem("cookies"));
+  $("input[name=cookie]").val(window.localStorage.getItem("cookies"));
 });
 
 
 var saveCookie = function (e) {
   e && e.preventDefault();
-  var v = $("textarea[name=cookie]").val();
+  var v = $("input[name=cookie]").val();
   window.localStorage.setItem("cookies", v);
-  console.log(v);
 }
 /**
  * 调用api
@@ -27,9 +26,14 @@ var endpointEvent = function(e){
   var method = $(event.currentTarget).data("method");
   var summary = $(event.currentTarget).data("summary");
   var cookies = window.localStorage.getItem("cookies");
-  var isMap = $(e.currentTarget).find('input[name=isMap]').val();
+  var isMap = $(e.currentTarget).find('input[name=isMap]').is(':checked');
 
   var data = $(event.currentTarget).serializeJSON();
+  for (var k in data) {
+    if (!data[k]) {
+      delete data[k];
+    }
+  }
   for(var d in data){
     path = path.replace("{"+d+"}",data[d]);
   }
@@ -41,8 +45,11 @@ var endpointEvent = function(e){
     method: method,
     data: JSON.stringify(data),
     cookies: cookies,
-    isMap: isMap === 'on' ? true : false
-  }
+    isMap: isMap ,
+    headers: {
+      contentType: $(e.currentTarget).find('select[name=contentType]').val()
+    }
+  };
 
   $.ajax({
     url: '/api/mock-request',

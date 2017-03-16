@@ -1301,7 +1301,7 @@ this["Handlebars"]["templates"]["applications"]["result"] = Handlebars.template(
     + alias4(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"method","hash":{},"data":data}) : helper)))
     + "</a></span>\n  </h4>\n</div>\n<div class=\"modal-body\" style=\"width:500px;height:420px\">\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">REQUEST URL</label>\n    <pre id=\"request-url\">"
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
-    + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE BODY</label>\n    <pre id=\"response-body\">"
+    + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE BODY </label>\n    <!--<a href=\"#\" name=\"jsonFormat\" class=\"jsonFormat\">JSON</a>-->\n    <pre id=\"response-body\">"
     + alias4(((helper = (helper = helpers.body || (depth0 != null ? depth0.body : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"body","hash":{},"data":data}) : helper)))
     + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE CODE</label>\n    <pre id=\"response-code\">"
     + alias4(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"code","hash":{},"data":data}) : helper)))

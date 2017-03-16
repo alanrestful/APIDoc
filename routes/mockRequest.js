@@ -23,16 +23,19 @@ router.post('/', function(req, res, next) {
   var method = req.body.method.toUpperCase()
   var result;
   var cookie = req.body.cookies;
-  var headers = {cookie: cookie};
+  var headers = {
+    cookie: cookie,
+    'Content-Type': req.body.headers.contentType,
+  };
   var formData = new FormData();
   var reqUrl = '';
   checkParams(req.body)
     .then(function (e) {
       var body = '';
-      if (method === 'GET') {
+      if (method === 'GET' || method === 'DELETE') {
         var dataObj = JSON.parse(e.data);
         var paramsStr = "?";
-        if (!req.body.isMap) {
+        if (!req.body.isMap || req.body.isMap === 'false') {
           for (var i in dataObj) {
             (function () {
               paramsStr += i + "=" + dataObj[i] + "&";
@@ -41,10 +44,15 @@ router.post('/', function(req, res, next) {
         } else {
           paramsStr = _.values(dataObj)[0];
         }
-        reqUrl = e.url + paramsStr;
+        reqUrl = e.url;
+        if (paramsStr) {
+           reqUrl += paramsStr ;
+        }
         console.log(reqUrl);
-      } else if (method === 'POST'){
-
+      } else if (['POST','PUT'].indexOf(method) !== -1){
+        reqUrl = e.url;
+        body = e.data;
+        console.log(reqUrl);
       }
       return fetch(reqUrl, {
         method: e.method,

@@ -9,6 +9,8 @@ var ApiPath = require('../models/APIPath').APIPath;
 var ApiDefinition = require('../models/APIDefinition').APIDefinition;
 var User = require('../models/User').User;
 
+var _ = require('lodash');
+
 /* 首页 */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
@@ -49,6 +51,7 @@ router.get('/applications/:id', function (req, res, next) {
     res.redirect('../projects');
   }else{
     var resJson = {};
+    var definitionsMap = {};
 
     Application.findOne({"_id": aid}, {'__v':0})
         .then(function(app) {
@@ -63,18 +66,25 @@ router.get('/applications/:id', function (req, res, next) {
         })
         .then(function(paths) {
           resJson.paths = paths;
+          var apiDefinition = new ApiDefinition;
+          return apiDefinition.findByAid(aid);
+        })
+        .then(function(definitions) {
+          definitionsMap = definitionConvert(definitions);
+          resJson.definitions = definitions;
           return ApiDocument.find({"applicationId": aid});
         })
         .then(function(doc) {
           resJson.document = doc;
-          return navGenerator(resJson.paths);
+          return navGenerator(resJson.paths, definitionsMap);
         })
         .then(function(navArr) {
           resJson.nav = navArr;
           res.render('applications/application_manager', resJson);
         })
         .catch(function(err) {
-          res.json({status: false, messages: err});
+          console.error(err);
+          res.json({status: false, messages: err.message});
         })
   }
 });
@@ -87,12 +97,14 @@ router.get('/cases', function(req, res) {
 
 module.exports = router;
 
-var navGenerator = function(paths) {
+var navGenerator = function(paths, definitionsMap) {
   return new Promise(function(resolve, reject) {
     var nav = {};
     for (var path in paths) {
       for (var p in paths[path]["path_json"]) {
         for (var m in paths[path]["path_json"][p]) {
+          //parameters 组装definition
+          insertDefinitionToPath(definitionsMap, paths[path]["path_json"][p][m].parameters);
           if (!nav[paths[path]["path_json"][p][m].tags[0]]) {
             nav[paths[path]["path_json"][p][m].tags[0]] = [];
           }
@@ -114,4 +126,25 @@ var navGenerator = function(paths) {
     });
     resolve(arr);
   })
+};
+
+var definitionConvert = function(definitions) {
+  var definitionMap = {};
+  definitions.map(function(v, i, a) {
+    var key = _.keys(v.definition_json)[0];
+    definitionMap[key] = v.definition_json[key];
+  })
+  return definitionMap;
+};
+
+var insertDefinitionToPath = function(definitionMap, parameters) {
+  if (parameters) {
+    parameters.forEach(function (parameter, i, a) {
+      if (parameter.schema && parameter.schema.$ref) {
+        var definitionName = parameter.schema.$ref.replace('#/definitions/', '');
+        a[i].definition = definitionMap[definitionName];
+      }
+    })
+  }
+
 };
