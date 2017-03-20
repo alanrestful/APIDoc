@@ -1292,6 +1292,15 @@ $(function(){
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["applications"] = this["Handlebars"]["templates"]["applications"] || {};
+this["Handlebars"]["templates"]["applications"]["jsonFormat"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"modal-header\" style=\"width: 100%;\">\n    <button type=\"button\" class=\"modal-box-close\">\n        &times;\n    </button>\n    <h4 class=\"modal-title\" id=\"importApiModalLabel\">\n        <span id=\"result-summary\" style=\"font-weight: bold;\">"
+    + alias4(((helper = (helper = helpers.summary || (depth0 != null ? depth0.summary : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"summary","hash":{},"data":data}) : helper)))
+    + "</span>\n        <span class=\"http_method\"><a href=\"#\" id=\"result-method\">"
+    + alias4(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"method","hash":{},"data":data}) : helper)))
+    + "</a></span>\n    </h4>\n</div>\n<div class=\"modal-body\" style=\"width:500px;height:420px\">\n    <div class=\"form-group\">\n\n    </div>\n</div>\n\n";
+},"useData":true});
 this["Handlebars"]["templates"]["applications"]["result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
@@ -1301,7 +1310,9 @@ this["Handlebars"]["templates"]["applications"]["result"] = Handlebars.template(
     + alias4(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"method","hash":{},"data":data}) : helper)))
     + "</a></span>\n  </h4>\n</div>\n<div class=\"modal-body\" style=\"width:500px;height:420px\">\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">REQUEST URL</label>\n    <pre id=\"request-url\">"
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
-    + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE BODY </label>\n    <!--<a href=\"#\" name=\"jsonFormat\" class=\"jsonFormat\">JSON</a>-->\n    <pre id=\"response-body\">"
+    + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE BODY </label>\n    <a href=\"#\" name=\"jsonFormat\" class=\"jsonFormat\" data-info=\""
+    + alias4(((helper = (helper = helpers.json || (depth0 != null ? depth0.json : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"json","hash":{},"data":data}) : helper)))
+    + "\">JSON</a>\n    <pre id=\"response-body\">"
     + alias4(((helper = (helper = helpers.body || (depth0 != null ? depth0.body : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"body","hash":{},"data":data}) : helper)))
     + "</pre>\n  </div>\n  <div class=\"form-group\">\n    <label style=\"width: 150px;\">RESPONSE CODE</label>\n    <pre id=\"response-code\">"
     + alias4(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"code","hash":{},"data":data}) : helper)))

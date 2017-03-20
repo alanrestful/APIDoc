@@ -9,7 +9,7 @@ var http = require('http');
 var fetch = require('node-fetch');
 var FormData = require('form-data');
 var _ = require('lodash');
-
+var JSONFormat = require('../helpers/jsonFormat');
 const REST_METHOD = ['POST', 'GET', 'PUT', 'DELETE'];
 /**
  * 模拟请求
@@ -25,13 +25,13 @@ router.post('/', function(req, res, next) {
   var cookie = req.body.cookies;
   var headers = {
     cookie: cookie,
-    'Content-Type': req.body.headers.contentType,
+    'Content-Type': req.body.headers.contentType ? req.body.headers.contentType : null,
   };
   var formData = new FormData();
   var reqUrl = '';
   checkParams(req.body)
     .then(function (e) {
-      var body = '';
+      var body = null;
       if (method === 'GET' || method === 'DELETE') {
         var dataObj = JSON.parse(e.data);
         var paramsStr = "?";
@@ -67,7 +67,7 @@ router.post('/', function(req, res, next) {
     };
     return e.text();
   }).then(function(e) {
-    res.json({success: true, resultText: e, result: result, url: reqUrl})
+    res.json({success: true, resultText: e, result: result, url: reqUrl, html: new JSONFormat(e).init().html()})
   }).catch(function(e) {
     console.error(e);
     res.json({success: false, cause: e.message, result: result});
