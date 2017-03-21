@@ -26,7 +26,7 @@ MockServer.prototype.mockResponse = function(response, appId) {
       return new Promise(function(resolve, reject) {
         if (!response || !response['200'] || !response['200']['schema']) return null;
         var schema = response['200']['schema'];
-        var definitionParser = new DefinitionParser(schema.$ref, appId, schema.type, schema.format);
+        var definitionParser = new DefinitionParser(schema, appId);
         definitionParser.gen().then(function(result) {
           resolve(result);
         });

@@ -4,13 +4,14 @@
 var ApiDefinition = require('../../models/APIDefinition').APIDefinition;
 var definitionDao = new ApiDefinition;
 var _ = require('lodash');
-var DefinitionParser = function($ref, appId, type, format) {
-  this.$ref = $ref;
+var DefinitionParser = function(schema, appId) {
+  this.$ref = schema.$ref;
   this.applicationId = appId;
-  this.type = type;
+  this.type = schema.type;
   this.modelArray = {};
   this.mockModel = {};
-  this.format = format;
+  this.format = schema.format;
+  this.schema = schema;
 };
 
 DefinitionParser.prototype.gen = function() {
@@ -24,7 +25,7 @@ DefinitionParser.prototype.gen = function() {
       })
     } else {
       if (_this.type) {
-        resolve(mockBase(null,_this.type, _this.format));
+        resolve(mockBase(null, _this.schema));
       }
     }
   })
@@ -68,11 +69,17 @@ DefinitionParser.prototype.parseModel = function($ref) {
       for (var j = 0; j < 20; j++) {
         mockModel[i].push(this.parseModel(modelProp.items.$ref));
       }
+    } else if (modelProp.type === 'array' && modelProp.items && modelProp.items.type) {
+      //直接数组
+      mockModel[i] = [];
+      for (var j =10 ; j > 0; j--) {
+        mockModel[i].push(mockBase(i, modelProp ))
+      }
     } else {
       //基本类型,直接填值
       var type = modelProp.type;
       var format = modelProp.format;
-      mockModel[i] = mockBase(i, type, format);
+      mockModel[i] = mockBase(i, modelProp);
     }
   }
   return mockModel;
@@ -80,7 +87,7 @@ DefinitionParser.prototype.parseModel = function($ref) {
 
 function parseString(str, format) {
   if (!format) {
-    return str;
+    return str ? str: 'example';
   } else if (format === 'date-time') {
     return new Date().getTime();
   }
@@ -99,18 +106,32 @@ function getDefName($ref) {
   return $ref.replace('#\/definitions\/', '');
 }
 
-function mockBase(i,type, format) {
-  switch(type) {
+function parseArray(i, type, format) {
+  var arr = [];
+  for (var i = 0; i < 10; i++ ) {
+
+  }
+}
+
+function mockBase(i, schema) {
+
+  switch(schema.type) {
     case 'string':
-      return parseString(i, format);
+      return parseString(i, schema.format);
     case 'integer':
-      return parseInteger(i, format);
+      return parseInteger(i, schema.format);
     case 'boolean':
       return parseInt(Math.random()*100) % 2 == 0;
     case 'object':
       return {object: 'object'};
+    case 'array':
+      var arr = [];
+      for (var j = 0 ; j < 10; j ++ ) {
+        arr.push(mockBase(i, schema.items));
+      }
+      return arr;
     default:
-      console.error("unknown prop type " + type);
+      console.error("unknown prop type " + schema.type);
       return null;
   }
 }
