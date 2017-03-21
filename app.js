@@ -22,6 +22,7 @@ var applications = require('./routes/applications');
 var codeGen = require('./routes/codeGen');
 var logs = require('./routes/logs');
 var mockRequest = require('./routes/mockRequest');
+var mockServer = require('./routes/mockServer');
 
 
 var util = require('util'),
@@ -87,7 +88,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var allow = ['/','/users/login','/users/register','/codegen/.*', '/api/.*', '/api/cases/group'];
+        var allow = ['/','/users/login','/users/register','/codegen/.*', '/api/.*', '/api/cases/group', '/mock-server.*'];
         var allowTag = false;
         for (var s in allow) {
             if(new RegExp("^" + allow[s] + "$").test(url)) {
@@ -134,6 +135,7 @@ app.use('/api/applications', applications);
 app.use('/codegen', codeGen);
 app.use('/logs', logs);
 app.use('/api/mock-request', mockRequest);
+app.use('/mock-server', mockServer);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));

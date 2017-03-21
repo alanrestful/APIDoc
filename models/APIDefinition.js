@@ -13,6 +13,14 @@ _APIDefinition.method("findByAid", function(aId, cb) {
     return this.model('api_definitions').find({'applicationId': aId}, {_id:0}).sort('_id').exec(cb);
 });
 
+_APIDefinition.method("findByRef", function(appId, ref, cb) {
+    var refName = 'definition_json.'+ref;
+    var query = {};
+    query['applicationId'] = appId;
+    query[refName] = {$type: 3};
+    return this.model('api_definitions').find(query, cb);
+});
+
 _APIDefinition.method("updatePath", function(obj, id, appId, cb) {
     var model = this.model('api_definitions');
     model.remove({_id: id}, function(err,doc) {

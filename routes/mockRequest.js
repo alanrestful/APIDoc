@@ -11,6 +11,10 @@ var FormData = require('form-data');
 var _ = require('lodash');
 var JSONFormat = require('../helpers/jsonFormat');
 const REST_METHOD = ['POST', 'GET', 'PUT', 'DELETE'];
+
+var Application = require('../models/Application').Application;
+var Project = require('../models/Project').Project;
+var mongoose = require('mongoose');
 /**
  * 模拟请求
  * method
@@ -29,8 +33,25 @@ router.post('/', function(req, res, next) {
   };
   var formData = new FormData();
   var reqUrl = '';
-  checkParams(req.body)
-    .then(function (e) {
+  var _application;
+  //从db里拿到application，project，找到对应环境
+  Application.find({_id: mongoose.Types.ObjectId(req.body.appId)}).then(function(applications) {
+    if (!applications || applications.length === 0) throw new Error('application not exist: ' + req.body.appId);
+    var application = applications[0];
+    _application = application;
+    return Project.find({_id: mongoose.Types.ObjectId(application['projectId'])})
+  }).then(function(projects) {
+    if (!projects || projects.length === 0) return new Error('project not exist: ' + _application['projectId']);
+    var project = projects[0];
+    project['env_json'].map(function(item, i, array) {
+      if (item.name == _application.env) {
+        //找到的环境url与传来的path组合
+        reqUrl = item.domain + req.body.path;
+        req.body.url = reqUrl ;
+      }
+    })
+    return checkParams(req.body);
+  }).then(function (e) {
       var body = null;
       if (method === 'GET' || method === 'DELETE') {
         var dataObj = JSON.parse(e.data);

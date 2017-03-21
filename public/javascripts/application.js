@@ -41,7 +41,9 @@ var endpointEvent = function(e){
   var $modal;
 
   var ajaxData = {
+    appId: $('input[name=_id]').val(),
     url: url,
+    path: path,
     method: method,
     data: JSON.stringify(data),
     cookies: cookies,

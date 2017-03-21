@@ -9,6 +9,8 @@ var ApiPath = require('../models/APIPath').APIPath;
 var ApiDefinition = require('../models/APIDefinition').APIDefinition;
 var updateLogs = require('../models/UpdateLogs').UpdateLogs;
 var JsonComparer = require("../helpers/json-processor/json-compare").json_comparer;
+var PathKey = require('../models/Path').PathKey;
+var _ = require('lodash');
 
 var multer = require('multer');
 var upload = multer({dest: path.join(__dirname, '../temp/')});
@@ -63,6 +65,11 @@ router.post('/importAPI', upload.single('apifile'), function (req, res) {
         path_json: path_obj
       });
       apiPath.save();
+      var pathKey = new PathKey({
+        applicationId: req.body._id,
+        apiPath: _.keys(path_obj)[0]
+      });
+      pathKey.save();
     }
 
     for (var def in data.definitions) {
