@@ -17,7 +17,36 @@ MockServer.prototype.mock = function(paths, apiModel) {
   var path = paths[0]['path_json'][apiModel.api][apiModel.method.toLowerCase()];
   if (!path) throw new Error('can not find api');
   var response = path.responses;
+  try {
+    this.checkParams(path, apiModel);
+  } catch (e) {
+    return this.mockResponse(response, apiModel.appId).response400(e.message);
+  }
   return this.mockResponse(response, apiModel.appId).response200();
+};
+
+//核对方法参数是否一致
+MockServer.prototype.checkParams = function(path, apiModel) {
+  let parameters = path.parameters;
+  if (!parameters || parameters.length === 0) return;
+  let body = apiModel.body;
+  parameters.forEach((param, i, array) => {
+    this.checkRequired(param, apiModel.body);
+    // this.checkType();
+  })
+};
+
+MockServer.prototype.checkRequired = function(pathParam, reqParams) {
+    if ((pathParam.required && reqParams[pathParam.name]) || !pathParam.required) {
+      // try {
+    } else {
+      throw new ParamError("Required param '" + pathParam.name + "' not present!");
+    }
+};
+
+//检查类型
+MockServer.prototype.checkType = function(pathParam, reqParams) {
+    // if (pathParam.type )
 };
 
 MockServer.prototype.mockResponse = function(response, appId) {
@@ -31,6 +60,9 @@ MockServer.prototype.mockResponse = function(response, appId) {
           resolve(result);
         });
       })
+    },
+    response400: function(message) {
+      return Promise.reject(message);
     }
   }
 };
@@ -55,9 +87,21 @@ var ApiModel = function(api, method, body, appId) {
   this.method = method;
   this.body = body;
   this.appId = appId;
-
-
 };
+
+
+function ParamError(message) {
+  this.message = message;
+}
+/**
+ @type {string}
+ */
+ParamError.prototype.name = null;
+/**
+ @type {string}
+ */
+ParamError.prototype.message = null;
+
 
 module.exports = {
   MockServer: MockServer,
