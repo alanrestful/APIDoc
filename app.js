@@ -23,6 +23,7 @@ var codeGen = require('./routes/codeGen');
 var logs = require('./routes/logs');
 var mockRequest = require('./routes/mockRequest');
 var mockServer = require('./routes/mockServer');
+var apiForm = require('./routes/apiForm');
 
 
 var util = require('util'),
@@ -136,6 +137,7 @@ app.use('/codegen', codeGen);
 app.use('/logs', logs);
 app.use('/api/mock-request', mockRequest);
 app.use('/mock-server', mockServer);
+app.use('/api-form', apiForm);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));

@@ -1,0 +1,115 @@
+{{>header}}
+<div class="container-fluid">
+  <div class="row bg-success" style="margin-top: 10px;">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-1 text-right">Path: </label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control input-sm"/>
+        </div>
+        <label class="col-sm-1 text-right">方法: </label>
+        <div class="col-sm-1">
+          <select class="form-control input-sm">
+            <option value="">GET</option>
+            <option value="">POST</option>
+            <option value="">PUT</option>
+            <option value="">DELETE</option>
+            <option value="">PATCH</option>
+            <option value="">OPTIONS</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-1 text-right">标签： </label>
+        <div class="col-sm-2">
+          <select class="form-control input-sm">
+            <option>core-users</option>
+          </select>
+        </div>
+        <label class="col-sm-1 text-right">概要: </label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control input-sm"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-1 text-right">Consumer: </label>
+        <div class="col-sm-2">
+          <select class="form-control input-sm">
+            <option value=""></option>
+            <option value="">application/json</option>
+          </select>
+        </div>
+        <label class="col-sm-1 text-right">Producer: </label>
+        <div class="col-sm-2">
+          <select class="form-control input-sm">
+            <option value=""></option>
+            <option value="">application/json</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-7">
+          <table class="table table-striped">
+            <thead>
+            <tr class="text-center">
+              <td>ParamType</td>
+              <td>Name</td>
+              <td>Description</td>
+              <td>Type</td>
+              <td>Required</td>
+              <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                <select>
+                  <option>query</option>
+                  <option>body</option>
+                  <option>path</option>
+                </select>
+              </td>
+              <td>
+                <input type="text">
+              </td>
+              <td>
+                <input type="text">
+              </td>
+              <td>
+                <select>
+                  <option value="0">integer</option>
+                  <option value="1">integer [int32]</option>
+                  <option value="2" selected="selected">integer [int64]</option>
+                  <option value="3">number</option>
+                  <option value="4">number [float]</option>
+                  <option value="5">number [double]</option>
+                  <option value="6">string</option>
+                  <option value="7">string [byte]</option>
+                  <option value="8">boolean</option>
+                  <option value="9">string [date]</option>
+                  <option value="10">string [date-time]</option>
+                  <option value="11">File</option>
+                  <option value="12">Model</option>
+                  <option value="13">Model575.0</option>
+                </select>
+              </td>
+              <td class="text-center">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox">
+                  </label>
+                </div>
+              </td>
+              <td>
+                -
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary btn-sm pull-right">add Parameter</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
