@@ -65,6 +65,8 @@ class ParamManager {
       }
     }
     if (this.pathParams.length === 0) {
+      this.searchPath = api;
+      this.resultPath = api;
       return api;
     } else {
       this.searchPath = pathArray.join('/');
@@ -76,7 +78,7 @@ class ParamManager {
    */
   convertPath() {
     return pathKeyDao.findBy(this.appId, this.searchPath).then((result) => {
-      if (!result || result.length === 0) return Promise.reject(new Error('404'))
+      if (!result || result.length === 0) return Promise.reject(JSON.stringify(new Error({status: 404, message: 'can not find ' + this.searchPath})))
       if (result.length === 1) {
         //查到1个,进行恢复
         let path = result[0].apiPath.split('/');

@@ -32,7 +32,8 @@ router.all('/s/:appId/*', function(req, res, next) {
     res.json(result);
   }).catch((e) => {
     console.error(e);
-    res.json({success: false, cause: e.message})
+    var eObj = JSON.parse(e.message);
+    res.status(eObj.status).send(eObj.message)
   });
 });
 
