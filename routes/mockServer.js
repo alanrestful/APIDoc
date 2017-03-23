@@ -13,16 +13,30 @@ var MockServer = require('./common/MockServer').MockServer;
 var mockServer = new MockServer();
 var PathKey = require('../models/Path').PathKey;
 var pathKeyDao = new PathKey();
-
+var MockServers = require('./common/MockServers');
+const mockServers = new MockServers();
 
 var DefinitionParser = require('./common/DefinitionParser');
 
+var ParamManager = require('./common/ParamManager');
+router.all('/12', function(req, res, next) {
 
-// router.post('/*', function(req, res, next) {
-//   console.log(req);
-//   res.json({});
-//
-// });
+  res.json({});
+});
+router.all('/s/:appId/*', function(req, res, next) {
+  var paramManager = new ParamManager(req);
+  paramManager.process().then((result) => {
+    console.log(result);
+    return mockServers.checkParameters(result);
+  }).then((result) => {
+    res.json(result);
+  }).catch((e) => {
+    console.error(e);
+    var eObj = JSON.parse(e.message);
+    res.status(eObj.status).send(eObj.message)
+  });
+});
+
 
 router.all('/:appId/*', function(req, res, next) {
   var _apiModel = null;
@@ -46,19 +60,12 @@ router.all('/:appId/*', function(req, res, next) {
     res.json(result);
   }).catch(function(e) {
     console.error(e);
-    res.json({success: false, cause: e.message});
+    res.status(400).send(e);
   });
 });
 
-// router.put('/*', function(req, res, next) {
-//   console.log(req);
-//   res.json({});
-// });
-//
-// router.delete('/*', function(req, res, next) {
-//   console.log(req);
-//   res.json({});
-// });
+
+
 module.exports = router;
 
 function buildApi(req) {

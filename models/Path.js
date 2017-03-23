@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-mongoose.set('debug', false);
+mongoose.set('debug', true);
 
 
 var PathKey = new Schema({
