@@ -1,0 +1,47 @@
+<tr>
+  <td>
+    <select name="in">
+      <option>query</option>
+      <option>body</option>
+      <option>path</option>
+    </select>
+  </td>
+  <td>
+    <input type="text" name="name">
+  </td>
+  <td>
+    <input type="text" name="description">
+  </td>
+  <td>
+    <select name="type">
+      <option value="0">integer</option>
+      <option value="1">integer [int32]</option>
+      <option value="2" selected="selected">integer [int64]</option>
+      <option value="3">number</option>
+      <option value="4">number [float]</option>
+      <option value="5">number [double]</option>
+      <option value="6">string</option>
+      <option value="7">string [byte]</option>
+      <option value="8">boolean</option>
+      <option value="9">string [date]</option>
+      <option value="10">string [date-time]</option>
+      <option value="11">File</option>
+      <option value="12">Model</option>
+      <option value="13">Model575.0</option>
+    </select>
+  </td>
+  <td class="text-center" >
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="required">
+      </label>
+    </div>
+  </td>
+  <td>
+    <div class="js-remove-row" style="cursor: pointer;">
+      <sub>
+        ➖
+      </sub>
+    </div>
+  </td>
+</tr>

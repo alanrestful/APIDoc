@@ -68,7 +68,7 @@
                             <h5>Parameters</h5>
 
                             {{#each parameters}}
-                              <div class="form-group" data-schema="{{json schema}}">
+                              <div class="form-group" data-schema="{{json schema}}" data-in="{{in}}">
                               <label>{{name}}</label></br>
                               {{#if schema.$ref}}
                                   {{#each definition.properties}}
@@ -76,7 +76,7 @@
                                   {{/each}}
                                 <!--<textarea class="form-control" rows="3" style="width: 300px;" name="{{this.name}}" placeholder="{{#if this.required}}required{{/if}}" {{#if this.required}}required{{/if}}></textarea>-->
                               {{else}}
-                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}" placeholder="{{type}} {{#if this.required}}required{{/if}}" autocomplete="off" {{#if this.required}}required{{/if}}>
+                                <input type="text" class="form-control" style="width: 300px;" name="{{this.name}}{{#equals in "path"}}-path{{/equals}}" placeholder="{{type}} {{#if this.required}}required{{/if}}" autocomplete="off" {{#if this.required}}required{{/if}}>
                                 {{#equals (size ../parameters) 1}}<input type="checkbox" name="isMap"/><span>isMap</span>{{/equals}}
                               {{/if}}
                               </div>

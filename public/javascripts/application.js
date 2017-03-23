@@ -33,10 +33,13 @@ var endpointEvent = function(e){
     if (!data[k]) {
       delete data[k];
     }
+    if (/-path/.test(k) && data[k]) {
+      path = path.replace("{"+k.replace(/-path/,'')+"}", data[k]);
+    }
   }
-  for(var d in data){
-    path = path.replace("{"+d+"}",data[d]);
-  }
+  // for(var d in data){
+  //   path = path.replace("{"+d+"}",data[d]);
+  // }
   var url = domain + path;
   var $modal;
 
