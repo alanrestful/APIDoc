@@ -5,7 +5,9 @@
 
 var PathKey = require('../../models/Path').PathKey;
 var pathKeyDao = new PathKey();
-
+const MediaType = {
+  APPLICATION_JSON: 'application/json',
+};
 class ParamManager {
   constructor(req) {
     this.parameters = [];
@@ -13,6 +15,7 @@ class ParamManager {
     this.body = req.body;
     this.query = req.query;
     this.method = req.method;
+    this.reqContentType = req.headers['content-type'];
 
 /*  this.path; // 原path
     this.searchPath; //查询数据库的字符串
@@ -139,7 +142,11 @@ class ParamManager {
 
   convertForPost() {
     for (let i in this.body) {
-      this.parameters.push({name: i, in: 'body', value: this.body[i]})
+      if (this.reqContentType === MediaType.APPLICATION_JSON) {
+        this.parameters.push({name: i, in: 'body', value: this.body[i]})
+      } else {
+        this.parameters.push({name: i, in: 'query', value: this.body[i]})
+      }
     }
     for (let i = 0; i < this.pathParams.length; i++ ) {
       this.parameters.push({name: this.pathParams[i].key, in: 'path', value: this.pathParams[i].value})
@@ -168,23 +175,6 @@ class ParamManager {
     }
   }
 
-
-
 }
-
-class Parameter {
-  constructor(name, position, type) {
-    this.name = name;
-    this.position = position;
-    this.type = type;
-  }
-}
-
-
-// {
-//   name: name,
-//   in: in,
-//   type: type
-// }
 
 module.exports = ParamManager;

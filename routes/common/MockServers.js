@@ -33,20 +33,23 @@ class MockServers {
     }
     for (let i = 0; i < originParam.length; i++ ) {
       //检查必需
+      if (originParam[i].in === 'body' && originParam[i].schema) {
+        continue; //todo post application/json格式的先过，之后应该加上模型参数类型转换的检查。
+      }
       if (!((originParam[i].required && reqParametersObj[originParam[i].name]) || !originParam[i].required)) {
         throw new Error(JSON.stringify({status:400, message: `required param ${originParam[i].name} not present!`}));
       }
       var originPosition = originParam[i].in;
       if (originPosition === 'query') {
-        if (!paramManager.query[originParam[i].name] && reqParametersObj[originParam[i].name]) {
+        if (reqParametersObj[originParam[i].name] && reqParametersObj[originParam[i].name].in !== 'query') {
           throw new Error(JSON.stringify({status:400, message:originParam[i].name + ' need in query'}));
         }
       } else if (originPosition === 'body') {
-        if (!paramManager.body[originParam[i].name] && reqParametersObj[originParam[i].name]) {
+        if (reqParametersObj[originParam[i].name] && reqParametersObj[originParam[i].name].in !== 'body') {
           throw new Error(JSON.stringify({status:400, message: originParam[i].name + ' need in body'}));
         }
       } else if (originPosition === 'path') {
-        if (!paramManager.paths[originParam[i].name] && reqParametersObj[originParam[i].name]) {
+        if (reqParametersObj[originParam[i].name] && reqParametersObj[originParam[i].name].in !== 'path') {
           throw new Error(JSON.stringify({status:400, message: originParam[i].name + ' need in path'}));
         }
       }
@@ -58,7 +61,11 @@ class MockServers {
   mockResponse(path, appId) {
     let response = path.responses;
     return new Promise(function(resolve, reject) {
-      if (!response || !response['200'] || !response['200']['schema']) return null;
+      if (!response || !response['200']) throw new Error(JSON.stringify({status: 500, message: `can not find 200 response`}));
+      if (!response['200']['schema']) {
+        resolve(true);
+        return;
+      }
       var schema = response['200']['schema'];
       var definitionParser = new DefinitionParser(schema, appId);
       definitionParser.gen().then(function(result) {
