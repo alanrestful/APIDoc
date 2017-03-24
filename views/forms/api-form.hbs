@@ -1,78 +1,102 @@
-{{>header}}
-<div class="container-fluid">
-  <div class="row bg-success " style="margin-top: 10px;">
-    <form class="form-horizontal js-path-form table-bordered ">
-      <div class="form-group">
-        <label class="col-sm-1 text-right">Path: </label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control input-sm js-path-value"/>
-        </div>
-        <label class="col-sm-1 text-right">方法: </label>
-        <div class="col-sm-1">
-          <select class="form-control input-sm js-method-value">
-            <option value="get">GET</option>
-            <option value="post">POST</option>
-            <option value="put">PUT</option>
-            <option value="delete">DELETE</option>
-            <option value="patch">PATCH</option>
-            <option value="options">OPTIONS</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-1 text-right">标签： </label>
-        <div class="col-sm-2">
-          <select class="form-control input-sm js-tags-value">
-            <option>core-users</option>
-          </select>
-        </div>
-        <label class="col-sm-1 text-right">概要: </label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control input-sm js-summary-value"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-1 text-right">Consumes: </label>
-        <div class="col-sm-2">
-          <select class="form-control input-sm js-consumes-value">
-            <option value=""></option>
-            <option value="">application/json</option>
-          </select>
-        </div>
-        <label class="col-sm-1 text-right">Produces: </label>
-        <div class="col-sm-2">
-          <select class="form-control input-sm js-produces-value">
-            <option value=""></option>
-            <option value="">application/json</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class=" col-sm-7">
-          <table class="table table-striped js-param-table">
-            <thead>
-            <tr class="text-center">
-              <td>ParamType</td>
-              <td>Name</td>
-              <td>Description</td>
-              <td>Type</td>
-              <td>Required</td>
-              <td></td>
-            </tr>
-            </thead>
-            <tbody>
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <form class="form-horizontal js-path-form" data-app-id="{{appId}}">
+    <div class="modal-header">
+      <button type="button" class="modal-box-close" aria-label="Close" aria-hidden="true" data-dismiss="modal">
+        &times;
+      </button>
+      <h4 class="modal-title" id="addApiModalLabel">
+        <span id="title" style="font-weight: bold;">添加API接口</span>
+      </h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <label class="pull-right">Path:</label>
+          </div>
+          <div class="col-sm-4">
+            <input type="text" class="form-control input-sm js-path-value"/>
+          </div>
 
-            </tbody>
-          </table>
-          <button class="btn btn-primary btn-sm pull-right js-add-param-btn">add Parameter</button>
+          <div class="col-sm-2">
+            <label class="pull-right">方法:</label>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control input-sm js-method-value">
+              <option value="get">GET</option>
+              <option value="post">POST</option>
+              <option value="put">PUT</option>
+              <option value="delete">DELETE</option>
+              <option value="patch">PATCH</option>
+              <option value="options">OPTIONS</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-7">
-          <button class="btn btn-primary pull-right js-save-path-btn">Save</button>
+        <div class="form-group">
+          <div class="col-sm-2">
+            <label class="pull-right">标签:</label>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control input-sm js-tags-value">
+              <option>core-users</option>
+            </select>
+          </div>
+
+          <div class="col-sm-2">
+            <label class="pull-right">概要:</label>
+          </div>
+          <div class="col-sm-4">
+            <input type="text" class="form-control input-sm js-summary-value"/>
+          </div>
         </div>
-      </div>
+        <div class="form-group">
+          <div class="col-sm-2">
+            <label class="pull-right">Consumes: </label>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control input-sm js-consumes-value">
+              <option value=""></option>
+              <option value="">application/json</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label class="pull-right">Produces: </label>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control input-sm js-produces-value">
+              <option value=""></option>
+              <option value="">application/json</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class=" col-sm-12">
+            <table class="table js-param-table table-condensed table-striped">
+              <thead>
+              <tr class="text-center active">
+                <td width="80">in</td>
+                <td width="250">Name</td>
+                <td width="250">Description</td>
+                <td width="200">Type</td>
+                <td width="30">Required</td>
+                <td width="30"></td>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+            <button class="btn btn-primary btn-sm pull-right js-add-param-btn">add Parameter</button>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-default modal-box-close-btn" data-dismiss="modal">取消</button>
+      <button class="btn btn-sm btn-primary pull-right js-save-path-btn">Save</button>
+    </div>
     </form>
   </div>
+
 </div>
+
 <script src="/javascripts/apiForm.js"></script>

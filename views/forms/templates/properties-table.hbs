@@ -1,0 +1,36 @@
+<tr>
+  <td>
+    <input type="text" name="name" class="tr-stretch">
+  </td>
+  <td>
+    <input type="text" name="description" class="tr-stretch">
+  </td>
+  <td class="js-type-td text-center">
+    <select name="type" class="js-type-value">
+      <option value="integer">integer</option>
+      <option value="integer" data-format="int32">integer [int32]</option>
+      <option value="integer" selected="selected" data-format="int64">integer [int64]</option>
+      <option value="number">number</option>
+      <option value="number" data-format="float">number [float]</option>
+      <option value="number" data-format="double">number [double]</option>
+      <option value="string">string</option>
+      <option value="string" data-format="byte">string [byte]</option>
+      <option value="boolean">boolean</option>
+      <option value="string" data-format="date">string [date]</option>
+      <option value="string" data-format="date-time">string [date-time]</option>
+      <option value="object" data-type="object">object</option>
+      <option value="array" data-type="array-base">array-base</option>
+      <option value="array" data-type="array-object">array-object</option>
+    </select>
+  </td>
+  <td class="text-center js-items-td" >
+
+  </td>
+  <td>
+    <div class="js-remove-row" style="cursor: pointer;">
+      <sub>
+        ➖
+      </sub>
+    </div>
+  </td>
+</tr>

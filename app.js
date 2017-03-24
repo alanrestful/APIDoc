@@ -56,7 +56,7 @@ app.all('*', function(req, res, next) {
 app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
 app.engine('hbs', exphbs({
-  partialsDir: 'views/partials',
+  partialsDir: ['views/partials', 'views/forms'],
   layoutsDir: 'views/layouts',
   defaultLayout: 'layout',
   extname: '.hbs',

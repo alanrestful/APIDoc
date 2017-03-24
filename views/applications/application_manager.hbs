@@ -3,7 +3,9 @@
   <div class="row">
     <div class="application-manager">
     <div class="col-sm-3 col-md-2 sidebar">
-      <a style="text-decoration: none;" href="../../projects" ><i class="iconfont icon-fanhui"></i> 返回应用列表</a>
+      <a style="text-decoration: none;" class="btn-block"  href="../../projects" ><i class="iconfont icon-fanhui"></i> 返回应用列表</a>
+      <a style="text-decoration: none;" class="btn-block" href="#" data-target="#addApiModal" data-toggle="modal"><i class="iconfont icon-add"></i> 添加API</a>
+      <a style="text-decoration: none;" class="btn-block" href="#" data-target="#addDefinitionModal" data-toggle="modal"><i class="iconfont icon-add"></i> 添加数据模型</a>
       <hr>
       <ul class="nav nav-sidebar">
         <span style="margin-left: 20px;color: #8c8c8c;">API REFERENCE</span>
@@ -99,6 +101,7 @@
                         </form>
                       </div>
                       <div class="col-sm-6 col-md-6 schemas">
+                          <button class="btn btn-xs btn-info js-edit-path" href="#">修改</button>
                           <a class="show-samples" href="javascript:;" data-parameters="{{#if parameters}}{{json parameters}}{{/if}}" data-responses="{{#if responses}}{{json responses}}{{/if}}" >Show samples</a>
                           <br>
                           <div style="display:none;" class="samples">samples:<pre></pre></div>
@@ -174,5 +177,11 @@
     </form>
     </div>
   </div>
+</div>
+<div class="modal fade" id="addApiModal" tabindex="-1" role="dialog" aria-labelledby="addApiModalLabel" aria-hidden="true">
+  {{> api-form}}
+</div>
+<div class="modal fade" id="addDefinitionModal" tabindex="-1" role="dialog" aria-labelledby="addDefinitionModalLabel" aria-hidden="true">
+  {{> definition-form}}
 </div>
 <script type="text/javascript" src="/javascripts/application.js"></script>

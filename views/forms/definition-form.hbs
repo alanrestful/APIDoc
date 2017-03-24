@@ -1,0 +1,60 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <form class="form-horizontal js-definition-form" data-app-id="{{appId}}">
+      <div class="modal-header">
+        <button type="button" class="modal-box-close" aria-label="Close" aria-hidden="true" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title" id="addApiModalLabel">
+          <span id="title" style="font-weight: bold;">添加数据模型</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <label class="pull-right">完整名称:</label>
+          </div>
+          <div class="col-sm-4">
+            <input type="text" class="form-control input-sm js-model-name-value"/>
+          </div>
+
+          <div class="col-sm-2">
+            <label class="pull-right">类型:</label>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-control input-sm js-model-type-value">
+              <option value="object">object</option>
+              <option value="array">array</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class=" col-sm-12">
+            <table class="table js-definition-table table-condensed table-striped">
+              <thead>
+              <tr class="text-center active">
+                <td width="200">Name</td>
+                <td width="200">Description</td>
+                <td width="200">Type</td>
+                <td width="200">Items</td>
+                <td width="30">#</td>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+            <button class="btn btn-primary btn-sm pull-right js-add-param-btn">add Parameter</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-default modal-box-close-btn" data-dismiss="modal">取消</button>
+        <button class="btn btn-sm btn-primary pull-right js-save-path-btn">Save</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<!--<script src="/javascripts/apiForm.js"></script>-->

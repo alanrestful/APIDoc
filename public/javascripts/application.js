@@ -6,6 +6,11 @@ $(function(){
   $(".show-samples").click(showSamplesEvent);
   $("#save-cookie").click(saveCookie);
   $("input[name=cookie]").val(window.localStorage.getItem("cookies"));
+  $(document).on('click', '.js-edit-path', function(e) {
+    new Model({
+
+    })
+  })
 });
 
 
