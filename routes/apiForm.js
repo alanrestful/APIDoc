@@ -5,6 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var apiDefinitionDao = new require('../models/APIDefinition').APIDefinition();
+var ApiDefinition = require('../models/APIDefinition').APIDefinition;
 var ApiPath = require('../models/APIPath').APIPath;
 
 router.get('/:appId/', function(req, res, next) {
@@ -21,6 +22,19 @@ router.get('/api/models', function(req, res, next) {
   }).catch((e) => {
     console.error(e);
     res.status(500).send(e.message);
+  })
+});
+
+router.post('/api/models/save', function(req, res, next) {
+  var model = req.body.data;
+  var apiDefinition = new ApiDefinition({
+    applicationId: req.body.appId,
+    definition_json: model
+  });
+  apiDefinition.save().then((res) => {
+    res.json({})
+  }).catch((e) => {
+    res.json({success: false})
   })
 });
 
