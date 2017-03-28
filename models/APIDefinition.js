@@ -15,9 +15,10 @@ _APIDefinition.method("findByAid", function(aId, cb) {
 
 _APIDefinition.method("findByRef", function(appId, ref, cb) {
     var refName = 'definition_json.'+ref;
-    var query = {};
-    query['applicationId'] = appId;
-    query[refName] = {$type: 3};
+    var query = {
+        applicationId: appId,
+        [refName]: {$type: 3}
+    };
     return this.model('api_definitions').find(query, cb);
 });
 

@@ -1313,6 +1313,50 @@ this["Handlebars"]["templates"]["forms"] = this["Handlebars"]["templates"]["form
 this["Handlebars"]["templates"]["forms"]["definition-type"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<select name=\"type\" class=\"js-items-type-value\">\n  <option value=\"integer\">integer</option>\n  <option value=\"integer\" data-format=\"int32\">integer [int32]</option>\n  <option value=\"integer\" selected=\"selected\" data-format=\"int64\">integer [int64]</option>\n  <option value=\"number\">number</option>\n  <option value=\"number\" data-format=\"float\">number [float]</option>\n  <option value=\"number\" data-format=\"double\">number [double]</option>\n  <option value=\"string\">string</option>\n  <option value=\"string\" data-format=\"byte\">string [byte]</option>\n  <option value=\"boolean\">boolean</option>\n  <option value=\"string\" data-format=\"date\">string [date]</option>\n  <option value=\"string\" data-format=\"date-time\">string [date-time]</option>\n</select>";
 },"useData":true});
+this["Handlebars"]["templates"]["forms"]["mock-param-row"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "        <option value=\""
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+    + "\"  >"
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+    + "</option>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+
+  return "<tr>\n  <td  class=\"js-param-key\" data-key=\""
+    + container.escapeExpression(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + "\">\n    <select class=\"input-group\" >\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.param : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </select>\n  </td>\n  <td  class=\"js-param-value\">\n    <input name=\"@key\"/>\n  </td>\n</tr>";
+},"useData":true});
+this["Handlebars"]["templates"]["forms"]["mock-tab"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "      <tr>\n        <td class=\"js-param-key\" data-key=\""
+    + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td class=\"js-param-value\"><input name=\"@key\" value=\""
+    + alias4(container.lambda(depth0, depth0))
+    + "\"/></td>\n      </tr>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "<h4 class=\"path-title\" data-path=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.path : depth0)) != null ? stack1.path : stack1), depth0))
+    + "\" data-method=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.path : depth0)) != null ? stack1.method : stack1), depth0))
+    + "\">\n  "
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.path : depth0)) != null ? stack1.path : stack1), depth0))
+    + " ["
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.path : depth0)) != null ? stack1.method : stack1), depth0))
+    + "]\n</h4>\n<div class=\"form-group\">\n  <label>名称:</label>\n  <input class=\"input-group-sm js-mock-name\" value=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.name : stack1), depth0))
+    + "\"/>\n</div>\n<div class=\"js-criteria form-group\">\n  <table class=\"table table-bordered table-responsive js-mock-param-table\">\n    <thead>\n    <tr>\n      <td>字段名称</td>\n      <td>字段值</td>\n    </tr>\n    </thead>\n    <tbody>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.criteria : stack1),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </tbody>\n  </table>\n</div>\n<div class=\"bottom-right\">\n  <button class=\"btn btn-sm btn-primary js-mock-param-add\">添加</button>\n  <button class=\"btn btn-sm btn-primary js-mock-save\">保存\n  </button>\n</div>";
+},"useData":true});
 this["Handlebars"]["templates"]["forms"]["param-table"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<tr>\n  <td>\n    <select name=\"in\" class=\"js-position-value\">\n      <option>query</option>\n      <option>body</option>\n      <option>path</option>\n    </select>\n  </td>\n  <td>\n    <input type=\"text\" name=\"name\" class=\"tr-stretch\">\n  </td>\n  <td>\n    <input type=\"text\" name=\"description\" class=\"tr-stretch\">\n  </td>\n  <td class=\"js-type-td text-center\">\n    <select name=\"type\" class=\"js-type-value\">\n      <option value=\"0\">integer</option>\n      <option value=\"1\">integer [int32]</option>\n      <option value=\"2\" selected=\"selected\">integer [int64]</option>\n      <option value=\"3\">number</option>\n      <option value=\"4\">number [float]</option>\n      <option value=\"5\">number [double]</option>\n      <option value=\"6\">string</option>\n      <option value=\"7\">string [byte]</option>\n      <option value=\"8\">boolean</option>\n      <option value=\"9\">string [date]</option>\n      <option value=\"10\">string [date-time]</option>\n      <option value=\"11\">File</option>\n      <option value=\"12\">Model</option>\n      <option value=\"13\">Model575.0</option>\n    </select>\n  </td>\n  <td class=\"text-center\" >\n    <div class=\"checkbox\">\n      <label>\n        <input type=\"checkbox\" name=\"required\">\n      </label>\n    </div>\n  </td>\n  <td>\n    <div class=\"js-remove-row\" style=\"cursor: pointer;\">\n      <sub>\n        ➖\n      </sub>\n    </div>\n  </td>\n</tr>";
 },"useData":true});

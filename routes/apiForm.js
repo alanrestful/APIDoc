@@ -8,9 +8,8 @@ var apiDefinitionDao = new require('../models/APIDefinition').APIDefinition();
 var ApiDefinition = require('../models/APIDefinition').APIDefinition;
 var ApiPath = require('../models/APIPath').APIPath;
 
-router.get('/:appId/', function(req, res, next) {
-  res.render('forms/api-form',{appId: req.params.appId});
-});
+var Application = require('../models/Application').Application;
+
 
 
 /**
@@ -48,3 +47,4 @@ router.post('/api/path-save', function(req, res, next) {
 })
 
 module.exports = router;
+

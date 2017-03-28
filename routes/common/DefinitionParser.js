@@ -66,13 +66,13 @@ DefinitionParser.prototype.parseModel = function($ref) {
       mockModel[i] = this.parseModel(modelProp.$ref);
     } else if (modelProp.items && modelProp.items.$ref && modelProp.type === 'array') {
       mockModel[i] = [];
-      for (var j = 0; j < 20; j++) {
+      for (var j = 0; j < 2; j++) {
         mockModel[i].push(this.parseModel(modelProp.items.$ref));
       }
     } else if (modelProp.type === 'array' && modelProp.items && modelProp.items.type) {
       //直接数组
       mockModel[i] = [];
-      for (var j =10 ; j > 0; j--) {
+      for (var j =2 ; j > 0; j--) {
         mockModel[i].push(mockBase(i, modelProp ))
       }
     } else {
@@ -126,7 +126,7 @@ function mockBase(i, schema) {
       return {object: 'object'};
     case 'array':
       var arr = [];
-      for (var j = 0 ; j < 10; j ++ ) {
+      for (var j = 0 ; j < 2; j ++ ) {
         arr.push(mockBase(i, schema.items));
       }
       return arr;

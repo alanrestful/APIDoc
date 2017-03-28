@@ -14,6 +14,13 @@ var mockServer = new MockServer();
 var PathKey = require('../models/Path').PathKey;
 var pathKeyDao = new PathKey();
 var MockServers = require('./common/MockServers');
+var project = require('../models/Project').Project;
+
+var Application = require('../models/Application').Application;
+
+var Mock = require('../models/Mock').Mock;
+var MockDao = new Mock();
+
 const mockServers = new MockServers();
 
 var DefinitionParser = require('./common/DefinitionParser');
@@ -23,7 +30,75 @@ router.all('/12', function(req, res, next) {
 
   res.json({});
 });
-router.all('/s/:appId/*', function(req, res, next) {
+
+/**
+ * 保存mock数据
+ */
+router.post('/mock/save', function(req, res, next) {
+  var obj = {
+    applicationId: req.body.applicationId,
+    path: req.body.path,
+    criteria: req.body.criteria,
+    mockData: req.body.mockData,
+    name: req.body.name,
+    method: req.body.method,
+  };
+  var mock = new Mock(obj);
+  let _id = req.body._id;
+  if (!_id) {
+    mock.save().then((result) => {
+      res.json({success: true});
+    }).catch((e) => {
+      res.status(500).json({message: e})
+    });
+  } else {
+    Mock.update({_id: _id}, {$set: obj}).then((result) => {
+      res.json({success: true})
+    }).catch((e) => {
+      console.error(e);
+      res.status(500).json({message: e});
+    })
+  }
+});
+
+
+/**
+ * mock数据编辑界面获取全部api信息的接口。
+ */
+router.get('/mock/:appId/', function(req, res, next) {
+  var aid = req.params.appId;
+  if (!aid) {
+    res.redirect('../projects');
+  }else{
+    var resJson = {};
+    Application.findOne({"_id": aid}, {'__v':0})
+        .then(function(app) {
+          var pid = app.projectId;
+          resJson.app = app;
+          return project.findOne({"_id": pid}, {});
+        })
+        .then(function(project) {
+          resJson.project = project;
+          var apiPath = new ApiPath;
+          return apiPath.findByAid(aid);
+        })
+        .then(function(paths) {
+          resJson.paths = paths;
+          return navGenerator(resJson.paths)
+        })
+        .then(function(navArr) {
+          resJson.nav = navArr;
+          res.render('forms/mock-form', resJson);
+        })
+        .catch(function(err) {
+          console.error(err);
+          res.json({status: false, messages: err.message});
+        })
+  }
+});
+
+
+router.all('/:appId/*', function(req, res, next) {
   var paramManager = new ParamManager(req);
   paramManager.process().then((result) => {
     console.log(result);
@@ -36,35 +111,6 @@ router.all('/s/:appId/*', function(req, res, next) {
     res.status(eObj.status).send(eObj.message)
   });
 });
-
-
-router.all('/:appId/*', function(req, res, next) {
-  var _apiModel = null;
-  buildApi(req).then(function(apiModel) {
-    _apiModel = apiModel;
-    return pathKeyDao.findBy(apiModel.appId, apiModel.apiSearch);
-  }).then(function(result) {
-    //找path
-    if (!result) {
-      return Promise.reject(new Error('can not find api', _apiModel.api));
-    }
-    _apiModel.api = result[0].apiPath;
-    return apiPathDao.findByPath(result[0].apiPath, _apiModel.appId);
-  }).catch(function(e) {
-    console.error(e.message);
-    res.json({success: false, cause: e.message})
-  }).then(function(result) {
-    // 找到了path,解析path的response
-    return mockServer.mock(result, _apiModel);
-  }).then(function(result) {
-    res.json(result);
-  }).catch(function(e) {
-    console.error(e);
-    res.status(400).send(e);
-  });
-});
-
-
 
 module.exports = router;
 
@@ -98,3 +144,38 @@ function getApi(params) {
     return api;
 }
 
+
+var navGenerator = function(paths) {
+  return new Promise(function(resolve, reject) {
+    var nav = {};
+    for (var path in paths) {
+      for (var p in paths[path]["path_json"]) {
+        for (var m in paths[path]["path_json"][p]) {
+          if (!nav[paths[path]["path_json"][p][m].tags[0]]) {
+            nav[paths[path]["path_json"][p][m].tags[0]] = [];
+          }
+          if (nav[paths[path]["path_json"][p][m].tags[0]].indexOf(paths[path]["path_json"][p][m].summary) == -1) {
+            nav[paths[path]["path_json"][p][m].tags[0]].push({
+              title: paths[path]["path_json"][p][m].summary,
+              path: p,
+              method: m,
+              param: paths[path]["path_json"][p][m].parameters,
+              _id: paths[path]["_id"]
+            });
+          }
+        }
+      }
+    }
+    var arr = [];
+    for (var n in nav) {
+      nav[n].sort(function (a, b) {
+        return a < b ? -1 : 1;
+      });
+      arr.push({name: n, key: nav[n]})
+    }
+    arr.sort(function (a, b) {
+      return a.name < b.name ? -1 : 1;
+    });
+    resolve(arr);
+  })
+};

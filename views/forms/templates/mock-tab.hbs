@@ -1,0 +1,30 @@
+<h4 class="path-title" data-path="{{path.path}}" data-method="{{path.method}}">
+  {{path.path}} [{{path.method}}]
+</h4>
+<div class="form-group">
+  <label>名称:</label>
+  <input class="input-group-sm js-mock-name" value="{{data.name}}"/>
+</div>
+<div class="js-criteria form-group">
+  <table class="table table-bordered table-responsive js-mock-param-table">
+    <thead>
+    <tr>
+      <td>字段名称</td>
+      <td>字段值</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each data.criteria}}
+      <tr>
+        <td class="js-param-key" data-key="{{@key}}">{{@key}}</td>
+        <td class="js-param-value"><input name="@key" value="{{this}}"/></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+</div>
+<div class="bottom-right">
+  <button class="btn btn-sm btn-primary js-mock-param-add">添加</button>
+  <button class="btn btn-sm btn-primary js-mock-save">保存
+  </button>
+</div>

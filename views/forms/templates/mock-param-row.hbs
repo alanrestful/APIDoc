@@ -1,0 +1,12 @@
+<tr>
+  <td  class="js-param-key" data-key="{{@key}}">
+    <select class="input-group" >
+      {{#each param}}
+        <option value="{{this.name}}"  >{{this.name}}</option>
+      {{/each}}
+    </select>
+  </td>
+  <td  class="js-param-value">
+    <input name="@key"/>
+  </td>
+</tr>

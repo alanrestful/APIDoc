@@ -18,8 +18,12 @@ _APIPath.method("findByPath", function(pathKey, applicationId, cb) {
     return this.model('api_paths').find(query,cb);
 });
 
+_APIPath.method("findById", function(id, cb) {
+   return this.model('api_paths').findById(id, cb);
+});
+
 _APIPath.method("findByAid", function(aId, cb) {
-    return this.model('api_paths').find({'applicationId': aId}, {_id:0}).sort('_id').exec(cb);
+    return this.model('api_paths').find({'applicationId': aId}).sort('_id').exec(cb);
 });
 
 _APIPath.method("updatePath", function(obj, id, appId, cb) {
