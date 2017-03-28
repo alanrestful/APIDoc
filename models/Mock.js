@@ -28,7 +28,7 @@ Mock.method('findBy', function(appId, api, method, cb) {
   if (method) {
     query.method = method;
   }
-  return this.model('mock_datas').find(query, cb);
+  return this.model('mock_datas').find(query, {}, cb);
 });
 
 /**

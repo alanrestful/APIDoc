@@ -2,6 +2,8 @@
 const ApiPath = require('../../models/APIPath').APIPath;
 const apiPathDao = new ApiPath;
 const DefinitionParser = require('./DefinitionParser').DefinitionParser;
+const MockData = require('./MockDatas').MockDatas;
+const mockData = new MockData();
 class MockServers {
   constructor() {}
 
@@ -21,7 +23,8 @@ class MockServers {
       this.checkParamRequired(paramManager, parameters);
       return Promise.resolve(path);
     }).then((path) => {
-      return this.mockResponse(path, paramManager.appId);
+      // return this.mockResponse(path, paramManager.appId);
+      return this.getMockResponse(paramManager.resultPath, paramManager.appId, paramManager.method.toLowerCase(), paramManager.parameters);
     });
   }
 
@@ -72,6 +75,21 @@ class MockServers {
         resolve(result);
       });
     })
+  }
+
+  getMockResponse(pathName, appId, method, parameters) {
+    let criteria = {};
+    parameters.forEach((item, i, a) => {
+      criteria[item.name] = item.value;
+    });
+    //这是从数据库中获取数据。
+    return new Promise((resolve, reject) => {
+      mockData.getData(pathName, method, appId).then((data) => {
+        return mockData.filterMock(data, criteria);
+      }).then((result) => {
+        resolve(result);
+      });
+    });
   }
 
 

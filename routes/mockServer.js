@@ -97,7 +97,9 @@ router.get('/mock/:appId/', function(req, res, next) {
   }
 });
 
-
+/**
+ * 模拟服务端，数据从req请求中获取。
+ */
 router.all('/:appId/*', function(req, res, next) {
   var paramManager = new ParamManager(req);
   paramManager.process().then((result) => {
@@ -107,7 +109,7 @@ router.all('/:appId/*', function(req, res, next) {
     res.json(result);
   }).catch((e) => {
     console.error(e);
-    var eObj = JSON.parse(e.message);
+    var eObj = JSON.parse(e && e.message);
     res.status(eObj.status).send(eObj.message)
   });
 });

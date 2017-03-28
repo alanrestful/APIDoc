@@ -64,6 +64,9 @@ class ParamManager {
           //如果是数字，表示是一个变量
           this.pathParams.push({index: i, value: pathArray[i]});
           pathArray.splice(i, 1, '\\\{[A-Za-z]+\\\}');
+          if (i === pathArray.length -1 ) {
+            pathArray.splice(i, 1, '\\\{[A-Za-z]+\\\}$');
+          }
         }
       }
     }
@@ -95,7 +98,7 @@ class ParamManager {
         }
         this.resultPath = result[0].apiPath;
       } else {
-
+        console.error("todo: //mockServer.js 101");
       }
       return Promise.resolve();
     });

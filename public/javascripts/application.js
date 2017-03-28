@@ -57,7 +57,7 @@ var endpointEvent = function(e){
     cookies: cookies,
     isMap: isMap ,
     headers: {
-      contentType: $(e.currentTarget).find('select[name=contentType]').val()
+      contentType: $(e.currentTarget).find('select[name=contentType]').val() || 'application/x-www-form-urlencoded; charset=UTF-8'
     }
   };
 

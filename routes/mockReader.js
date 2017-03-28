@@ -36,7 +36,7 @@ router.get('/path-mock', function(req, res, next) {
 
 /**
  * 获取某一具体模拟数据的接口
- * @param id mock_data中的主键
+ * @param id mock_datas中的主键
  * @return Mock object
  */
 router.get('/mock-data/:id', function(req, res, next) {
