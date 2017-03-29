@@ -10,8 +10,8 @@ class MockServers {
   //检查参数必需，类型
   checkParameters(paramManager) {
     return apiPathDao.findByPath(paramManager.resultPath, paramManager.appId).then((paths) => {
-      if (!paths || paths.length === 0) return Promise.reject(JSON.stringify(new Error({status: 404,message: paramManager.resultPath + ' not exists'})));
-      if (paths.length > 1) return Promise.reject(JSON.stringify(new Error('Data Error: duplicate path: ' + paramManager.resultPath)));
+      if (!paths || paths.length === 0) return Promise.reject(new Error(JSON.stringify({status: 404,message: paramManager.resultPath + ' not exists'})));
+      if (paths.length > 1) return Promise.reject(new Error(JSON.stringify({status: 405, message: 'Data Error: duplicate path: ' + paramManager.resultPath})));
       paramManager.pathInfo = paths[0];
       return Promise.resolve(paths[0]);
     }).then((pathModel) => {
@@ -88,7 +88,7 @@ class MockServers {
         return mockData.filterMock(data, criteria);
       }).then((result) => {
         resolve(result);
-      });
+      }).catch(e => reject(e));
     });
   }
 

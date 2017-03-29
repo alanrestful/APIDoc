@@ -107,7 +107,6 @@ router.get('/mock/:appId/', function(req, res, next) {
 router.all('/:appId/*', function(req, res, next) {
   var paramManager = new ParamManager(req);
   paramManager.process().then((result) => {
-    console.log(result);
     return mockServers.checkParameters(result);
   }).then((result) => {
     res.json(result);
