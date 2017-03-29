@@ -28,11 +28,13 @@ class ParamManager {
   process() {
 
     //处理路径变量
-    return new Promise((resolve, rejcet) => {
+    return new Promise((resolve, reject) => {
       this.processPathVariables().then(() => {
         this.convertForMethod();
         console.log(this);
         resolve(this);
+      }).catch((e) => {
+        reject(e);
       });
     });
 
@@ -83,25 +85,31 @@ class ParamManager {
    * 转变path中有数字的，到数据库中查
    */
   convertPath() {
-    return pathKeyDao.findBy(this.appId, this.searchPath).then((result) => {
-      if (!result || result.length === 0) return Promise.reject(JSON.stringify(new Error({status: 404, message: 'can not find ' + this.searchPath})))
-      if (result.length === 1) {
-        //查到1个,进行恢复
-        let path = result[0].apiPath.split('/');
-        this.paths = {};
-        // if (path.length !== this.pathParams.length) return Promise.reject(new Error('404'));
-        for (let i = 0; i < this.pathParams.length; i++ ) {
-          let index = this.pathParams[i].index;
-          let value = this.pathParams[i].value;
-          this.pathParams[i].key = path[index].match(/[a-zA-Z\\_\\-]+/)[0];
-          this.paths[this.pathParams[i].key] = value;
+    return new Promise((resolve, reject) => {
+      pathKeyDao.findBy(this.appId, this.searchPath).then((result) => {
+        if (!result || result.length === 0) {
+          reject(new Error(JSON.stringify({status: 404, message: 'can not find ' + this.searchPath})));
+          return;
         }
-        this.resultPath = result[0].apiPath;
-      } else {
-        console.error("todo: //mockServer.js 101");
-      }
-      return Promise.resolve();
-    });
+        if (result.length === 1) {
+          //查到1个,进行恢复
+          let path = result[0].apiPath.split('/');
+          this.paths = {};
+          // if (path.length !== this.pathParams.length) return Promise.reject(new Error('404'));
+          for (let i = 0; i < this.pathParams.length; i++ ) {
+            let index = this.pathParams[i].index;
+            let value = this.pathParams[i].value;
+            this.pathParams[i].key = path[index].match(/[a-zA-Z\\_\\-]+/)[0];
+            this.paths[this.pathParams[i].key] = value;
+          }
+          this.resultPath = result[0].apiPath;
+        } else {
+          console.error("todo: //mockServer.js 101");
+        }
+        resolve();
+      });
+    })
+
   }
 
   //查询path，检查key

@@ -40,6 +40,7 @@ var endpointEvent = function(e){
     }
     if (/-path/.test(k) && data[k]) {
       path = path.replace("{"+k.replace(/-path/,'')+"}", data[k]);
+      delete data[k];
     }
   }
   // for(var d in data){

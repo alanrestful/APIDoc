@@ -16,7 +16,11 @@
     <tbody>
     {{#each data.criteria}}
       <tr>
-        <td class="js-param-key" data-key="{{@key}}">{{@key}}</td>
+        <td class="js-param-key" data-key="{{@key}}">
+          <select name="key" >
+            <option value="{{@key}}">{{@key}}</option>
+          </select>
+        </td>
         <td class="js-param-value"><input name="@key" value="{{this}}"/></td>
       </tr>
     {{/each}}

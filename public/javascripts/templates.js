@@ -1335,9 +1335,11 @@ this["Handlebars"]["templates"]["forms"]["mock-tab"] = Handlebars.template({"1":
 
   return "      <tr>\n        <td class=\"js-param-key\" data-key=\""
     + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + "\">\n          <select name=\"key\" >\n            <option value=\""
+    + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
-    + "</td>\n        <td class=\"js-param-value\"><input name=\"@key\" value=\""
+    + "</option>\n          </select>\n        </td>\n        <td class=\"js-param-value\"><input name=\"@key\" value=\""
     + alias4(container.lambda(depth0, depth0))
     + "\"/></td>\n      </tr>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

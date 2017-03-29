@@ -43,6 +43,10 @@ router.post('/mock/save', function(req, res, next) {
     name: req.body.name,
     method: req.body.method,
   };
+  if (!obj.name) {
+    res.status(500).json({message: `name can not be null`});
+    return;
+  }
   var mock = new Mock(obj);
   let _id = req.body._id;
   if (!_id) {

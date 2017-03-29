@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-mongoose.set('debug', false);
 var Schema = mongoose.Schema;
 
 //APIPath schema

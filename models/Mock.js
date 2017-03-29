@@ -3,7 +3,6 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-mongoose.set('debug', true);
 
 var Mock = new Schema({
   applicationId: {type: String, default: ''},

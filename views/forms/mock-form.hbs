@@ -106,6 +106,7 @@
     _this.onClickPathNav = function(e) {
       e.preventDefault();
       var el = $(e.currentTarget);
+      el.parents('ul').find('li a').removeClass('nav-active');
       el.addClass('nav-active');
       $.ajax({
         url: `/mock-reader/path-mock?path=${el.data('path')}&appId=${$('input[name=appId]').val()}&method=${el.data('method')}`,
@@ -143,6 +144,7 @@
           _this.mockDataTab.html(tpl);
           editor.setValue(data? JSON.stringify(data.result, null, '\t'): '');
           el.tab('show');
+          _this.checkRequired();
 
         }
       });
@@ -176,26 +178,44 @@
         var value = $(item).find('td.js-param-value input').val();
         criteria[name] = value;
       });
+      var parseData;
+      try {
+        parseData = JSON.parse(editor.getValue());
+      } catch (e) {
+        parseData = editor.getValue();
+      }
       var data = {
         name: $('.js-mock-name').val(),
         path: $('.path-title').data('path'),
         method: $('.path-title').data('method'),
         applicationId: $('input[name=appId]').val(),
         criteria: criteria,
-        mockData: JSON.parse(editor.getValue()),
+        mockData: parseData,
         _id: $('#tab .active a').data('id')
       };
-      console.log(data);
       $.ajax({
         url: `/mock-server/mock/save`,
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function(data) {
-          console.log(data);
+          if (data && data.success) {
+            $('.nav-active').trigger('click');
+          } else {
+            alert('保存失败');
+          }
         }
       })
 
+    };
+
+    _this.checkRequired = function() {
+      var param = $('.nav-sidebar a.nav-active').data('all').param;
+      param.map(function(item, i) {
+        if (item.required) {
+          $('.js-mock-param-table').append(Handlebars.templates.forms['mock-param-row']({param: [item]}))
+        }
+      });
     };
 
     $(document).on('click', 'ul.js-path-data li a', _this.onClickPathNav);
