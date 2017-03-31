@@ -2,13 +2,13 @@
  * Created by macbook on 2017/3/21.
  * 操作api，model可视化表格
  */
-var express = require('express');
-var router = express.Router();
-var apiDefinitionDao = new require('../models/APIDefinition').APIDefinition();
-var ApiDefinition = require('../models/APIDefinition').APIDefinition;
-var ApiPath = require('../models/APIPath').APIPath;
+let express = require('express');
+let router = express.Router();
+let apiDefinitionDao = new require('../models/APIDefinition').APIDefinition();
+let ApiDefinition = require('../models/APIDefinition').APIDefinition;
+let ApiPath = require('../models/APIPath').APIPath;
 
-var Application = require('../models/Application').Application;
+let Application = require('../models/Application').Application;
 
 
 
@@ -25,14 +25,23 @@ router.get('/api/models', function(req, res, next) {
 });
 
 router.post('/api/models/save', function(req, res, next) {
-  var model = req.body.data;
-  var apiDefinition = new ApiDefinition({
+  let model = req.body.data;
+  let apiDefinition = new ApiDefinition({
     applicationId: req.body.appId,
     definition_json: model
   });
-  apiDefinition.save().then((res) => {
+  //先查找再保存
+  apiDefinition.findByRef(req.body.appId, Object.keys(model)[0]).then((result) => {
+    if (result && result.length > 0) {
+      res.status(500).json({success: false, message: '已存在'});
+      return ;
+    }
+    return apiDefinition.save();
+  })
+  .then((result) => {
     res.json({})
   }).catch((e) => {
+    console.log(e);
     res.json({success: false})
   })
 });

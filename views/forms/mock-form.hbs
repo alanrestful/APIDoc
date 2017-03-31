@@ -28,14 +28,11 @@
         <div class="row">
           <div class="col-sm-3 col-md-2" id="tab">
             <ul class="nav nav-sidebar js-mock-list">
-              <li role="presentation" class="active"><a href="#">Home</a></li>
-              <li role="presentation"><a href="#">Profile</a></li>
-              <li role="presentation"><a href="#">Messages</a></li>
+
             </ul>
           </div>
           <div class="col-sm-4 col-md-4 js-mock-data-tab" data-info>
             <h4 class="path-title">
-              /api/user [get]
             </h4>
             <div class="form-group">
               <label>名称:</label>
@@ -185,7 +182,7 @@
         parseData = editor.getValue();
       }
       var data = {
-        name: $('.js-mock-name').val(),
+        name: $('.js-mock-name').val() || (alert("请填写名称")),
         path: $('.path-title').data('path'),
         method: $('.path-title').data('method'),
         applicationId: $('input[name=appId]').val(),
