@@ -27,7 +27,7 @@ var DefinitionParser = require('./common/DefinitionParser');
 
 var ParamManager = require('./common/ParamManager');
 router.all('/12', function(req, res, next) {
-
+  throw new Error("hadhfha", 500);
   res.json({});
 });
 
