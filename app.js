@@ -25,6 +25,7 @@ var mockRequest = require('./routes/mockRequest');
 var mockServer = require('./routes/mockServer');
 var apiForm = require('./routes/apiForm');
 var mockReader = require('./routes/mockReader');
+var oauth = require('./routes/oauth');
 
 var util = require('util'),
     serveStatic = require('serve-static'),
@@ -89,7 +90,7 @@ app.use(function(req,res,next){
     if (req.session.user) {
         next();
     } else {
-        var allow = ['/','/users/login','/users/register','/codegen/.*', '/api/.*', '/api/cases/group', '/mock-server.*'];
+        var allow = ['/','/users/login','/users/register','/codegen/.*', '/api/.*', '/auth/.*','/api/cases/group', '/mock-server.*'];
         var allowTag = false;
         for (var s in allow) {
             if(new RegExp("^" + allow[s] + "$").test(url)) {
@@ -137,8 +138,6 @@ app.use('/codegen', codeGen);
 app.use('/logs', logs);
 app.use('/api/mock-request', mockRequest);
 app.use('/mock-server', mockServer);
-app.use('/api-form', apiForm);
-app.use('/mock-reader', mockReader);
 
 /// 初始化mongodb的连接池（默认pool=5）
 mongoose.connect(config.get("mongodb.uri"), config.get("mongodb.options"));
