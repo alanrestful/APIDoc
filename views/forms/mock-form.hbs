@@ -213,7 +213,7 @@
       var param = $('.nav-sidebar a.nav-active').data('all').param;
       param.map(function(item, i) {
         if (item.required) {
-          $('.js-mock-param-table').append(Handlebars.templates.forms['mock-param-row']({param: [item]}))
+          $('.js-mock-param-table').append(Handlebars.templates.forms['mock-param-row']({param: [item], required: true}))
         }
       });
     };

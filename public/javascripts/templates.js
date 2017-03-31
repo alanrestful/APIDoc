@@ -1322,13 +1322,15 @@ this["Handlebars"]["templates"]["forms"]["mock-param-row"] = Handlebars.template
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "</option>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<tr>\n  <td  class=\"js-param-key\" data-key=\""
-    + container.escapeExpression(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + "\">\n    <select class=\"input-group\" >\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.param : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </select>\n  </td>\n  <td  class=\"js-param-value\">\n    <input name=\"@key\"/>\n  </td>\n</tr>";
+    + "    </select>\n  </td>\n  <td  class=\"js-param-value\">\n    <input name=\"@key\" required=\""
+    + alias4(((helper = (helper = helpers.required || (depth0 != null ? depth0.required : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"required","hash":{},"data":data}) : helper)))
+    + "\"/>\n  </td>\n</tr>";
 },"useData":true});
 this["Handlebars"]["templates"]["forms"]["mock-tab"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
