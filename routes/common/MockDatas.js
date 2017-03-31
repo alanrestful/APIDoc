@@ -61,6 +61,7 @@ module.exports = {MockDatas: MockDatas};
 
 class ObjectUtil {
   static isEquals(obj1, obj2) {
+    if(obj2 === null) obj2 = {};
     if (!obj1 || !obj2) return false;
     if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
     for (let i in obj1) {
